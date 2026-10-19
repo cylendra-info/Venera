@@ -1,0 +1,1 @@
+document.querySelector('.hamb')?.addEventListener('click',()=>{const n=document.querySelector('.links');const open=n.classList.toggle('open');document.querySelector('.hamb').setAttribute('aria-expanded',open?'true':'false')});
