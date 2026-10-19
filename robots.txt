@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://veneratech.com/sitemap.xml

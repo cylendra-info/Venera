@@ -1,0 +1,23 @@
+{
+  "name": "venera-technology-website",
+  "version": "5.0.0",
+  "description": "VENERA Technology Corporate Website V5 - Sovereign Tech & Enterprise Engineering",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test:qa": "node scripts/qa-test.js",
+    "serve": "node scripts/serve.js"
+  },
+  "keywords": [
+    "venera",
+    "technology",
+    "sovereign-tech",
+    "enterprise-engineering",
+    "bilingual"
+  ],
+  "author": "Venera Finance LTD",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "playwright": "^1.64.1"
+  }
+}
