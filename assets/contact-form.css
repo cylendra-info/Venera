@@ -1,0 +1,103 @@
+.form-honeypot {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  clip-path: inset(50%) !important;
+}
+
+.form-consent {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 10px;
+  margin: 4px 0 16px;
+}
+
+.form-consent input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--accent-cyan);
+}
+
+.form-consent label,
+.form-privacy-notice,
+.form-sensitive-warning {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.form-sensitive-warning {
+  margin: 0 0 14px;
+  padding: 11px 13px;
+  border-inline-start: 2px solid rgba(56, 189, 248, 0.55);
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.form-privacy-notice {
+  margin: 0 0 12px;
+}
+
+.form-field-hint,
+.form-field-error {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.form-field-hint {
+  color: var(--text-dim);
+}
+
+.form-field-error {
+  color: #fca5a5;
+}
+
+.form-field-error:empty {
+  display: none;
+}
+
+.form-consent-error {
+  margin: -10px 0 16px;
+}
+
+.form-control[aria-invalid="true"] {
+  border-color: rgba(248, 113, 113, 0.8);
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.2);
+}
+
+.form-consent input[aria-invalid="true"] {
+  outline: 2px solid rgba(248, 113, 113, 0.8);
+  outline-offset: 2px;
+}
+
+.form-feedback.error {
+  display: block;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  color: #fca5a5;
+}
+
+.form-feedback:focus {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 3px;
+}
+
+#institutional-contact-form button[aria-busy="true"] {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+html[dir="rtl"] .form-consent {
+  grid-template-columns: auto 1fr;
+}
+
+@media (max-width: 600px) {
+  .contact-form-box {
+    padding: 28px 20px;
+  }
+}

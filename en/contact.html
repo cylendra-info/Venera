@@ -7,18 +7,23 @@
   <title>Institutional Contact & Technical Inquiries | VENERA Technology</title>
   <meta name="description" content="Connect with our engineering leadership to discuss enterprise systems architecture, applied artificial intelligence, or national digital transformation studies.">
   
-  <!-- Canonical and hreflang omitted: no verified production domain configured -->
+  <!-- Canonical & Multilingual Alternate -->
+  <link rel="canonical" href="https://veneratec.netlify.app/en/contact">
+  <link rel="alternate" hreflang="en" href="https://veneratec.netlify.app/en/contact">
+  <link rel="alternate" hreflang="ar" href="https://veneratec.netlify.app/ar/contact">
+  <link rel="alternate" hreflang="x-default" href="https://veneratec.netlify.app/en/contact">
 
   <!-- Open Graph & Twitter Cards -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Institutional Contact & Technical Inquiries | VENERA Technology">
   <meta property="og:description" content="Connect with our engineering leadership to discuss enterprise systems architecture, applied artificial intelligence, or national digital transformation studies.">
-  
+  <meta property="og:url" content="https://veneratec.netlify.app/en/contact">
   <meta property="og:site_name" content="VENERA Technology">
-  <meta property="og:image" content="../assets/venera-logo-transparent.png">
+  <meta property="og:image" content="https://veneratec.netlify.app/assets/venera-logo-transparent.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Institutional Contact & Technical Inquiries | VENERA Technology">
   <meta name="twitter:description" content="Connect with our engineering leadership to discuss enterprise systems architecture, applied artificial intelligence, or national digital transformation studies.">
+  <meta name="twitter:image" content="https://veneratec.netlify.app/assets/venera-logo-transparent.png">
 
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/png" href="../assets/favicon.png">
@@ -26,7 +31,7 @@
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="../assets/style.css">
-  
+  <link rel="stylesheet" href="../assets/contact-form.css">
 </head>
 <body>
 
@@ -37,14 +42,22 @@
       </a>
       <button class="hamb" aria-label="Toggle Navigation Menu" aria-expanded="false">☰</button>
       <nav class="links" aria-label="Primary Navigation">
-        <a class="" href="index.html">Home</a><a class="" href="about.html">About</a><a class="" href="expertise.html">Expertise</a><a class="" href="projects.html">Projects</a><a class="" href="ai-ventures.html">AI Ventures</a><a class="" href="partnerships.html">Partnerships</a>
+        <a class="" href="index.html">Home</a><a class="" href="about.html">About</a><a class="" href="founder.html">Founder</a>
+    <div class="nav-more nav-group nav-group-projects-menu" data-nav-group="projects-menu">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-projects-menu-menu">
+        Projects <span class="nav-more-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="nav-dropdown" id="nav-projects-menu-menu" role="menu">
+        <a class="nav-dropdown-item" href="projects.html" role="menuitem">Ventures & Platforms</a><a class="nav-dropdown-item" href="ai-ventures.html" role="menuitem">AI Ventures & Emerging Technologies</a>
+      </div>
+    </div><a class="" href="expertise.html">Expertise</a><a class="" href="partnerships.html">Partnerships</a>
         
-    <div class="nav-more has-active">
-      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-label="More">
+    <div class="nav-more nav-group nav-group-more has-active" data-nav-group="more">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-more-menu">
         More <span class="nav-more-chevron" aria-hidden="true">▾</span>
       </button>
-      <div class="nav-dropdown" role="menu">
-        <a class="nav-dropdown-item" href="initiatives.html">Initiatives</a><a class="nav-dropdown-item" href="team.html">Team</a><a class="nav-dropdown-item" href="founder.html">Founder</a><a class="nav-dropdown-item" href="insights.html">Research & Insights</a><a class="nav-dropdown-item active" href="contact.html">Contact</a>
+      <div class="nav-dropdown" id="nav-more-menu" role="menu">
+        <a class="nav-dropdown-item" href="initiatives.html" role="menuitem">Strategic Initiatives</a><a class="nav-dropdown-item" href="team.html" role="menuitem">Team</a><a class="nav-dropdown-item" href="insights.html" role="menuitem">Research & Insights</a><a class="nav-dropdown-item active" href="contact.html" role="menuitem" aria-current="page">Contact</a>
       </div>
     </div>
         <a class="lang-pill" href="../ar/contact.html" hreflang="ar" lang="ar">العربية</a>
@@ -89,51 +102,68 @@
         <div class="contact-form-box" id="inquiry-form">
           <div class="eyebrow">SYSTEMS ENGAGEMENT</div>
           <h2 style="font-size: 1.75rem; color: #ffffff; margin-bottom: 8px;">Institutional Inquiry Portal</h2>
-          <p style="color: var(--text-muted); font-size: 0.9375rem; margin-bottom: 28px;">Submit an inquiry to be routed to our systems engineering practice.</p>
+          <p style="color: var(--text-muted); font-size: 0.9375rem; margin-bottom: 28px;">Submit a business, investment, institutional, or strategic partnership inquiry.</p>
 
-          <form id="institutional-contact-form" novalidate>
+          <form id="institutional-contact-form" name="venera-institutional-inquiry" method="POST" action="/en/contact" data-netlify="true" netlify-honeypot="bot-field" data-validation-message="Please review the highlighted field." data-submitting-message="Submitting securely…" data-accepted-message="The submission endpoint accepted the HTTP request. Netlify dashboard receipt and email delivery are still awaiting owner verification. Your entries remain available below." data-html-response-message="The website returned a page response, which does not confirm that Netlify recorded the inquiry. Your entries remain available below." data-redirected-message="The submission request was redirected, so delivery cannot be confirmed. Your entries remain available; please try again after the site configuration is reviewed." data-rejected-message="The submission endpoint rejected the request. Your entries have been preserved; please try again." data-network-failure-message="The submission endpoint could not be reached. Your entries have been preserved; please check your connection and try again." novalidate>
+            <input type="hidden" name="form-name" value="venera-institutional-inquiry">
+            <p class="form-honeypot" aria-hidden="true">
+              <label>Leave this field blank<input name="bot-field" type="text" tabindex="-1" autocomplete="off"></label>
+            </p>
+
             <div class="form-group">
               <label for="contact-name">Full Name *</label>
-              <input type="text" id="contact-name" class="form-control" required placeholder="e.g. Dr. Alexander Vance">
+              <input type="text" id="contact-name" name="full_name" class="form-control" required minlength="2" maxlength="120" autocomplete="name" aria-describedby="contact-name-error" data-required-message="Enter your full name." data-too-short-message="Full name must contain at least 2 characters." placeholder="e.g. Dr. Alexander Vance">
+              <p class="form-field-error" id="contact-name-error"></p>
             </div>
 
             <div class="form-row-2">
               <div class="form-group">
-                <label for="contact-org">Organization / Institution *</label>
-                <input type="text" id="contact-org" class="form-control" required placeholder="Enterprise / Agency">
+                <label for="contact-org">Organization / Company *</label>
+                <input type="text" id="contact-org" name="organization" class="form-control" required minlength="2" maxlength="160" autocomplete="organization" aria-describedby="contact-org-error" data-required-message="Enter your organization or company." data-too-short-message="Organization or company must contain at least 2 characters." placeholder="Enterprise / Agency">
+                <p class="form-field-error" id="contact-org-error"></p>
               </div>
               <div class="form-group">
-                <label for="contact-role">Professional Title</label>
-                <input type="text" id="contact-role" class="form-control" placeholder="Director / Architect">
+                <label for="contact-role">Job Title</label>
+                <input type="text" id="contact-role" name="job_title" class="form-control" maxlength="120" autocomplete="organization-title" placeholder="Director / Architect">
               </div>
             </div>
 
             <div class="form-group">
-              <label for="contact-email">Official Email Address *</label>
-              <input type="email" id="contact-email" class="form-control" required placeholder="contact@institution.org">
+              <label for="contact-email">Business Email *</label>
+              <input type="email" id="contact-email" name="email" class="form-control" required maxlength="254" autocomplete="email" inputmode="email" aria-describedby="contact-email-error" data-required-message="Enter an email address." data-invalid-message="Enter a valid email address, such as name@example.com. Gmail, Outlook, and other valid providers are accepted." placeholder="contact@institution.org">
+              <p class="form-field-error" id="contact-email-error"></p>
             </div>
 
             <div class="form-group">
               <label for="contact-category">Inquiry Category *</label>
-              <select id="contact-category" class="form-control" required>
-                <option value="strategic-systems">Strategic Systems & National Infrastructure</option><option value="enterprise-ai">Enterprise AI & Intelligent Automation</option><option value="fintech-platforms">Financial Technology & Trading Architecture</option><option value="technical-partnership">Technical Partnership & Joint R&D</option><option value="executive-advisory">Executive Consultation</option>
+              <select id="contact-category" name="category" class="form-control" required aria-describedby="contact-category-error" data-required-message="Select an inquiry category.">
+                <option value="" selected disabled>Select an inquiry category</option>
+                <option value="strategic-partnership">Strategic Partnership</option><option value="investment-opportunity">Investment Opportunity</option><option value="joint-venture">Joint Venture</option><option value="government-institutional-collaboration">Government / Institutional Collaboration</option><option value="technology-partnership">Technology Partnership</option><option value="general-inquiry">General Inquiry</option>
               </select>
+              <p class="form-field-error" id="contact-category-error"></p>
             </div>
 
             <div class="form-group">
-              <label for="contact-message">Brief Description of Architectural or Strategic Requirement *</label>
-              <textarea id="contact-message" class="form-control" required placeholder="Provide brief context regarding your enterprise requirement or briefing request..."></textarea>
+              <label for="contact-message">Inquiry Description *</label>
+              <textarea id="contact-message" name="message" class="form-control" required minlength="20" maxlength="4000" aria-describedby="contact-message-hint contact-message-error" data-required-message="Describe your inquiry." data-too-short-message="Inquiry description must contain at least 20 characters." placeholder="Provide brief context regarding your inquiry or proposed collaboration..."></textarea>
+              <p class="form-field-hint" id="contact-message-hint">Minimum 20 characters.</p>
+              <p class="form-field-error" id="contact-message-error"></p>
             </div>
+
+            <div class="form-consent">
+              <input type="checkbox" id="contact-consent" name="privacy_consent" value="consented" required aria-describedby="contact-consent-error" data-required-message="Confirm privacy consent before submitting.">
+              <label for="contact-consent">I consent to VENERA Technology collecting and processing my contact details and inquiry for the purpose of responding to this request. *</label>
+            </div>
+            <p class="form-field-error form-consent-error" id="contact-consent-error"></p>
+
+            <p class="form-privacy-notice">Netlify processes this submission on VENERA Technology's behalf. Your contact details and inquiry are collected only to review and respond to your request. You may use this contact page or the verified LinkedIn route to request deletion.</p>
+            <p class="form-sensitive-warning"><strong>Important:</strong> Do not submit confidential technical documents, credentials, or sensitive financial records.</p>
 
             <button type="submit" class="btn" style="width: 100%; margin-top: 8px;">
               Submit Institutional Inquiry →
             </button>
 
-            <div id="form-feedback" class="form-feedback"></div>
-
-            <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 16px; text-align: center;">
-              🔒 Inquiries are treated with strict confidentiality. No marketing spam or data sharing.
-            </p>
+            <div id="form-feedback" class="form-feedback" role="status" aria-live="polite" tabindex="-1"></div>
           </form>
         </div>
       </div>
@@ -167,10 +197,12 @@
           <ul>
             <li><a href="cylendra.html">Cylendra Labs</a></li>
             <li><a href="veneraswap.html">VeneraSwap</a></li>
-            <li><a href="paynxs.html">PayNXS</a></li>
-            <li><a href="ordernxs.html">OrderNXS</a></li>
-            <li><a href="roic.html">ROIC</a></li>
-            <li><a href="nuxese.html">Nuxese Group</a></li>
+            <li><a href="stylai.html">StylAI</a></li>
+            <li><a href="stylai-store.html">StylAI Store</a></li>
+            <li><a href="dilmart.html">DilMart</a></li>
+            <li><a href="muhasebos.html">MuhasebOS</a></li>
+            <li><a href="max-hub.html">Max Hub</a></li>
+            <li><a href="deyon.html">Deyon App</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -183,7 +215,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <div>© 2026 Venera Finance LTD · VENERA Technology. All Rights Reserved.</div>
+        <div>© 2020–2026 Venera Finance LTD · VENERA Technology. All Rights Reserved.</div>
         <div class="footer-disclaimer">Institutional Notice: Content on this corporate website is for descriptive and institutional informational purposes. Conceptual blueprints and research studies do not represent awarded government contracts, official public endorsements, or deployed state systems.</div>
       </div>
     </div>

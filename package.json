@@ -5,7 +5,11 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build.js",
+    "package:netlify": "node scripts/deploy-package.js",
+    "test:dist": "node scripts/dist-qa-test.js",
     "test:qa": "node scripts/qa-test.js",
+    "test:contact": "node scripts/contact-form-test.js",
+    "test:globe": "node scripts/globe-v58-test.js",
     "serve": "node scripts/serve.js"
   },
   "keywords": [

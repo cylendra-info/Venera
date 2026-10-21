@@ -7,18 +7,23 @@
   <title>PayNXS | منظومة مدفوعات رقمية للتجار والأسواق الناشئة | VENERA Technology</title>
   <meta name="description" content="مبادرة تقنية للدفع الإلكتروني ومنظومة التجار صُممت لقطاع التجزئة في العراق (قرابة 2019–2020).">
   
-  <!-- Canonical and hreflang omitted: no verified production domain configured -->
+  <!-- Canonical & Multilingual Alternate -->
+  <link rel="canonical" href="https://veneratec.netlify.app/ar/paynxs">
+  <link rel="alternate" hreflang="ar" href="https://veneratec.netlify.app/ar/paynxs">
+  <link rel="alternate" hreflang="en" href="https://veneratec.netlify.app/en/paynxs">
+  <link rel="alternate" hreflang="x-default" href="https://veneratec.netlify.app/en/paynxs">
 
   <!-- Open Graph & Twitter Cards -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="PayNXS | منظومة مدفوعات رقمية للتجار والأسواق الناشئة | VENERA Technology">
   <meta property="og:description" content="مبادرة تقنية للدفع الإلكتروني ومنظومة التجار صُممت لقطاع التجزئة في العراق (قرابة 2019–2020).">
-  
+  <meta property="og:url" content="https://veneratec.netlify.app/ar/paynxs">
   <meta property="og:site_name" content="VENERA Technology">
-  <meta property="og:image" content="../assets/venera-logo-transparent.png">
+  <meta property="og:image" content="https://veneratec.netlify.app/assets/venera-logo-transparent.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="PayNXS | منظومة مدفوعات رقمية للتجار والأسواق الناشئة | VENERA Technology">
   <meta name="twitter:description" content="مبادرة تقنية للدفع الإلكتروني ومنظومة التجار صُممت لقطاع التجزئة في العراق (قرابة 2019–2020).">
+  <meta name="twitter:image" content="https://veneratec.netlify.app/assets/venera-logo-transparent.png">
 
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/png" href="../assets/favicon.png">
@@ -37,14 +42,22 @@
       </a>
       <button class="hamb" aria-label="فتح القائمة" aria-expanded="false">☰</button>
       <nav class="links" aria-label="القائمة الرئيسية">
-        <a class="" href="index.html">الرئيسية</a><a class="" href="about.html">عن فينيريا</a><a class="" href="expertise.html">الخبرات</a><a class="active" href="projects.html">المشاريع</a><a class="" href="ai-ventures.html">مشاريع الذكاء</a><a class="" href="partnerships.html">الشراكات</a>
+        <a class="" href="index.html">الرئيسية</a><a class="" href="about.html">عن فينيرا</a><a class="" href="founder.html">المؤسس</a>
+    <div class="nav-more nav-group nav-group-projects-menu has-active" data-nav-group="projects-menu">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-projects-menu-menu">
+        المشاريع <span class="nav-more-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="nav-dropdown" id="nav-projects-menu-menu" role="menu">
+        <a class="nav-dropdown-item active" href="projects.html" role="menuitem" aria-current="page">المشاريع والمنصات</a><a class="nav-dropdown-item" href="ai-ventures.html" role="menuitem">مشاريع الذكاء الاصطناعي</a>
+      </div>
+    </div><a class="" href="expertise.html">الخبرات</a><a class="" href="partnerships.html">الشراكات</a>
         
-    <div class="nav-more">
-      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-label="المزيد">
+    <div class="nav-more nav-group nav-group-more" data-nav-group="more">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-more-menu">
         المزيد <span class="nav-more-chevron" aria-hidden="true">▾</span>
       </button>
-      <div class="nav-dropdown" role="menu">
-        <a class="nav-dropdown-item" href="initiatives.html">المبادرات</a><a class="nav-dropdown-item" href="team.html">الفريق</a><a class="nav-dropdown-item" href="founder.html">المؤسس</a><a class="nav-dropdown-item" href="insights.html">البحوث والرؤى</a><a class="nav-dropdown-item" href="contact.html">التواصل</a>
+      <div class="nav-dropdown" id="nav-more-menu" role="menu">
+        <a class="nav-dropdown-item" href="initiatives.html" role="menuitem">المبادرات الاستراتيجية</a><a class="nav-dropdown-item" href="team.html" role="menuitem">فريق العمل</a><a class="nav-dropdown-item" href="insights.html" role="menuitem">البحوث والرؤى</a><a class="nav-dropdown-item" href="contact.html" role="menuitem">التواصل</a>
       </div>
     </div>
         <a class="lang-pill" href="../en/paynxs.html" hreflang="en" lang="en">English</a>
@@ -70,24 +83,16 @@
     <section class="section">
       <div class="wrap detail-grid">
         <div class="detail-body">
-          <div class="eyebrow">نظرة عامة على النظام</div>
+          <div class="eyebrow">نظرة عامة</div>
           <p>كانت PayNXS منصة تقنية مالية طموحة صُممت لمعالجة الاعتماد الكثيف على النقد الورقي في قطاع التجزئة بالعراق، عبر توفير الدفع السريع برمز الاستجابة السريعة (QR)، والمحافظ الإلكترونية للتجار، ومزامنة سجلات المعاملات.</p>
 
-          <div class="card" style="margin: 32px 0;">
-            <div class="eyebrow">المشكلة المعمارية والقطاعية</div>
-            <p>الاعتماد شبه الكامل على النقد الورقي في العراق يزيد من مخاطر الخسارة والسرقة، ويحرم المتاجر الصغيرة من السجلات المالية المعتمدة.</p>
-          </div>
-
-          <div class="eyebrow">مفهوم الحل الهندسي</div>
+          <div class="eyebrow" style="margin-top: 36px;">القيمة والأثر</div>
           <p>تطبيق متكامل للتجار مرتبط بمحفظة دفع للمستهلكين، يتيح التسوية الفورية عبر مسح رمز QR مع مسك الدفاتر الرقمية.</p>
 
-          <div class="eyebrow" style="margin-top: 36px;">القدرات والميزات التقنية</div>
+          <div class="eyebrow" style="margin-top: 36px;">قدرات مختارة</div>
           <ul class="detail-caps-list">
             <li>توليد فوري لرموز QR للدفع ومسح المعاملات بديناميكية وسرعة</li><li>واجهات تشغيل للمتاجر والمستهلكين مع إمكانية إصدار إيصالات غير متصلة</li><li>تسوية آلية لدفاتر الحسابات وإصدار تقارير الإغلاق اليومي</li><li>إشعارات فورية عبر الرسائل القصيرة مع توثيق تشفيري للعمليات</li>
           </ul>
-
-          <div class="eyebrow" style="margin-top: 36px;">الهندسة المعمارية للنظام</div>
-          <p>تطبيقات هواتف ذكية تتصل بخدمات دفع مصغرة مؤمنة، ونماذج حالات المعاملات، وقواعد بيانات علائقية دقيقة.</p>
 
           <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line-dark);">
             <a class="btn" href="projects.html">← استعراض مشاريع أخرى</a>
@@ -96,15 +101,15 @@
         </div>
 
         <aside class="sidebar-box">
-          <h3>بيانات وحالة المشروع</h3>
-          
+          <h3>عن المشروع</h3>
+
           <div class="sidebar-item">
-            <strong>الحالة التشغيلية</strong>
+            <strong>الحالة</strong>
             <span><span class="status-badge status-hist">منصة مطوّرة</span></span>
           </div>
 
           <div class="sidebar-item">
-            <strong>دور المؤسس / الشركة</strong>
+            <strong>الدور</strong>
             <span>تصميم النظام، وهندسة البرمجيات، وتصميم سير عمليات التجار بواسطة المؤسس.</span>
           </div>
 
@@ -122,7 +127,7 @@
           <p>العلامة الهندسية والتقنية التابعة لشركة Venera Finance LTD (بيلاروسيا، تأسست عام 2020). تصميم المنصات الذكية، والأنظمة المؤسسية، والبنى التحتية الرقمية السيادية.</p>
           <div style="margin-top: 16px;">
             <a class="inline-link" href="https://www.linkedin.com/in/leader7701/" target="_blank" rel="noopener noreferrer">
-              Founder LinkedIn Profile ↗
+              الملف المهني للمؤسس على LinkedIn ↗
             </a>
           </div>
         </div>
@@ -141,10 +146,12 @@
           <ul>
             <li><a href="cylendra.html">Cylendra Labs</a></li>
             <li><a href="veneraswap.html">VeneraSwap</a></li>
-            <li><a href="paynxs.html">PayNXS</a></li>
-            <li><a href="ordernxs.html">OrderNXS</a></li>
-            <li><a href="roic.html">ROIC</a></li>
-            <li><a href="nuxese.html">Nuxese Group</a></li>
+            <li><a href="stylai.html">StylAI</a></li>
+            <li><a href="stylai-store.html">StylAI Store</a></li>
+            <li><a href="dilmart.html">DilMart</a></li>
+            <li><a href="muhasebos.html">MuhasebOS</a></li>
+            <li><a href="max-hub.html">Max Hub</a></li>
+            <li><a href="deyon.html">Deyon App</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -157,7 +164,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <div>© 2026 Venera Finance LTD · VENERA Technology. جميع الحقوق محفوظة.</div>
+        <div>© 2020–2026 Venera Finance LTD · VENERA Technology. جميع الحقوق محفوظة.</div>
         <div class="footer-disclaimer">إشعار مؤسسي: المعلومات الواردة في هذا الموقع مخصصة للتعريف المؤسسي والهندسي. ولا تُمثل المخططات المفاهيمية والدراسات البحثية عقوداً حكومية ممنوحة أو تأييداً رسمياً أو أنظمة عامة مشغلة.</div>
       </div>
     </div>

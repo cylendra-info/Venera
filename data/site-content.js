@@ -31,30 +31,41 @@ const siteContent = {
   },
 
   navigation: {
-    // Primary items always visible. Secondary items collapse into "More" dropdown.
+    // Ordered global navigation. Items with children render as accessible menu groups;
+    // secondary items collapse into the shared "More" group.
     en: [
       { id: "home",         label: "Home",                href: "/en/index.html",        primary: true  },
       { id: "about",        label: "About",               href: "/en/about.html",        primary: true  },
+      { id: "founder",      label: "Founder",             href: "/en/founder.html",      primary: true  },
+      {
+        id: "projects-menu", label: "Projects", primary: true,
+        children: [
+          { id: "projects",    label: "Ventures & Platforms", href: "/en/projects.html" },
+          { id: "ai-ventures", label: "AI Ventures & Emerging Technologies", href: "/en/ai-ventures.html" }
+        ]
+      },
       { id: "expertise",    label: "Expertise",           href: "/en/expertise.html",    primary: true  },
-      { id: "projects",     label: "Projects",            href: "/en/projects.html",     primary: true  },
-      { id: "ai-ventures",  label: "AI Ventures",         href: "/en/ai-ventures.html",  primary: true  },
       { id: "partnerships", label: "Partnerships",        href: "/en/partnerships.html", primary: true  },
-      { id: "initiatives",  label: "Initiatives",         href: "/en/initiatives.html",  primary: false },
+      { id: "initiatives",  label: "Strategic Initiatives", href: "/en/initiatives.html", primary: false },
       { id: "team",         label: "Team",                href: "/en/team.html",         primary: false },
-      { id: "founder",      label: "Founder",             href: "/en/founder.html",      primary: false },
       { id: "insights",     label: "Research & Insights", href: "/en/insights.html",     primary: false },
       { id: "contact",      label: "Contact",             href: "/en/contact.html",      primary: false }
     ],
     ar: [
       { id: "home",         label: "الرئيسية",                 href: "/ar/index.html",        primary: true  },
-      { id: "about",        label: "عن فينيريا",               href: "/ar/about.html",        primary: true  },
+      { id: "about",        label: "عن فينيرا",                href: "/ar/about.html",        primary: true  },
+      { id: "founder",      label: "المؤسس",                   href: "/ar/founder.html",      primary: true  },
+      {
+        id: "projects-menu", label: "المشاريع", primary: true,
+        children: [
+          { id: "projects",    label: "المشاريع والمنصات", href: "/ar/projects.html" },
+          { id: "ai-ventures", label: "مشاريع الذكاء الاصطناعي", href: "/ar/ai-ventures.html" }
+        ]
+      },
       { id: "expertise",    label: "الخبرات",                  href: "/ar/expertise.html",    primary: true  },
-      { id: "projects",     label: "المشاريع",                 href: "/ar/projects.html",     primary: true  },
-      { id: "ai-ventures",  label: "مشاريع الذكاء",           href: "/ar/ai-ventures.html",  primary: true  },
       { id: "partnerships", label: "الشراكات",                 href: "/ar/partnerships.html", primary: true  },
-      { id: "initiatives",  label: "المبادرات",                href: "/ar/initiatives.html",  primary: false },
-      { id: "team",         label: "الفريق",                   href: "/ar/team.html",         primary: false },
-      { id: "founder",      label: "المؤسس",                   href: "/ar/founder.html",      primary: false },
+      { id: "initiatives",  label: "المبادرات الاستراتيجية",   href: "/ar/initiatives.html",  primary: false },
+      { id: "team",         label: "فريق العمل",               href: "/ar/team.html",         primary: false },
       { id: "insights",     label: "البحوث والرؤى",            href: "/ar/insights.html",     primary: false },
       { id: "contact",      label: "التواصل",                  href: "/ar/contact.html",      primary: false }
     ]
@@ -547,7 +558,7 @@ const siteContent = {
           "Constant-product automated market maker (AMM) pricing logic",
           "Non-custodial asset exchange with user wallet custody",
           "Yield distribution algorithms for decentralized liquidity providers",
-          "Smart contract architecture audited for reentrancy and arithmetic safety"
+          "Smart contract architecture designed to guard against reentrancy and arithmetic-overflow risks"
         ],
         architecture: "Solidity smart contracts deployed on EVM-compatible chains, paired with indexing subgraphs, web3 client libraries, and responsive interface layers.",
         role: "Original product engineering, protocol concept, and technical documentation by Venera.",
@@ -856,7 +867,7 @@ const siteContent = {
           "خوارزميات تسعير تعتمد نموذج حاصل الضرب الثابت (Constant-Product AMM)",
           "مبادلة الأصول بدون وساطة مع احتفاظ المستخدم بالسيطرة على محفظته",
           "خوارزميات توزيع العوائد لموفري السيولة اللامركزيين",
-          "عقود ذكية مدققة برمجياً لضمان السلامة الحسابية ومقاومة هجمات إعادة الدخول"
+          "عقود ذكية مصممة للحماية من هجمات إعادة الدخول ومخاطر تجاوز القيم الحسابية"
         ],
         architecture: "عقود ذكية بلغة Solidity منشورة على سلاسل متوافقة مع EVM، مدعومة بمفهرسات Subgraphs وواجهات ويب تفاعلية.",
         role: "التطوير البرمجي الأصلي، ومفهوم البروتوكول، والتوثيق التقني المنشور بواسطة فينيريا.",
@@ -1592,23 +1603,50 @@ const siteContent = {
       ],
       form: {
         title: "Institutional Inquiry Portal",
-        subtitle: "Submit an inquiry to be routed to our systems engineering practice.",
+        subtitle: "Submit a business, investment, institutional, or strategic partnership inquiry.",
         categories: [
-          { value: "strategic-systems", label: "Strategic Systems & National Infrastructure" },
-          { value: "enterprise-ai", label: "Enterprise AI & Intelligent Automation" },
-          { value: "fintech-platforms", label: "Financial Technology & Trading Architecture" },
-          { value: "technical-partnership", label: "Technical Partnership & Joint R&D" },
-          { value: "executive-advisory", label: "Executive Consultation" }
+          { value: "strategic-partnership", label: "Strategic Partnership" },
+          { value: "investment-opportunity", label: "Investment Opportunity" },
+          { value: "joint-venture", label: "Joint Venture" },
+          { value: "government-institutional-collaboration", label: "Government / Institutional Collaboration" },
+          { value: "technology-partnership", label: "Technology Partnership" },
+          { value: "general-inquiry", label: "General Inquiry" }
         ],
         fields: {
           name: "Full Name",
-          org: "Organization / Institution",
-          role: "Professional Title",
-          email: "Official Email Address",
+          org: "Organization / Company",
+          role: "Job Title",
+          email: "Business Email",
           category: "Inquiry Category",
-          message: "Brief Description of Architectural or Strategic Requirement",
+          message: "Inquiry Description",
           submit: "Submit Institutional Inquiry",
-          privacyNote: "Inquiries are treated with strict confidentiality. No marketing spam or data sharing."
+          selectCategory: "Select an inquiry category",
+          consent: "I consent to VENERA Technology collecting and processing my contact details and inquiry for the purpose of responding to this request.",
+          privacyNote: "Netlify processes this submission on VENERA Technology's behalf. Your contact details and inquiry are collected only to review and respond to your request. You may use this contact page or the verified LinkedIn route to request deletion.",
+          sensitiveWarning: "Do not submit confidential technical documents, credentials, or sensitive financial records.",
+          honeypot: "Leave this field blank"
+        },
+        status: {
+          validation: "Please review the highlighted field.",
+          submitting: "Submitting securely…",
+          accepted: "The submission endpoint accepted the HTTP request. Netlify dashboard receipt and email delivery are still awaiting owner verification. Your entries remain available below.",
+          htmlResponse: "The website returned a page response, which does not confirm that Netlify recorded the inquiry. Your entries remain available below.",
+          redirected: "The submission request was redirected, so delivery cannot be confirmed. Your entries remain available; please try again after the site configuration is reviewed.",
+          rejected: "The submission endpoint rejected the request. Your entries have been preserved; please try again.",
+          networkFailure: "The submission endpoint could not be reached. Your entries have been preserved; please check your connection and try again."
+        },
+        validation: {
+          fullNameRequired: "Enter your full name.",
+          fullNameTooShort: "Full name must contain at least 2 characters.",
+          organizationRequired: "Enter your organization or company.",
+          organizationTooShort: "Organization or company must contain at least 2 characters.",
+          emailRequired: "Enter an email address.",
+          emailInvalid: "Enter a valid email address, such as name@example.com. Gmail, Outlook, and other valid providers are accepted.",
+          categoryRequired: "Select an inquiry category.",
+          messageRequired: "Describe your inquiry.",
+          messageTooShort: "Inquiry description must contain at least 20 characters.",
+          messageHint: "Minimum 20 characters.",
+          consentRequired: "Confirm privacy consent before submitting."
         }
       }
     },
@@ -1640,23 +1678,50 @@ const siteContent = {
       ],
       form: {
         title: "بوابة الاستفسارات المؤسسية",
-        subtitle: "أرسل استفسارك ليتم توجيهه مباشرة إلى الفريق الهندسي المختص.",
+        subtitle: "أرسل استفساراً تجارياً أو استثمارياً أو مؤسسياً أو متعلقاً بشراكة استراتيجية.",
         categories: [
-          { value: "strategic-systems", label: "الأنظمة الاستراتيجية والبنى التحتية الوطنية" },
-          { value: "enterprise-ai", label: "الذكاء الاصطناعي المؤسسي والأتمتة الذكية" },
-          { value: "fintech-platforms", label: "التقنيات المالية وهندسة التداول" },
-          { value: "technical-partnership", label: "الشراكات الهندسية والبحث المشترك" },
-          { value: "executive-advisory", label: "الاستشارات واللقاءات التنفيذية" }
+          { value: "strategic-partnership", label: "شراكة استراتيجية" },
+          { value: "investment-opportunity", label: "فرصة استثمارية" },
+          { value: "joint-venture", label: "مشروع مشترك" },
+          { value: "government-institutional-collaboration", label: "تعاون حكومي / مؤسسي" },
+          { value: "technology-partnership", label: "شراكة تقنية" },
+          { value: "general-inquiry", label: "استفسار عام" }
         ],
         fields: {
           name: "الاسم الكامل",
-          org: "المؤسسة / الجهة",
+          org: "المؤسسة / الشركة",
           role: "المسمى الوظيفي",
-          email: "البريد الإلكتروني الرسمي",
+          email: "البريد الإلكتروني المهني",
           category: "تصنيف الاستفسار",
-          message: "وصف موجز للمتطلبات المعمارية أو التقنية",
+          message: "وصف الاستفسار",
           submit: "إرسال الاستفسار المؤسسي",
-          privacyNote: "تُعامل المراسلات بسرية تامة وتخضع لبروتوكولات الخصوصية المؤسسية."
+          selectCategory: "اختر تصنيف الاستفسار",
+          consent: "أوافق على جمع VENERA Technology لبيانات التواصل والاستفسار ومعالجتها لغرض الرد على هذا الطلب.",
+          privacyNote: "تعالج Netlify هذا الإرسال نيابةً عن VENERA Technology. تُجمع بيانات التواصل والاستفسار فقط لمراجعة الطلب والرد عليه. يمكنك استخدام صفحة التواصل هذه أو قناة LinkedIn الموثقة لطلب حذف بياناتك.",
+          sensitiveWarning: "لا ترسل مستندات تقنية سرية أو بيانات اعتماد أو سجلات مالية حساسة.",
+          honeypot: "اترك هذا الحقل فارغاً"
+        },
+        status: {
+          validation: "يرجى مراجعة الحقل المحدد.",
+          submitting: "جارٍ إرسال الاستفسار…",
+          accepted: "قبلت نقطة الإرسال طلب HTTP. لا يزال استلام الطلب في لوحة Netlify ووصول إشعار البريد الإلكتروني بانتظار تحقق المالك. ستبقى البيانات المدخلة متاحة أدناه.",
+          htmlResponse: "أعاد الموقع استجابة صفحة، وهذا لا يؤكد تسجيل Netlify للاستفسار. ستبقى البيانات المدخلة متاحة أدناه.",
+          redirected: "أُعيد توجيه طلب الإرسال، لذلك لا يمكن تأكيد التسليم. ستبقى البيانات المدخلة متاحة؛ يرجى المحاولة مجدداً بعد مراجعة إعدادات الموقع.",
+          rejected: "رفضت نقطة الإرسال الطلب. تم الاحتفاظ بالبيانات المدخلة؛ يرجى المحاولة مجدداً.",
+          networkFailure: "تعذر الوصول إلى نقطة الإرسال. تم الاحتفاظ بالبيانات المدخلة؛ تحقق من الاتصال وحاول مرة أخرى."
+        },
+        validation: {
+          fullNameRequired: "أدخل الاسم الكامل.",
+          fullNameTooShort: "يجب ألا يقل الاسم الكامل عن حرفين.",
+          organizationRequired: "أدخل اسم المؤسسة أو الشركة.",
+          organizationTooShort: "يجب ألا يقل اسم المؤسسة أو الشركة عن حرفين.",
+          emailRequired: "أدخل عنوان بريد إلكتروني.",
+          emailInvalid: "أدخل عنوان بريد إلكتروني صالحاً مثل name@example.com. تُقبل عناوين Gmail وOutlook وغيرها من المزودين الصالحين.",
+          categoryRequired: "اختر تصنيف الاستفسار.",
+          messageRequired: "اكتب وصفاً للاستفسار.",
+          messageTooShort: "يجب ألا يقل وصف الاستفسار عن 20 حرفاً.",
+          messageHint: "الحد الأدنى 20 حرفاً.",
+          consentRequired: "يرجى تأكيد الموافقة على الخصوصية قبل الإرسال."
         }
       }
     }
@@ -1937,9 +2002,7 @@ const siteContent = {
   // opportunities array: each record requires visibility: "approved_public"
   // to appear in the public build. Private/draft records must NEVER appear.
   // Currently no approved public opportunities — elegant general page shown.
-  // Internal register entries are withheld from this public source snapshot.
-  // The two synthetic fixtures below exist ONLY so the confidentiality
-  // regression tests can verify the visibility gate without real data.
+  // Internal register entries below are synthetic regression fixtures.
   // -----------------------------------------------------------------------
   opportunities: {
     // Internal register only. Public build reads this but filters to approved_public.
@@ -2073,7 +2136,7 @@ const siteContent = {
       colProjects: "Selected Work",
       colResearch: "Strategic Research",
       legalDisclaimer: "Institutional Notice: Content on this corporate website is for descriptive and institutional informational purposes. Conceptual blueprints and research studies do not represent awarded government contracts, official public endorsements, or deployed state systems.",
-      copyright: "© 2026 Venera Finance LTD · VENERA Technology. All Rights Reserved."
+      copyright: "© 2020–2026 Venera Finance LTD · VENERA Technology. All Rights Reserved."
     },
     ar: {
       brandDesc: "العلامة الهندسية والتقنية التابعة لشركة Venera Finance LTD (بيلاروسيا، تأسست عام 2020). تصميم المنصات الذكية، والأنظمة المؤسسية، والبنى التحتية الرقمية السيادية.",
@@ -2081,7 +2144,7 @@ const siteContent = {
       colProjects: "أعمال مختارة",
       colResearch: "البحوث الاستراتيجية",
       legalDisclaimer: "إشعار مؤسسي: المعلومات الواردة في هذا الموقع مخصصة للتعريف المؤسسي والهندسي. ولا تُمثل المخططات المفاهيمية والدراسات البحثية عقوداً حكومية ممنوحة أو تأييداً رسمياً أو أنظمة عامة مشغلة.",
-      copyright: "© 2026 Venera Finance LTD · VENERA Technology. جميع الحقوق محفوظة."
+      copyright: "© 2020–2026 Venera Finance LTD · VENERA Technology. جميع الحقوق محفوظة."
     }
   }
 };

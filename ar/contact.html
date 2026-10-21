@@ -7,18 +7,23 @@
   <title>التواصل المؤسسي وبوابة الاستفسارات | VENERA Technology</title>
   <meta name="description" content="تواصل مع قيادتنا الهندسية لمناقشة بنية الأنظمة المؤسسية، أو تطبيقات الذكاء الاصطناعي، أو دراسات التحول الرقمي الوطني.">
   
-  <!-- Canonical and hreflang omitted: no verified production domain configured -->
+  <!-- Canonical & Multilingual Alternate -->
+  <link rel="canonical" href="https://veneratec.netlify.app/ar/contact">
+  <link rel="alternate" hreflang="ar" href="https://veneratec.netlify.app/ar/contact">
+  <link rel="alternate" hreflang="en" href="https://veneratec.netlify.app/en/contact">
+  <link rel="alternate" hreflang="x-default" href="https://veneratec.netlify.app/en/contact">
 
   <!-- Open Graph & Twitter Cards -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="التواصل المؤسسي وبوابة الاستفسارات | VENERA Technology">
   <meta property="og:description" content="تواصل مع قيادتنا الهندسية لمناقشة بنية الأنظمة المؤسسية، أو تطبيقات الذكاء الاصطناعي، أو دراسات التحول الرقمي الوطني.">
-  
+  <meta property="og:url" content="https://veneratec.netlify.app/ar/contact">
   <meta property="og:site_name" content="VENERA Technology">
-  <meta property="og:image" content="../assets/venera-logo-transparent.png">
+  <meta property="og:image" content="https://veneratec.netlify.app/assets/venera-logo-transparent.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="التواصل المؤسسي وبوابة الاستفسارات | VENERA Technology">
   <meta name="twitter:description" content="تواصل مع قيادتنا الهندسية لمناقشة بنية الأنظمة المؤسسية، أو تطبيقات الذكاء الاصطناعي، أو دراسات التحول الرقمي الوطني.">
+  <meta name="twitter:image" content="https://veneratec.netlify.app/assets/venera-logo-transparent.png">
 
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/png" href="../assets/favicon.png">
@@ -26,7 +31,7 @@
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="../assets/style.css">
-  
+  <link rel="stylesheet" href="../assets/contact-form.css">
 </head>
 <body>
 
@@ -37,14 +42,22 @@
       </a>
       <button class="hamb" aria-label="فتح القائمة" aria-expanded="false">☰</button>
       <nav class="links" aria-label="القائمة الرئيسية">
-        <a class="" href="index.html">الرئيسية</a><a class="" href="about.html">عن فينيريا</a><a class="" href="expertise.html">الخبرات</a><a class="" href="projects.html">المشاريع</a><a class="" href="ai-ventures.html">مشاريع الذكاء</a><a class="" href="partnerships.html">الشراكات</a>
+        <a class="" href="index.html">الرئيسية</a><a class="" href="about.html">عن فينيرا</a><a class="" href="founder.html">المؤسس</a>
+    <div class="nav-more nav-group nav-group-projects-menu" data-nav-group="projects-menu">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-projects-menu-menu">
+        المشاريع <span class="nav-more-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="nav-dropdown" id="nav-projects-menu-menu" role="menu">
+        <a class="nav-dropdown-item" href="projects.html" role="menuitem">المشاريع والمنصات</a><a class="nav-dropdown-item" href="ai-ventures.html" role="menuitem">مشاريع الذكاء الاصطناعي</a>
+      </div>
+    </div><a class="" href="expertise.html">الخبرات</a><a class="" href="partnerships.html">الشراكات</a>
         
-    <div class="nav-more has-active">
-      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-label="المزيد">
+    <div class="nav-more nav-group nav-group-more has-active" data-nav-group="more">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-more-menu">
         المزيد <span class="nav-more-chevron" aria-hidden="true">▾</span>
       </button>
-      <div class="nav-dropdown" role="menu">
-        <a class="nav-dropdown-item" href="initiatives.html">المبادرات</a><a class="nav-dropdown-item" href="team.html">الفريق</a><a class="nav-dropdown-item" href="founder.html">المؤسس</a><a class="nav-dropdown-item" href="insights.html">البحوث والرؤى</a><a class="nav-dropdown-item active" href="contact.html">التواصل</a>
+      <div class="nav-dropdown" id="nav-more-menu" role="menu">
+        <a class="nav-dropdown-item" href="initiatives.html" role="menuitem">المبادرات الاستراتيجية</a><a class="nav-dropdown-item" href="team.html" role="menuitem">فريق العمل</a><a class="nav-dropdown-item" href="insights.html" role="menuitem">البحوث والرؤى</a><a class="nav-dropdown-item active" href="contact.html" role="menuitem" aria-current="page">التواصل</a>
       </div>
     </div>
         <a class="lang-pill" href="../en/contact.html" hreflang="en" lang="en">English</a>
@@ -89,51 +102,68 @@
         <div class="contact-form-box" id="inquiry-form">
           <div class="eyebrow">بوابة التوجيه التقني</div>
           <h2 style="font-size: 1.75rem; color: #ffffff; margin-bottom: 8px;">بوابة الاستفسارات المؤسسية</h2>
-          <p style="color: var(--text-muted); font-size: 0.9375rem; margin-bottom: 28px;">أرسل استفسارك ليتم توجيهه مباشرة إلى الفريق الهندسي المختص.</p>
+          <p style="color: var(--text-muted); font-size: 0.9375rem; margin-bottom: 28px;">أرسل استفساراً تجارياً أو استثمارياً أو مؤسسياً أو متعلقاً بشراكة استراتيجية.</p>
 
-          <form id="institutional-contact-form" novalidate>
+          <form id="institutional-contact-form" name="venera-institutional-inquiry" method="POST" action="/ar/contact" data-netlify="true" netlify-honeypot="bot-field" data-validation-message="يرجى مراجعة الحقل المحدد." data-submitting-message="جارٍ إرسال الاستفسار…" data-accepted-message="قبلت نقطة الإرسال طلب HTTP. لا يزال استلام الطلب في لوحة Netlify ووصول إشعار البريد الإلكتروني بانتظار تحقق المالك. ستبقى البيانات المدخلة متاحة أدناه." data-html-response-message="أعاد الموقع استجابة صفحة، وهذا لا يؤكد تسجيل Netlify للاستفسار. ستبقى البيانات المدخلة متاحة أدناه." data-redirected-message="أُعيد توجيه طلب الإرسال، لذلك لا يمكن تأكيد التسليم. ستبقى البيانات المدخلة متاحة؛ يرجى المحاولة مجدداً بعد مراجعة إعدادات الموقع." data-rejected-message="رفضت نقطة الإرسال الطلب. تم الاحتفاظ بالبيانات المدخلة؛ يرجى المحاولة مجدداً." data-network-failure-message="تعذر الوصول إلى نقطة الإرسال. تم الاحتفاظ بالبيانات المدخلة؛ تحقق من الاتصال وحاول مرة أخرى." novalidate>
+            <input type="hidden" name="form-name" value="venera-institutional-inquiry">
+            <p class="form-honeypot" aria-hidden="true">
+              <label>اترك هذا الحقل فارغاً<input name="bot-field" type="text" tabindex="-1" autocomplete="off"></label>
+            </p>
+
             <div class="form-group">
               <label for="contact-name">الاسم الكامل *</label>
-              <input type="text" id="contact-name" class="form-control" required placeholder="مثال: د. أحمد المنصور">
+              <input type="text" id="contact-name" name="full_name" class="form-control" required minlength="2" maxlength="120" autocomplete="name" aria-describedby="contact-name-error" data-required-message="أدخل الاسم الكامل." data-too-short-message="يجب ألا يقل الاسم الكامل عن حرفين." placeholder="مثال: د. أحمد المنصور">
+              <p class="form-field-error" id="contact-name-error"></p>
             </div>
 
             <div class="form-row-2">
               <div class="form-group">
-                <label for="contact-org">المؤسسة / الجهة *</label>
-                <input type="text" id="contact-org" class="form-control" required placeholder="المؤسسة أو الهيئة">
+                <label for="contact-org">المؤسسة / الشركة *</label>
+                <input type="text" id="contact-org" name="organization" class="form-control" required minlength="2" maxlength="160" autocomplete="organization" aria-describedby="contact-org-error" data-required-message="أدخل اسم المؤسسة أو الشركة." data-too-short-message="يجب ألا يقل اسم المؤسسة أو الشركة عن حرفين." placeholder="المؤسسة أو الشركة">
+                <p class="form-field-error" id="contact-org-error"></p>
               </div>
               <div class="form-group">
                 <label for="contact-role">المسمى الوظيفي</label>
-                <input type="text" id="contact-role" class="form-control" placeholder="المسمى الوظيفي">
+                <input type="text" id="contact-role" name="job_title" class="form-control" maxlength="120" autocomplete="organization-title" placeholder="المسمى الوظيفي">
               </div>
             </div>
 
             <div class="form-group">
-              <label for="contact-email">البريد الإلكتروني الرسمي *</label>
-              <input type="email" id="contact-email" class="form-control" required placeholder="contact@institution.org">
+              <label for="contact-email">البريد الإلكتروني المهني *</label>
+              <input type="email" id="contact-email" name="email" class="form-control" required maxlength="254" autocomplete="email" inputmode="email" aria-describedby="contact-email-error" data-required-message="أدخل عنوان بريد إلكتروني." data-invalid-message="أدخل عنوان بريد إلكتروني صالحاً مثل name@example.com. تُقبل عناوين Gmail وOutlook وغيرها من المزودين الصالحين." placeholder="contact@institution.org">
+              <p class="form-field-error" id="contact-email-error"></p>
             </div>
 
             <div class="form-group">
               <label for="contact-category">تصنيف الاستفسار *</label>
-              <select id="contact-category" class="form-control" required>
-                <option value="strategic-systems">الأنظمة الاستراتيجية والبنى التحتية الوطنية</option><option value="enterprise-ai">الذكاء الاصطناعي المؤسسي والأتمتة الذكية</option><option value="fintech-platforms">التقنيات المالية وهندسة التداول</option><option value="technical-partnership">الشراكات الهندسية والبحث المشترك</option><option value="executive-advisory">الاستشارات واللقاءات التنفيذية</option>
+              <select id="contact-category" name="category" class="form-control" required aria-describedby="contact-category-error" data-required-message="اختر تصنيف الاستفسار.">
+                <option value="" selected disabled>اختر تصنيف الاستفسار</option>
+                <option value="strategic-partnership">شراكة استراتيجية</option><option value="investment-opportunity">فرصة استثمارية</option><option value="joint-venture">مشروع مشترك</option><option value="government-institutional-collaboration">تعاون حكومي / مؤسسي</option><option value="technology-partnership">شراكة تقنية</option><option value="general-inquiry">استفسار عام</option>
               </select>
+              <p class="form-field-error" id="contact-category-error"></p>
             </div>
 
             <div class="form-group">
-              <label for="contact-message">وصف موجز للمتطلبات المعمارية أو التقنية *</label>
-              <textarea id="contact-message" class="form-control" required placeholder="يرجى تقديم وصف موجز لنطاق التعاون أو الاستفسار التقني..."></textarea>
+              <label for="contact-message">وصف الاستفسار *</label>
+              <textarea id="contact-message" name="message" class="form-control" required minlength="20" maxlength="4000" aria-describedby="contact-message-hint contact-message-error" data-required-message="اكتب وصفاً للاستفسار." data-too-short-message="يجب ألا يقل وصف الاستفسار عن 20 حرفاً." placeholder="يرجى تقديم وصف موجز لنطاق التعاون أو الاستفسار..."></textarea>
+              <p class="form-field-hint" id="contact-message-hint">الحد الأدنى 20 حرفاً.</p>
+              <p class="form-field-error" id="contact-message-error"></p>
             </div>
+
+            <div class="form-consent">
+              <input type="checkbox" id="contact-consent" name="privacy_consent" value="consented" required aria-describedby="contact-consent-error" data-required-message="يرجى تأكيد الموافقة على الخصوصية قبل الإرسال.">
+              <label for="contact-consent">أوافق على جمع VENERA Technology لبيانات التواصل والاستفسار ومعالجتها لغرض الرد على هذا الطلب. *</label>
+            </div>
+            <p class="form-field-error form-consent-error" id="contact-consent-error"></p>
+
+            <p class="form-privacy-notice">تعالج Netlify هذا الإرسال نيابةً عن VENERA Technology. تُجمع بيانات التواصل والاستفسار فقط لمراجعة الطلب والرد عليه. يمكنك استخدام صفحة التواصل هذه أو قناة LinkedIn الموثقة لطلب حذف بياناتك.</p>
+            <p class="form-sensitive-warning"><strong>تنبيه:</strong> لا ترسل مستندات تقنية سرية أو بيانات اعتماد أو سجلات مالية حساسة.</p>
 
             <button type="submit" class="btn" style="width: 100%; margin-top: 8px;">
               إرسال الاستفسار المؤسسي →
             </button>
 
-            <div id="form-feedback" class="form-feedback"></div>
-
-            <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 16px; text-align: center;">
-              🔒 تُعامل المراسلات بسرية تامة وتخضع لبروتوكولات الخصوصية المؤسسية.
-            </p>
+            <div id="form-feedback" class="form-feedback" role="status" aria-live="polite" tabindex="-1"></div>
           </form>
         </div>
       </div>
@@ -148,7 +178,7 @@
           <p>العلامة الهندسية والتقنية التابعة لشركة Venera Finance LTD (بيلاروسيا، تأسست عام 2020). تصميم المنصات الذكية، والأنظمة المؤسسية، والبنى التحتية الرقمية السيادية.</p>
           <div style="margin-top: 16px;">
             <a class="inline-link" href="https://www.linkedin.com/in/leader7701/" target="_blank" rel="noopener noreferrer">
-              Founder LinkedIn Profile ↗
+              الملف المهني للمؤسس على LinkedIn ↗
             </a>
           </div>
         </div>
@@ -167,10 +197,12 @@
           <ul>
             <li><a href="cylendra.html">Cylendra Labs</a></li>
             <li><a href="veneraswap.html">VeneraSwap</a></li>
-            <li><a href="paynxs.html">PayNXS</a></li>
-            <li><a href="ordernxs.html">OrderNXS</a></li>
-            <li><a href="roic.html">ROIC</a></li>
-            <li><a href="nuxese.html">Nuxese Group</a></li>
+            <li><a href="stylai.html">StylAI</a></li>
+            <li><a href="stylai-store.html">StylAI Store</a></li>
+            <li><a href="dilmart.html">DilMart</a></li>
+            <li><a href="muhasebos.html">MuhasebOS</a></li>
+            <li><a href="max-hub.html">Max Hub</a></li>
+            <li><a href="deyon.html">Deyon App</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -183,7 +215,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <div>© 2026 Venera Finance LTD · VENERA Technology. جميع الحقوق محفوظة.</div>
+        <div>© 2020–2026 Venera Finance LTD · VENERA Technology. جميع الحقوق محفوظة.</div>
         <div class="footer-disclaimer">إشعار مؤسسي: المعلومات الواردة في هذا الموقع مخصصة للتعريف المؤسسي والهندسي. ولا تُمثل المخططات المفاهيمية والدراسات البحثية عقوداً حكومية ممنوحة أو تأييداً رسمياً أو أنظمة عامة مشغلة.</div>
       </div>
     </div>

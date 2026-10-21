@@ -1,0 +1,3 @@
+# Language-aware homepage routing only. Keep unknown paths as real 404 responses.
+/  /ar/  302!  Language=ar
+/  /en/  302!

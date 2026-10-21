@@ -7,18 +7,23 @@
   <title>OrderNXS | منصة لوجستية وتوصيل عند الطلب للشركات | VENERA Technology</title>
   <meta name="description" content="نظام شامل لإدارة الطلبات واللوجستيات وتوجيه السائقين تم تطويره لصالح عميل تجاري في العراق.">
   
-  <!-- Canonical and hreflang omitted: no verified production domain configured -->
+  <!-- Canonical & Multilingual Alternate -->
+  <link rel="canonical" href="https://veneratec.netlify.app/ar/ordernxs">
+  <link rel="alternate" hreflang="ar" href="https://veneratec.netlify.app/ar/ordernxs">
+  <link rel="alternate" hreflang="en" href="https://veneratec.netlify.app/en/ordernxs">
+  <link rel="alternate" hreflang="x-default" href="https://veneratec.netlify.app/en/ordernxs">
 
   <!-- Open Graph & Twitter Cards -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="OrderNXS | منصة لوجستية وتوصيل عند الطلب للشركات | VENERA Technology">
   <meta property="og:description" content="نظام شامل لإدارة الطلبات واللوجستيات وتوجيه السائقين تم تطويره لصالح عميل تجاري في العراق.">
-  
+  <meta property="og:url" content="https://veneratec.netlify.app/ar/ordernxs">
   <meta property="og:site_name" content="VENERA Technology">
-  <meta property="og:image" content="../assets/venera-logo-transparent.png">
+  <meta property="og:image" content="https://veneratec.netlify.app/assets/venera-logo-transparent.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="OrderNXS | منصة لوجستية وتوصيل عند الطلب للشركات | VENERA Technology">
   <meta name="twitter:description" content="نظام شامل لإدارة الطلبات واللوجستيات وتوجيه السائقين تم تطويره لصالح عميل تجاري في العراق.">
+  <meta name="twitter:image" content="https://veneratec.netlify.app/assets/venera-logo-transparent.png">
 
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/png" href="../assets/favicon.png">
@@ -37,14 +42,22 @@
       </a>
       <button class="hamb" aria-label="فتح القائمة" aria-expanded="false">☰</button>
       <nav class="links" aria-label="القائمة الرئيسية">
-        <a class="" href="index.html">الرئيسية</a><a class="" href="about.html">عن فينيريا</a><a class="" href="expertise.html">الخبرات</a><a class="active" href="projects.html">المشاريع</a><a class="" href="ai-ventures.html">مشاريع الذكاء</a><a class="" href="partnerships.html">الشراكات</a>
+        <a class="" href="index.html">الرئيسية</a><a class="" href="about.html">عن فينيرا</a><a class="" href="founder.html">المؤسس</a>
+    <div class="nav-more nav-group nav-group-projects-menu has-active" data-nav-group="projects-menu">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-projects-menu-menu">
+        المشاريع <span class="nav-more-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="nav-dropdown" id="nav-projects-menu-menu" role="menu">
+        <a class="nav-dropdown-item active" href="projects.html" role="menuitem" aria-current="page">المشاريع والمنصات</a><a class="nav-dropdown-item" href="ai-ventures.html" role="menuitem">مشاريع الذكاء الاصطناعي</a>
+      </div>
+    </div><a class="" href="expertise.html">الخبرات</a><a class="" href="partnerships.html">الشراكات</a>
         
-    <div class="nav-more">
-      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-label="المزيد">
+    <div class="nav-more nav-group nav-group-more" data-nav-group="more">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-more-menu">
         المزيد <span class="nav-more-chevron" aria-hidden="true">▾</span>
       </button>
-      <div class="nav-dropdown" role="menu">
-        <a class="nav-dropdown-item" href="initiatives.html">المبادرات</a><a class="nav-dropdown-item" href="team.html">الفريق</a><a class="nav-dropdown-item" href="founder.html">المؤسس</a><a class="nav-dropdown-item" href="insights.html">البحوث والرؤى</a><a class="nav-dropdown-item" href="contact.html">التواصل</a>
+      <div class="nav-dropdown" id="nav-more-menu" role="menu">
+        <a class="nav-dropdown-item" href="initiatives.html" role="menuitem">المبادرات الاستراتيجية</a><a class="nav-dropdown-item" href="team.html" role="menuitem">فريق العمل</a><a class="nav-dropdown-item" href="insights.html" role="menuitem">البحوث والرؤى</a><a class="nav-dropdown-item" href="contact.html" role="menuitem">التواصل</a>
       </div>
     </div>
         <a class="lang-pill" href="../en/ordernxs.html" hreflang="en" lang="en">English</a>
@@ -70,24 +83,16 @@
     <section class="section">
       <div class="wrap detail-grid">
         <div class="detail-body">
-          <div class="eyebrow">نظرة عامة على النظام</div>
+          <div class="eyebrow">نظرة عامة</div>
           <p>كان OrderNXS مشروعاً برمجياً متكاملاً وفّر قدرات طلب الطعام والسلع والطرود مع التوجيه الآلي للسائقين والتتبع اللحظي لمسارات التوصيل.</p>
 
-          <div class="card" style="margin: 32px 0;">
-            <div class="eyebrow">المشكلة المعمارية والقطاعية</div>
-            <p>غياب الحلول الرقمية القياسية لإدارة أساطيل التوصيل المحلية أدى إلى تكرار أخطاء التوجيه وضياع الطلبات وتأخر التسليم.</p>
-          </div>
-
-          <div class="eyebrow">مفهوم الحل الهندسي</div>
+          <div class="eyebrow" style="margin-top: 36px;">القيمة والأثر</div>
           <p>بنية برمجية ثلاثية تشمل تطبيقاً للمستهلكين، وشاشة لوحية لإدارة طلبات المتاجر، ولوحة تحكم لتوجيه ومتابعة السائقين.</p>
 
-          <div class="eyebrow" style="margin-top: 36px;">القدرات والميزات التقنية</div>
+          <div class="eyebrow" style="margin-top: 36px;">قدرات مختارة</div>
           <ul class="detail-caps-list">
             <li>تتبع جغرافي لحظي لمندوبي التوصيل مع تقدير دقيق لموعد الوصول (ETA)</li><li>نظام إدارة مطابخ المتاجر وترتيب أولوية تجهيز الطلبات</li><li>احتساب ديناميكي لرسوم التوصيل بناءً على المسافة والمناطق الجغرافية</li><li>إدارة ثنائية اللغة لقوائم المنتجات والأسعار وحملات التخفيض</li>
           </ul>
-
-          <div class="eyebrow" style="margin-top: 36px;">الهندسة المعمارية للنظام</div>
-          <p>تطبيقات جوال هجينة وأصلية مدعومة بخدمات التتبع الجغرافي، وبروتوكولات WebSocket للتحديثات اللحظية، وقواعد بيانات سحابية.</p>
 
           <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line-dark);">
             <a class="btn" href="projects.html">← استعراض مشاريع أخرى</a>
@@ -96,15 +101,15 @@
         </div>
 
         <aside class="sidebar-box">
-          <h3>بيانات وحالة المشروع</h3>
-          
+          <h3>عن المشروع</h3>
+
           <div class="sidebar-item">
-            <strong>الحالة التشغيلية</strong>
+            <strong>الحالة</strong>
             <span><span class="status-badge status-third">تسليم مشروع</span></span>
           </div>
 
           <div class="sidebar-item">
-            <strong>دور المؤسس / الشركة</strong>
+            <strong>الدور</strong>
             <span>هندسة وتطوير الأنظمة البرمجية لصالح شركة تجارية خارجية.</span>
           </div>
 
@@ -122,7 +127,7 @@
           <p>العلامة الهندسية والتقنية التابعة لشركة Venera Finance LTD (بيلاروسيا، تأسست عام 2020). تصميم المنصات الذكية، والأنظمة المؤسسية، والبنى التحتية الرقمية السيادية.</p>
           <div style="margin-top: 16px;">
             <a class="inline-link" href="https://www.linkedin.com/in/leader7701/" target="_blank" rel="noopener noreferrer">
-              Founder LinkedIn Profile ↗
+              الملف المهني للمؤسس على LinkedIn ↗
             </a>
           </div>
         </div>
@@ -141,10 +146,12 @@
           <ul>
             <li><a href="cylendra.html">Cylendra Labs</a></li>
             <li><a href="veneraswap.html">VeneraSwap</a></li>
-            <li><a href="paynxs.html">PayNXS</a></li>
-            <li><a href="ordernxs.html">OrderNXS</a></li>
-            <li><a href="roic.html">ROIC</a></li>
-            <li><a href="nuxese.html">Nuxese Group</a></li>
+            <li><a href="stylai.html">StylAI</a></li>
+            <li><a href="stylai-store.html">StylAI Store</a></li>
+            <li><a href="dilmart.html">DilMart</a></li>
+            <li><a href="muhasebos.html">MuhasebOS</a></li>
+            <li><a href="max-hub.html">Max Hub</a></li>
+            <li><a href="deyon.html">Deyon App</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -157,7 +164,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <div>© 2026 Venera Finance LTD · VENERA Technology. جميع الحقوق محفوظة.</div>
+        <div>© 2020–2026 Venera Finance LTD · VENERA Technology. جميع الحقوق محفوظة.</div>
         <div class="footer-disclaimer">إشعار مؤسسي: المعلومات الواردة في هذا الموقع مخصصة للتعريف المؤسسي والهندسي. ولا تُمثل المخططات المفاهيمية والدراسات البحثية عقوداً حكومية ممنوحة أو تأييداً رسمياً أو أنظمة عامة مشغلة.</div>
       </div>
     </div>

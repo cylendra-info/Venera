@@ -7,9 +7,29 @@ const fs = require('fs');
 const path = require('path');
 const siteContent = require('../data/site-content.js');
 
+const approvedUrlFile = path.resolve(__dirname, '..', 'deployment', 'netlify', 'public-site-url.txt');
+const approvedFileUrl = fs.existsSync(approvedUrlFile) ? fs.readFileSync(approvedUrlFile, 'utf8').trim() : '';
+const publicSiteUrl = (process.env.VENERA_PUBLIC_SITE_URL || approvedFileUrl || '').trim();
+if (publicSiteUrl) {
+  let parsed;
+  try {
+    parsed = new URL(publicSiteUrl);
+  } catch {
+    throw new Error('VENERA_PUBLIC_SITE_URL must be a valid absolute HTTPS URL');
+  }
+  if (parsed.protocol !== 'https:' || parsed.username || parsed.password || parsed.search || parsed.hash || parsed.pathname !== '/') {
+    throw new Error('VENERA_PUBLIC_SITE_URL must be an HTTPS origin without credentials, path, query, or fragment');
+  }
+  siteContent.meta.canonicalDomain = parsed.origin;
+}
+
 const ROOT_DIR = path.resolve(__dirname, '..');
 const EN_DIR = path.join(ROOT_DIR, 'en');
 const AR_DIR = path.join(ROOT_DIR, 'ar');
+
+function publicPath(lang, slug) {
+  return slug === 'index.html' ? `/${lang}/` : `/${lang}/${slug.replace(/\.html$/, '')}`;
+}
 
 if (!fs.existsSync(EN_DIR)) fs.mkdirSync(EN_DIR, { recursive: true });
 if (!fs.existsSync(AR_DIR)) fs.mkdirSync(AR_DIR, { recursive: true });
@@ -22,10 +42,11 @@ function renderHead({ lang, title, description, slug, extraMeta = '' }) {
   const hasDomain = domain.length > 0;
 
   const canonicalBlock = hasDomain
-    ? `\n  <!-- Canonical & Multilingual Alternate (absolute URLs require verified domain) -->\n  <link rel="canonical" href="${domain}/${lang}/${slug}">\n  <link rel="alternate" hreflang="${lang}" href="${domain}/${lang}/${slug}">\n  <link rel="alternate" hreflang="${otherLang}" href="${domain}/${otherLang}/${slug}">\n  <link rel="alternate" hreflang="x-default" href="${domain}/en/${slug}">`
+    ? `\n  <!-- Canonical & Multilingual Alternate -->\n  <link rel="canonical" href="${domain}${publicPath(lang, slug)}">\n  <link rel="alternate" hreflang="${lang}" href="${domain}${publicPath(lang, slug)}">\n  <link rel="alternate" hreflang="${otherLang}" href="${domain}${publicPath(otherLang, slug)}">\n  <link rel="alternate" hreflang="x-default" href="${domain}${publicPath('en', slug)}">`
     : `\n  <!-- Canonical and hreflang omitted: no verified production domain configured -->`;
 
-  const ogUrl = hasDomain ? `<meta property="og:url" content="${domain}/${lang}/${slug}">` : '';
+  const ogUrl = hasDomain ? `<meta property="og:url" content="${domain}${publicPath(lang, slug)}">` : '';
+  const socialImage = hasDomain ? `${domain}/assets/venera-logo-transparent.png` : '../assets/venera-logo-transparent.png';
 
   return `<!doctype html>
 <html lang="${lang}" dir="${isAr ? 'rtl' : 'ltr'}">
@@ -43,10 +64,11 @@ function renderHead({ lang, title, description, slug, extraMeta = '' }) {
   <meta property="og:description" content="${description}">
   ${ogUrl}
   <meta property="og:site_name" content="${siteContent.meta.brandName}">
-  <meta property="og:image" content="../assets/venera-logo-transparent.png">
+  <meta property="og:image" content="${socialImage}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${title} | ${siteContent.meta.brandName}">
   <meta name="twitter:description" content="${description}">
+  <meta name="twitter:image" content="${socialImage}">
 
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/png" href="../assets/favicon.png">
@@ -67,8 +89,10 @@ function renderHeader({ lang, currentSlug }) {
   const otherLang = isAr ? 'en' : 'ar';
   const otherLangLabel = isAr ? 'English' : 'العربية';
   const otherLangUrl = `../${otherLang}/${currentSlug}`;
+  const projectDetailSlugs = new Set(siteContent.projects[lang].map(project => project.slug));
 
   const isActiveItem = (item) => {
+    if (item.children) return item.children.some(isActiveItem);
     const itemSlug = path.basename(item.href);
     return (itemSlug === currentSlug) ||
       (currentSlug === 'index.html' && item.id === 'home') ||
@@ -76,31 +100,40 @@ function renderHeader({ lang, currentSlug }) {
       (currentSlug === 'company.html' && item.id === 'about') ||
       (currentSlug === 'projects.html' && item.id === 'projects') ||
       (currentSlug === 'work.html' && item.id === 'projects') ||
-      (['cylendra.html', 'veneraswap.html', 'paynxs.html', 'ordernxs.html', 'roic.html', 'nuxese.html'].includes(currentSlug) && item.id === 'projects');
+      (projectDetailSlugs.has(currentSlug) && item.id === 'projects');
   };
 
   const primaryItems = navItems.filter(i => i.primary !== false);
   const secondaryItems = navItems.filter(i => i.primary === false);
-  const secondaryHasActive = secondaryItems.some(isActiveItem);
 
-  const primaryHtml = primaryItems.map(item =>
-    `<a class="${isActiveItem(item) ? 'active' : ''}" href="${path.basename(item.href)}">${item.label}</a>`
-  ).join('');
+  const renderDropdown = ({ id, label, items }) => {
+    const hasActive = items.some(isActiveItem);
+    const menuId = `nav-${id}-menu`;
+    const itemsHtml = items.map(item => {
+      const active = isActiveItem(item);
+      return `<a class="nav-dropdown-item${active ? ' active' : ''}" href="${path.basename(item.href)}" role="menuitem"${active ? ' aria-current="page"' : ''}>${item.label}</a>`;
+    }).join('');
+    return `
+    <div class="nav-more nav-group nav-group-${id}${hasActive ? ' has-active' : ''}" data-nav-group="${id}">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="${menuId}">
+        ${label} <span class="nav-more-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="nav-dropdown" id="${menuId}" role="menu">
+        ${itemsHtml}
+      </div>
+    </div>`;
+  };
 
-  const dropdownItemsHtml = secondaryItems.map(item =>
-    `<a class="nav-dropdown-item${isActiveItem(item) ? ' active' : ''}" href="${path.basename(item.href)}">${item.label}</a>`
-  ).join('');
+  const primaryHtml = primaryItems.map(item => {
+    if (item.children) return renderDropdown({ id: item.id, label: item.label, items: item.children });
+    const active = isActiveItem(item);
+    return `<a class="${active ? 'active' : ''}" href="${path.basename(item.href)}"${active ? ' aria-current="page"' : ''}>${item.label}</a>`;
+  }).join('');
 
   const moreLabel = isAr ? 'المزيد' : 'More';
-  const dropdownHtml = secondaryItems.length > 0 ? `
-    <div class="nav-more${secondaryHasActive ? ' has-active' : ''}">
-      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-label="${moreLabel}">
-        ${moreLabel} <span class="nav-more-chevron" aria-hidden="true">▾</span>
-      </button>
-      <div class="nav-dropdown" role="menu">
-        ${dropdownItemsHtml}
-      </div>
-    </div>` : '';
+  const moreDropdownHtml = secondaryItems.length > 0
+    ? renderDropdown({ id: 'more', label: moreLabel, items: secondaryItems })
+    : '';
 
   return `
   <header class="topnav">
@@ -111,7 +144,7 @@ function renderHeader({ lang, currentSlug }) {
       <button class="hamb" aria-label="${isAr ? 'فتح القائمة' : 'Toggle Navigation Menu'}" aria-expanded="false">☰</button>
       <nav class="links" aria-label="${isAr ? 'القائمة الرئيسية' : 'Primary Navigation'}">
         ${primaryHtml}
-        ${dropdownHtml}
+        ${moreDropdownHtml}
         <a class="lang-pill" href="${otherLangUrl}" hreflang="${otherLang}" lang="${otherLang}">${otherLangLabel}</a>
       </nav>
     </div>
@@ -120,11 +153,28 @@ function renderHeader({ lang, currentSlug }) {
 `;
 }
 
+const featuredFooterProjectIds = Object.freeze([
+  'cylendra',
+  'veneraswap',
+  'stylai',
+  'stylai-store',
+  'dilmart',
+  'muhasebos',
+  'max-hub',
+  'deyon'
+]);
+
 // Helper: Footer
 function renderFooter({ lang }) {
   const isAr = lang === 'ar';
   const f = siteContent.footer[lang];
   const m = siteContent.meta;
+  const projectsById = new Map(siteContent.projects[lang].map(project => [project.id, project]));
+  const featuredProjectLinks = featuredFooterProjectIds.map(id => {
+    const project = projectsById.get(id);
+    if (!project) throw new Error(`Footer project not found for ${lang}: ${id}`);
+    return `<li><a href="${project.slug}">${project.name}</a></li>`;
+  }).join('\n            ');
 
   return `
   </main>
@@ -135,8 +185,8 @@ function renderFooter({ lang }) {
           <img src="../assets/venera-logo-white.png" alt="${m.brandName}" width="190" height="47">
           <p>${f.brandDesc}</p>
           <div style="margin-top: 16px;">
-            <a class="inline-link" href="https://www.linkedin.com/in/leader7701/" target="_blank" rel="noopener noreferrer">
-              Founder LinkedIn Profile ↗
+            <a class="inline-link" href="${m.founderLinkedIn}" target="_blank" rel="noopener noreferrer">
+              ${isAr ? 'الملف المهني للمؤسس على LinkedIn' : 'Founder LinkedIn Profile'} ↗
             </a>
           </div>
         </div>
@@ -153,12 +203,7 @@ function renderFooter({ lang }) {
         <div class="footer-col">
           <h4>${f.colProjects}</h4>
           <ul>
-            <li><a href="cylendra.html">Cylendra Labs</a></li>
-            <li><a href="veneraswap.html">VeneraSwap</a></li>
-            <li><a href="paynxs.html">PayNXS</a></li>
-            <li><a href="ordernxs.html">OrderNXS</a></li>
-            <li><a href="roic.html">ROIC</a></li>
-            <li><a href="nuxese.html">Nuxese Group</a></li>
+            ${featuredProjectLinks}
           </ul>
         </div>
         <div class="footer-col">
@@ -583,9 +628,20 @@ function buildExpertisePage(lang) {
 }
 
 // 4. Projects Portfolio Catalog Page
+// V5.7.1 — explicit portfolio display order (applied to EN + AR identically)
+const PROJECT_ORDER = [
+  'stylai', 'dilmart', 'stylai-store', 'muhasebos', 'orbitraai',
+  'max-hub', 'deyon', 'cylendra', 'veneraswap', 'paynxs',
+  'ordernxs', 'roic', 'nuxese'
+];
+function orderProjects(list) {
+  const rank = id => { const i = PROJECT_ORDER.indexOf(id); return i === -1 ? 999 : i; };
+  return [...list].sort((a, b) => rank(a.id) - rank(b.id));
+}
+
 function buildProjectsPage(lang) {
   const isAr = lang === 'ar';
-  const projects = siteContent.projects[lang];
+  const projects = orderProjects(siteContent.projects[lang]);
 
   const head = renderHead({
     lang,
@@ -752,47 +808,39 @@ function buildProjectDetailPage(lang, project) {
     <section class="section">
       <div class="wrap detail-grid">
         <div class="detail-body">
-          <div class="eyebrow">${isAr ? 'نظرة عامة على النظام' : 'SYSTEM OVERVIEW'}</div>
+          <div class="eyebrow">${isAr ? 'نظرة عامة' : 'OVERVIEW'}</div>
           <p>${project.overview}</p>
 
-          <div class="card" style="margin: 32px 0;">
-            <div class="eyebrow">${isAr ? 'المشكلة المعمارية والقطاعية' : 'THE ARCHITECTURAL PROBLEM'}</div>
-            <p>${project.problemStatement}</p>
-          </div>
-
-          <div class="eyebrow">${isAr ? 'مفهوم الحل الهندسي' : 'SOLUTION CONCEPT'}</div>
+          <div class="eyebrow" style="margin-top: 36px;">${isAr ? 'القيمة والأثر' : 'BUSINESS VALUE'}</div>
           <p>${project.solutionConcept}</p>
 
-          <div class="eyebrow" style="margin-top: 36px;">${isAr ? 'القدرات والميزات التقنية' : 'TECHNICAL CAPABILITIES'}</div>
+          <div class="eyebrow" style="margin-top: 36px;">${isAr ? 'قدرات مختارة' : 'SELECTED CAPABILITIES'}</div>
           <ul class="detail-caps-list">
             ${capabilitiesHtml}
           </ul>
 
-          <div class="eyebrow" style="margin-top: 36px;">${isAr ? 'الهندسة المعمارية للنظام' : 'ARCHITECTURE & STACK'}</div>
-          <p>${project.architecture}</p>
-
           <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line-dark);">
             <a class="btn" href="projects.html">${isAr ? '← استعراض مشاريع أخرى' : '← Explore More Projects'}</a>
-            ${project.externalUrl ? `<a class="btn ghost" href="${project.externalUrl}" target="_blank" rel="noopener noreferrer" style="margin-inline-start: 12px;">${isAr ? 'زيارة الرابط الموثق ↗' : 'Visit Documentation / Site ↗'}</a>` : ''}
+            ${project.externalUrl ? `<a class="btn ghost" href="${project.externalUrl}" target="_blank" rel="noopener noreferrer" style="margin-inline-start: 12px;">${isAr ? 'زيارة الرابط الرسمي ↗' : 'Visit Official Site ↗'}</a>` : ''}
           </div>
         </div>
 
         <aside class="sidebar-box">
-          <h3>${isAr ? 'بيانات وحالة المشروع' : 'Project Metadata'}</h3>
-          
+          <h3>${isAr ? 'عن المشروع' : 'About This Project'}</h3>
+
           <div class="sidebar-item">
-            <strong>${isAr ? 'الحالة التشغيلية' : 'Operational Status'}</strong>
+            <strong>${isAr ? 'الحالة' : 'Status'}</strong>
             <span><span class="status-badge ${project.statusClass}">${project.status}</span></span>
           </div>
 
           <div class="sidebar-item">
-            <strong>${isAr ? 'دور المؤسس / الشركة' : 'Founder / Company Role'}</strong>
+            <strong>${isAr ? 'الدور' : 'Role'}</strong>
             <span>${project.role}</span>
           </div>
 
           ${project.externalUrl ? `
           <div class="sidebar-item" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line-dark);">
-            <strong>${isAr ? 'المصدر والتوثيق العلني' : 'Public Verification Link'}</strong>
+            <strong>${isAr ? 'الرابط الرسمي' : 'Official Link'}</strong>
             <a class="inline-link" href="${project.externalUrl}" target="_blank" rel="noopener noreferrer">${project.externalUrl} ↗</a>
           </div>
           ` : ''}
@@ -1113,7 +1161,8 @@ function buildContactPage(lang) {
     lang,
     title: isAr ? 'التواصل المؤسسي وبوابة الاستفسارات' : 'Institutional Contact & Technical Inquiries',
     description: c.hero.lead,
-    slug: 'contact.html'
+    slug: 'contact.html',
+    extraMeta: '<link rel="stylesheet" href="../assets/contact-form.css">'
   });
 
   const header = renderHeader({ lang, currentSlug: 'contact.html' });
@@ -1127,6 +1176,11 @@ function buildContactPage(lang) {
   `).join('');
 
   const categoryOptions = c.form.categories.map(opt => `<option value="${opt.value}">${opt.label}</option>`).join('');
+  const formMessages = Object.entries(c.form.status)
+    .map(([key, value]) => `data-${key.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)}-message="${value.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}"`)
+    .join(' ');
+  const validationAttr = (name, value) => value ? ` data-${name}="${value.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}"` : '';
+  const formAction = `/${lang}/contact`;
 
   const body = `
     <section class="page-hero">
@@ -1149,49 +1203,66 @@ function buildContactPage(lang) {
           <h2 style="font-size: 1.75rem; color: #ffffff; margin-bottom: 8px;">${c.form.title}</h2>
           <p style="color: var(--text-muted); font-size: 0.9375rem; margin-bottom: 28px;">${c.form.subtitle}</p>
 
-          <form id="institutional-contact-form" novalidate>
+          <form id="institutional-contact-form" name="venera-institutional-inquiry" method="POST" action="${formAction}" data-netlify="true" netlify-honeypot="bot-field" ${formMessages} novalidate>
+            <input type="hidden" name="form-name" value="venera-institutional-inquiry">
+            <p class="form-honeypot" aria-hidden="true">
+              <label>${c.form.fields.honeypot}<input name="bot-field" type="text" tabindex="-1" autocomplete="off"></label>
+            </p>
+
             <div class="form-group">
               <label for="contact-name">${c.form.fields.name} *</label>
-              <input type="text" id="contact-name" class="form-control" required placeholder="${isAr ? 'مثال: د. أحمد المنصور' : 'e.g. Dr. Alexander Vance'}">
+              <input type="text" id="contact-name" name="full_name" class="form-control" required minlength="2" maxlength="120" autocomplete="name" aria-describedby="contact-name-error"${validationAttr('required-message', c.form.validation.fullNameRequired)}${validationAttr('too-short-message', c.form.validation.fullNameTooShort)} placeholder="${isAr ? 'مثال: د. أحمد المنصور' : 'e.g. Dr. Alexander Vance'}">
+              <p class="form-field-error" id="contact-name-error"></p>
             </div>
 
             <div class="form-row-2">
               <div class="form-group">
                 <label for="contact-org">${c.form.fields.org} *</label>
-                <input type="text" id="contact-org" class="form-control" required placeholder="${isAr ? 'المؤسسة أو الهيئة' : 'Enterprise / Agency'}">
+                <input type="text" id="contact-org" name="organization" class="form-control" required minlength="2" maxlength="160" autocomplete="organization" aria-describedby="contact-org-error"${validationAttr('required-message', c.form.validation.organizationRequired)}${validationAttr('too-short-message', c.form.validation.organizationTooShort)} placeholder="${isAr ? 'المؤسسة أو الشركة' : 'Enterprise / Agency'}">
+                <p class="form-field-error" id="contact-org-error"></p>
               </div>
               <div class="form-group">
                 <label for="contact-role">${c.form.fields.role}</label>
-                <input type="text" id="contact-role" class="form-control" placeholder="${isAr ? 'المسمى الوظيفي' : 'Director / Architect'}">
+                <input type="text" id="contact-role" name="job_title" class="form-control" maxlength="120" autocomplete="organization-title" placeholder="${isAr ? 'المسمى الوظيفي' : 'Director / Architect'}">
               </div>
             </div>
 
             <div class="form-group">
               <label for="contact-email">${c.form.fields.email} *</label>
-              <input type="email" id="contact-email" class="form-control" required placeholder="contact@institution.org">
+              <input type="email" id="contact-email" name="email" class="form-control" required maxlength="254" autocomplete="email" inputmode="email" aria-describedby="contact-email-error"${validationAttr('required-message', c.form.validation.emailRequired)}${validationAttr('invalid-message', c.form.validation.emailInvalid)} placeholder="contact@institution.org">
+              <p class="form-field-error" id="contact-email-error"></p>
             </div>
 
             <div class="form-group">
               <label for="contact-category">${c.form.fields.category} *</label>
-              <select id="contact-category" class="form-control" required>
+              <select id="contact-category" name="category" class="form-control" required aria-describedby="contact-category-error"${validationAttr('required-message', c.form.validation.categoryRequired)}>
+                <option value="" selected disabled>${c.form.fields.selectCategory}</option>
                 ${categoryOptions}
               </select>
+              <p class="form-field-error" id="contact-category-error"></p>
             </div>
 
             <div class="form-group">
               <label for="contact-message">${c.form.fields.message} *</label>
-              <textarea id="contact-message" class="form-control" required placeholder="${isAr ? 'يرجى تقديم وصف موجز لنطاق التعاون أو الاستفسار التقني...' : 'Provide brief context regarding your enterprise requirement or briefing request...'}"></textarea>
+              <textarea id="contact-message" name="message" class="form-control" required minlength="20" maxlength="4000" aria-describedby="contact-message-hint contact-message-error"${validationAttr('required-message', c.form.validation.messageRequired)}${validationAttr('too-short-message', c.form.validation.messageTooShort)} placeholder="${isAr ? 'يرجى تقديم وصف موجز لنطاق التعاون أو الاستفسار...' : 'Provide brief context regarding your inquiry or proposed collaboration...'}"></textarea>
+              <p class="form-field-hint" id="contact-message-hint">${c.form.validation.messageHint}</p>
+              <p class="form-field-error" id="contact-message-error"></p>
             </div>
+
+            <div class="form-consent">
+              <input type="checkbox" id="contact-consent" name="privacy_consent" value="consented" required aria-describedby="contact-consent-error"${validationAttr('required-message', c.form.validation.consentRequired)}>
+              <label for="contact-consent">${c.form.fields.consent} *</label>
+            </div>
+            <p class="form-field-error form-consent-error" id="contact-consent-error"></p>
+
+            <p class="form-privacy-notice">${c.form.fields.privacyNote}</p>
+            <p class="form-sensitive-warning"><strong>${isAr ? 'تنبيه:' : 'Important:'}</strong> ${c.form.fields.sensitiveWarning}</p>
 
             <button type="submit" class="btn" style="width: 100%; margin-top: 8px;">
               ${c.form.fields.submit} →
             </button>
 
-            <div id="form-feedback" class="form-feedback"></div>
-
-            <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 16px; text-align: center;">
-              🔒 ${c.form.fields.privacyNote}
-            </p>
+            <div id="form-feedback" class="form-feedback" role="status" aria-live="polite" tabindex="-1"></div>
           </form>
         </div>
       </div>
@@ -1218,10 +1289,12 @@ function buildSitemap() {
     return;
   }
   const slugs = [
-    'index.html', 'about.html', 'expertise.html', 'projects.html',
-    'cylendra.html', 'veneraswap.html', 'paynxs.html', 'ordernxs.html',
-    'roic.html', 'nuxese.html', 'initiatives.html', 'founder.html',
-    'insights.html', 'contact.html'
+    'index.html', 'about.html', 'founder.html', 'expertise.html',
+    'projects.html', 'ai-ventures.html', 'partnerships.html', 'initiatives.html',
+    'team.html', 'insights.html', 'contact.html', 'cylendra.html',
+    'veneraswap.html', 'stylai.html', 'stylai-store.html', 'dilmart.html',
+    'muhasebos.html', 'max-hub.html', 'deyon.html', 'paynxs.html',
+    'ordernxs.html', 'roic.html', 'nuxese.html', 'orbitraai.html'
   ];
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -1230,13 +1303,15 @@ function buildSitemap() {
 
   slugs.forEach(slug => {
     const priority = slug === 'index.html' ? '1.0' : slug === 'founder.html' ? '0.9' : '0.8';
-    xml += `  <url>\n    <loc>${baseUrl}/en/${slug}</loc>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${baseUrl}/en/${slug}"/>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/ar/${slug}"/>\n`;
+    xml += `  <url>\n    <loc>${baseUrl}${publicPath('en', slug)}</loc>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${baseUrl}${publicPath('en', slug)}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}${publicPath('ar', slug)}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}${publicPath('en', slug)}"/>\n`;
     xml += `    <changefreq>weekly</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
-    xml += `  <url>\n    <loc>${baseUrl}/ar/${slug}</loc>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/ar/${slug}"/>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${baseUrl}/en/${slug}"/>\n`;
+    xml += `  <url>\n    <loc>${baseUrl}${publicPath('ar', slug)}</loc>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}${publicPath('ar', slug)}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${baseUrl}${publicPath('en', slug)}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}${publicPath('en', slug)}"/>\n`;
     xml += `    <changefreq>weekly</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
   });
 

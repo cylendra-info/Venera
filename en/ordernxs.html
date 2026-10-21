@@ -7,18 +7,23 @@
   <title>OrderNXS | On-Demand Delivery & Commercial Services Platform | VENERA Technology</title>
   <meta name="description" content="A full-featured commercial logistics and order dispatch system engineered for a third-party commercial client in Iraq.">
   
-  <!-- Canonical and hreflang omitted: no verified production domain configured -->
+  <!-- Canonical & Multilingual Alternate -->
+  <link rel="canonical" href="https://veneratec.netlify.app/en/ordernxs">
+  <link rel="alternate" hreflang="en" href="https://veneratec.netlify.app/en/ordernxs">
+  <link rel="alternate" hreflang="ar" href="https://veneratec.netlify.app/ar/ordernxs">
+  <link rel="alternate" hreflang="x-default" href="https://veneratec.netlify.app/en/ordernxs">
 
   <!-- Open Graph & Twitter Cards -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="OrderNXS | On-Demand Delivery & Commercial Services Platform | VENERA Technology">
   <meta property="og:description" content="A full-featured commercial logistics and order dispatch system engineered for a third-party commercial client in Iraq.">
-  
+  <meta property="og:url" content="https://veneratec.netlify.app/en/ordernxs">
   <meta property="og:site_name" content="VENERA Technology">
-  <meta property="og:image" content="../assets/venera-logo-transparent.png">
+  <meta property="og:image" content="https://veneratec.netlify.app/assets/venera-logo-transparent.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="OrderNXS | On-Demand Delivery & Commercial Services Platform | VENERA Technology">
   <meta name="twitter:description" content="A full-featured commercial logistics and order dispatch system engineered for a third-party commercial client in Iraq.">
+  <meta name="twitter:image" content="https://veneratec.netlify.app/assets/venera-logo-transparent.png">
 
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/png" href="../assets/favicon.png">
@@ -37,14 +42,22 @@
       </a>
       <button class="hamb" aria-label="Toggle Navigation Menu" aria-expanded="false">☰</button>
       <nav class="links" aria-label="Primary Navigation">
-        <a class="" href="index.html">Home</a><a class="" href="about.html">About</a><a class="" href="expertise.html">Expertise</a><a class="active" href="projects.html">Projects</a><a class="" href="ai-ventures.html">AI Ventures</a><a class="" href="partnerships.html">Partnerships</a>
+        <a class="" href="index.html">Home</a><a class="" href="about.html">About</a><a class="" href="founder.html">Founder</a>
+    <div class="nav-more nav-group nav-group-projects-menu has-active" data-nav-group="projects-menu">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-projects-menu-menu">
+        Projects <span class="nav-more-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="nav-dropdown" id="nav-projects-menu-menu" role="menu">
+        <a class="nav-dropdown-item active" href="projects.html" role="menuitem" aria-current="page">Ventures & Platforms</a><a class="nav-dropdown-item" href="ai-ventures.html" role="menuitem">AI Ventures & Emerging Technologies</a>
+      </div>
+    </div><a class="" href="expertise.html">Expertise</a><a class="" href="partnerships.html">Partnerships</a>
         
-    <div class="nav-more">
-      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-label="More">
+    <div class="nav-more nav-group nav-group-more" data-nav-group="more">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-more-menu">
         More <span class="nav-more-chevron" aria-hidden="true">▾</span>
       </button>
-      <div class="nav-dropdown" role="menu">
-        <a class="nav-dropdown-item" href="initiatives.html">Initiatives</a><a class="nav-dropdown-item" href="team.html">Team</a><a class="nav-dropdown-item" href="founder.html">Founder</a><a class="nav-dropdown-item" href="insights.html">Research & Insights</a><a class="nav-dropdown-item" href="contact.html">Contact</a>
+      <div class="nav-dropdown" id="nav-more-menu" role="menu">
+        <a class="nav-dropdown-item" href="initiatives.html" role="menuitem">Strategic Initiatives</a><a class="nav-dropdown-item" href="team.html" role="menuitem">Team</a><a class="nav-dropdown-item" href="insights.html" role="menuitem">Research & Insights</a><a class="nav-dropdown-item" href="contact.html" role="menuitem">Contact</a>
       </div>
     </div>
         <a class="lang-pill" href="../ar/ordernxs.html" hreflang="ar" lang="ar">العربية</a>
@@ -70,24 +83,16 @@
     <section class="section">
       <div class="wrap detail-grid">
         <div class="detail-body">
-          <div class="eyebrow">SYSTEM OVERVIEW</div>
+          <div class="eyebrow">OVERVIEW</div>
           <p>OrderNXS was a comprehensive commercial software engagement delivering on-demand restaurant, grocery, and package ordering capabilities with driver dispatch telemetry and live route tracking.</p>
 
-          <div class="card" style="margin: 32px 0;">
-            <div class="eyebrow">THE ARCHITECTURAL PROBLEM</div>
-            <p>Fragmented logistics and absence of standardized digital dispatch tools made local delivery operations inefficient and prone to order loss.</p>
-          </div>
-
-          <div class="eyebrow">SOLUTION CONCEPT</div>
+          <div class="eyebrow" style="margin-top: 36px;">BUSINESS VALUE</div>
           <p>A triad software architecture comprising customer ordering mobile applications, a merchant order management tablet interface, and a driver dispatch and routing console.</p>
 
-          <div class="eyebrow" style="margin-top: 36px;">TECHNICAL CAPABILITIES</div>
+          <div class="eyebrow" style="margin-top: 36px;">SELECTED CAPABILITIES</div>
           <ul class="detail-caps-list">
             <li>Real-time geospatial tracking of delivery couriers with ETA predictions</li><li>Merchant kitchen display system with order queue prioritization</li><li>Dynamic delivery fee calculation based on distance and traffic zones</li><li>Bilingual Arabic/English menu catalog management and discount engines</li>
           </ul>
-
-          <div class="eyebrow" style="margin-top: 36px;">ARCHITECTURE & STACK</div>
-          <p>Native and cross-platform mobile applications backed by geolocation tracking services, WebSocket real-time updates, and cloud databases.</p>
 
           <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line-dark);">
             <a class="btn" href="projects.html">← Explore More Projects</a>
@@ -96,15 +101,15 @@
         </div>
 
         <aside class="sidebar-box">
-          <h3>Project Metadata</h3>
-          
+          <h3>About This Project</h3>
+
           <div class="sidebar-item">
-            <strong>Operational Status</strong>
+            <strong>Status</strong>
             <span><span class="status-badge status-third">Client Delivery</span></span>
           </div>
 
           <div class="sidebar-item">
-            <strong>Founder / Company Role</strong>
+            <strong>Role</strong>
             <span>Software engineering and systems development delivered for a third-party enterprise client.</span>
           </div>
 
@@ -141,10 +146,12 @@
           <ul>
             <li><a href="cylendra.html">Cylendra Labs</a></li>
             <li><a href="veneraswap.html">VeneraSwap</a></li>
-            <li><a href="paynxs.html">PayNXS</a></li>
-            <li><a href="ordernxs.html">OrderNXS</a></li>
-            <li><a href="roic.html">ROIC</a></li>
-            <li><a href="nuxese.html">Nuxese Group</a></li>
+            <li><a href="stylai.html">StylAI</a></li>
+            <li><a href="stylai-store.html">StylAI Store</a></li>
+            <li><a href="dilmart.html">DilMart</a></li>
+            <li><a href="muhasebos.html">MuhasebOS</a></li>
+            <li><a href="max-hub.html">Max Hub</a></li>
+            <li><a href="deyon.html">Deyon App</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -157,7 +164,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <div>© 2026 Venera Finance LTD · VENERA Technology. All Rights Reserved.</div>
+        <div>© 2020–2026 Venera Finance LTD · VENERA Technology. All Rights Reserved.</div>
         <div class="footer-disclaimer">Institutional Notice: Content on this corporate website is for descriptive and institutional informational purposes. Conceptual blueprints and research studies do not represent awarded government contracts, official public endorsements, or deployed state systems.</div>
       </div>
     </div>

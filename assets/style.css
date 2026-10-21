@@ -163,6 +163,13 @@ img {
   color: var(--text-white);
 }
 
+.links a:focus-visible,
+.nav-more-btn:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
 .links a.active {
   color: var(--text-white);
   font-weight: 600;
@@ -1950,6 +1957,7 @@ textarea.form-control {
 }
 
 .nav-more-btn {
+  position: relative;
   background: none;
   border: none;
   cursor: pointer;
@@ -1973,6 +1981,17 @@ textarea.form-control {
 .nav-more.has-active .nav-more-btn {
   color: var(--text-white);
   font-weight: 600;
+}
+
+.nav-more.has-active .nav-more-btn::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-blue-bright), var(--accent-cyan));
+  border-radius: 2px;
+  box-shadow: 0 0 10px var(--accent-cyan);
 }
 
 .nav-more-chevron {
@@ -2033,6 +2052,39 @@ textarea.form-control {
 [dir="rtl"] .nav-dropdown {
   inset-inline-start: auto;
   inset-inline-end: 0;
+}
+
+@media (max-width: 1080px) {
+  .links .nav-more {
+    display: block;
+    width: 100%;
+  }
+
+  .links .nav-more-btn {
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+    font-size: 1rem;
+    text-align: start;
+  }
+
+  .links .nav-dropdown {
+    position: static;
+    inset: auto;
+    width: 100%;
+    min-width: 0;
+    margin-top: 8px;
+    padding: 4px 12px;
+    background: rgba(8, 16, 38, 0.72);
+    box-shadow: none;
+  }
+
+  .links .nav-dropdown-item {
+    padding: 10px 12px;
+    font-size: 0.9375rem;
+    white-space: normal;
+  }
 }
 
 /* ====================================================== */
@@ -2388,7 +2440,9 @@ textarea.form-control {
 .pf-single-frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  /* Matches the captured product-shot ratio (1440x740) so detail interface
+     views render complete and readable — no aggressive cropping. */
+  aspect-ratio: 1440 / 740;
   border-radius: 16px;
   overflow: hidden;
   background: #081226;
@@ -2505,7 +2559,7 @@ textarea.form-control {
 
 /* ---- Portfolio responsive / mobile typography ---- */
 @media (max-width: 768px) {
-  .pf-stage, .pf-single-frame { aspect-ratio: 4 / 3; border-radius: 12px; }
+  .pf-stage, .pf-single-frame { border-radius: 12px; }
   .pf-gbtn { width: 42px; height: 42px; font-size: 1.05rem; }
   .pf-prev { inset-inline-start: 10px; }
   .pf-next { inset-inline-end: 10px; }
@@ -2518,7 +2572,6 @@ textarea.form-control {
   .pf-card-body { padding: 18px 18px 20px; }
   .pf-card-body p { font-size: 0.9375rem; line-height: 1.6; }
   .pf-card .card-footer a { font-size: 0.875rem; }
-  .pf-stage, .pf-single-frame { aspect-ratio: 1 / 1; }
 }
 
 /* Reduced Motion Support */

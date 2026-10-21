@@ -1,0 +1,17 @@
+Natural Earth 1:110m Land
+
+Source dataset:
+https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_land.geojson
+
+Runtime asset:
+ne_110m_land.geojson
+
+SHA-256:
+9E0729EE253CA7D7A5C4AE9395FB1902264C5377C52E224D13DD85010E2835D9
+
+License:
+Public domain. See NATURAL_EARTH_LICENSE.txt and
+https://www.naturalearthdata.com/about/terms-of-use/
+
+Optional attribution:
+Made with Natural Earth.

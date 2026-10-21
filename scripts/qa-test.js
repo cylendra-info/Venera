@@ -52,6 +52,20 @@ const PAGES_TO_TEST = [
   { path: '/ar/team.html', name: 'ar-team' }
 ];
 
+async function captureScreenshot(target, options) {
+  let lastError;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try {
+      await target.screenshot(options);
+      return;
+    } catch (error) {
+      lastError = error;
+      await new Promise(resolve => setTimeout(resolve, 150 * (attempt + 1)));
+    }
+  }
+  throw lastError;
+}
+
 async function runQA() {
   console.log('========================================================');
   console.log('VENERA Technology V5 — Starting Automated QA Test Suite');
@@ -134,7 +148,7 @@ async function runQA() {
           // Capture screenshot for key pages
           const shotName = `${p.name}-${vp.name}.png`;
           const shotPath = path.join(SCREENSHOTS_DIR, shotName);
-          await page.screenshot({ path: shotPath, fullPage: false });
+          await captureScreenshot(page, { path: shotPath, fullPage: false });
           results.screenshots.push(shotName);
 
           results.passed++;
@@ -200,17 +214,19 @@ async function runQA() {
       console.error('  ✗ Language switch test failed:', err.message);
     }
 
-    // Contact Form Safe-State Test (submission disabled, no fake delivery)
-    console.log('\n--- Testing Contact Form Safe State ---');
+    // Contact Form Activation Test (static Netlify form, no live submission)
+    console.log('\n--- Testing Contact Form Activation ---');
     results.total++;
     try {
       await switchPage.goto(`${BASE_URL}/en/contact.html`);
 
-      // Verify submit button is disabled
-      const submitDisabled = await switchPage.locator('button[type="submit"]').isDisabled();
-      if (!submitDisabled) {
-        throw new Error('Submit button must be disabled when no endpoint is configured');
-      }
+      const form = switchPage.locator('#institutional-contact-form');
+      if (await form.getAttribute('name') !== 'venera-institutional-inquiry') throw new Error('Incorrect Netlify form identity');
+      if (await form.getAttribute('method') !== 'POST') throw new Error('Contact form must use POST');
+      if (await form.getAttribute('data-netlify') !== 'true') throw new Error('Netlify form detection attribute missing');
+      if (await switchPage.locator('input[name="form-name"]').getAttribute('value') !== 'venera-institutional-inquiry') throw new Error('Hidden form-name mismatch');
+      if (await switchPage.locator('input[name="privacy_consent"]').isChecked()) throw new Error('Privacy consent must be unchecked by default');
+      if (await switchPage.locator('button[type="submit"]').isDisabled()) throw new Error('Activated form submit button must be enabled');
 
       // Verify no fake VEN- reference codes exist on page
       const pageText = await switchPage.textContent('body');
@@ -218,7 +234,7 @@ async function runQA() {
         throw new Error('Page contains a fake VEN- reference code — remove all simulated receipt numbers');
       }
 
-      // Verify no false success/encryption claims
+      // Verify no false delivery/encryption claims
       const fakeClaims = ['cryptographically routed', 'Encrypting & Routing', 'Institutional inquiry received successfully'];
       for (const claim of fakeClaims) {
         if (pageText.includes(claim)) {
@@ -226,15 +242,8 @@ async function runQA() {
         }
       }
 
-      // Verify pending-configuration notice is present
-      const feedbackEl = await switchPage.locator('#form-feedback');
-      const feedbackVisible = await feedbackEl.isVisible();
-      if (!feedbackVisible) {
-        throw new Error('#form-feedback not visible — pending notice must be shown');
-      }
-
       results.passed++;
-      console.log('  ✓ Contact form safe state: submit disabled, no fake claims, pending notice shown');
+      console.log('  ✓ Contact form active markup: Netlify identity, consent default, no fake claims');
     } catch (err) {
       results.failed++;
       results.errors.push(`Contact form test: ${err.message}`);
@@ -317,13 +326,13 @@ async function runQA() {
       console.error('  ✗ Partnerships page route test failed:', err.message);
     }
 
-    // V5.5 — Confidentiality gate: no private study URLs in any public HTML
-    console.log('\n--- V5.5: Confidentiality — No private study URLs in public output ---');
+    // Public-source confidentiality gate: synthetic private fixtures never render.
+    console.log('\n--- Public source: Synthetic private fixtures excluded from output ---');
     results.total++;
     try {
       const publicDirs = ['en', 'ar'];
-      // Synthetic fixtures — real private study URLs are withheld from this public source.
-      const privateUrls = ['alpha.private-study.example.invalid', 'beta.private-study.example.invalid', 'private-study.example.invalid'];
+      const privateUrls = ['alpha.private-study.example.invalid', 'beta.private-study.example.invalid',
+        'private-study.example.invalid'];
       const violations = [];
       for (const dir of publicDirs) {
         const htmlFiles = fs.readdirSync(path.resolve(__dirname, '..', dir)).filter(f => f.endsWith('.html'));
@@ -336,7 +345,7 @@ async function runQA() {
       }
       if (violations.length > 0) throw new Error('Private URLs found in public HTML: ' + violations.join('; '));
       results.passed++;
-      console.log('  ✓ No private study URLs (synthetic fixtures) in any public HTML');
+      console.log('  ✓ Synthetic private-study URLs do not appear in public HTML');
     } catch (err) {
       results.failed++;
       results.errors.push(`Confidentiality URL test: ${err.message}`);
@@ -357,10 +366,10 @@ async function runQA() {
       // Verify public opportunities array has no private or draft records
       const leaked = publicOpps.filter(o => o.visibility !== 'approved_public');
       if (leaked.length > 0) throw new Error('publicOpportunities contains non-approved records: ' + leaked.map(o => o.id).join(', '));
-      // Verify no synthetic private-study names leak into public HTML
+      // Verify no synthetic private-study names leak into public HTML.
       const enPartnerships = fs.readFileSync(path.resolve(__dirname, '..', 'en', 'partnerships.html'), 'utf8');
       if (enPartnerships.includes('Synthetic Study Alpha') || enPartnerships.includes('Synthetic Study Beta')) {
-        throw new Error('Internal study names found in public partnerships page');
+        throw new Error('Synthetic internal study names found in public partnerships page');
       }
       results.passed++;
       console.log('  ✓ Visibility gate: all internal records are private; no private data in public partnerships page');
@@ -510,21 +519,129 @@ async function runQA() {
       console.error('  ✗ V5.6.1 nav overflow test failed:', err.message);
     }
 
-    // V5.6.1 — Dropdown "More" button present in generated HTML
-    console.log('\n--- V5.6.1: Nav dropdown "More" button present ---');
+    // V5.9.2 — Global navigation structure, behavior, active states, and captures
+    console.log('\n--- V5.9.2: Accessible Projects + More navigation groups ---');
     results.total++;
     try {
-      const enHtml = fs.readFileSync(path.resolve(__dirname, '..', 'en', 'team.html'), 'utf8');
-      const arHtml = fs.readFileSync(path.resolve(__dirname, '..', 'ar', 'team.html'), 'utf8');
-      if (!enHtml.includes('nav-more-btn')) throw new Error('EN nav: .nav-more-btn not found');
-      if (!arHtml.includes('nav-more-btn')) throw new Error('AR nav: .nav-more-btn not found');
-      if (!enHtml.includes('nav-dropdown')) throw new Error('EN nav: .nav-dropdown not found');
+      const siteContent = require('../data/site-content.js');
+      const screenshotsDir = path.join(SCREENSHOTS_DIR, 'navigation-v592');
+      fs.mkdirSync(screenshotsDir, { recursive: true });
+      const problems = [];
+      const expected = {
+        en: {
+          top: ['Home', 'About', 'Founder', 'Projects', 'Expertise', 'Partnerships', 'More', 'العربية'],
+          projects: ['Ventures & Platforms', 'AI Ventures & Emerging Technologies'],
+          more: ['Strategic Initiatives', 'Team', 'Research & Insights', 'Contact']
+        },
+        ar: {
+          top: ['الرئيسية', 'عن فينيرا', 'المؤسس', 'المشاريع', 'الخبرات', 'الشراكات', 'المزيد', 'English'],
+          projects: ['المشاريع والمنصات', 'مشاريع الذكاء الاصطناعي'],
+          more: ['المبادرات الاستراتيجية', 'فريق العمل', 'البحوث والرؤى', 'التواصل']
+        }
+      };
+
+      for (const lang of ['en', 'ar']) {
+        const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+        const desktopPage = await desktopContext.newPage();
+        await desktopPage.goto(`${BASE_URL}/${lang}/index.html`, { waitUntil: 'networkidle' });
+
+        const structure = await desktopPage.evaluate(() => ({
+          top: Array.from(document.querySelector('.links').children).map(element =>
+            (element.matches('a') ? element : element.querySelector('button'))?.textContent.replace('▾', '').trim()
+          ),
+          projects: Array.from(document.querySelectorAll('[data-nav-group="projects-menu"] .nav-dropdown-item')).map(link => ({
+            label: link.textContent.trim(), href: link.getAttribute('href')
+          })),
+          more: Array.from(document.querySelectorAll('[data-nav-group="more"] .nav-dropdown-item')).map(link => ({
+            label: link.textContent.trim(), href: link.getAttribute('href')
+          })),
+          direction: document.documentElement.dir,
+          overflow: document.querySelector('.topnav .wrap').scrollWidth - document.querySelector('.topnav .wrap').clientWidth
+        }));
+        if (structure.top.join('|') !== expected[lang].top.join('|')) problems.push(`${lang}: top order ${structure.top.join(', ')}`);
+        if (structure.projects.map(item => item.label).join('|') !== expected[lang].projects.join('|')) problems.push(`${lang}: Projects labels`);
+        if (structure.more.map(item => item.label).join('|') !== expected[lang].more.join('|')) problems.push(`${lang}: More labels`);
+        if (structure.projects.map(item => item.href).join('|') !== 'projects.html|ai-ventures.html') problems.push(`${lang}: Projects routes`);
+        if (structure.more.map(item => item.href).join('|') !== 'initiatives.html|team.html|insights.html|contact.html') problems.push(`${lang}: More routes`);
+        if (structure.direction !== (lang === 'ar' ? 'rtl' : 'ltr')) problems.push(`${lang}: direction ${structure.direction}`);
+        if (structure.overflow > 5) problems.push(`${lang}: desktop overflow ${structure.overflow}px`);
+
+        const projectsButton = desktopPage.locator('[data-nav-group="projects-menu"] .nav-more-btn');
+        const moreButton = desktopPage.locator('[data-nav-group="more"] .nav-more-btn');
+        await projectsButton.click();
+        if (await projectsButton.getAttribute('aria-expanded') !== 'true') problems.push(`${lang}: Projects mouse open`);
+        await desktopPage.waitForTimeout(200);
+        await captureScreenshot(desktopPage, { path: path.join(screenshotsDir, `${lang}-desktop-projects-open-1440x900.png`) });
+        results.screenshots.push(`navigation-v592/${lang}-desktop-projects-open-1440x900.png`);
+        await desktopPage.keyboard.press('Escape');
+        if (await projectsButton.getAttribute('aria-expanded') !== 'false') problems.push(`${lang}: Projects Escape close`);
+
+        await projectsButton.focus();
+        await desktopPage.keyboard.press('Enter');
+        if (await projectsButton.getAttribute('aria-expanded') !== 'true') problems.push(`${lang}: Projects Enter open`);
+        await moreButton.focus();
+        await desktopPage.keyboard.press('Space');
+        if (await moreButton.getAttribute('aria-expanded') !== 'true' || await projectsButton.getAttribute('aria-expanded') !== 'false') {
+          problems.push(`${lang}: Space open or sibling close`);
+        }
+        await desktopPage.waitForTimeout(200);
+        await captureScreenshot(desktopPage, { path: path.join(screenshotsDir, `${lang}-desktop-more-open-1440x900.png`) });
+        results.screenshots.push(`navigation-v592/${lang}-desktop-more-open-1440x900.png`);
+        await desktopPage.locator('main').click({ position: { x: 8, y: 8 } });
+        if (await moreButton.getAttribute('aria-expanded') !== 'false') problems.push(`${lang}: outside-click close`);
+
+        const activeCases = [
+          { slug: 'founder.html', selector: '.links > a[href="founder.html"].active' },
+          { slug: 'projects.html', selector: '[data-nav-group="projects-menu"].has-active' },
+          { slug: 'ai-ventures.html', selector: '[data-nav-group="projects-menu"].has-active' }
+        ];
+        for (const project of siteContent.projects[lang]) {
+          activeCases.push({ slug: project.slug, selector: '[data-nav-group="projects-menu"].has-active' });
+        }
+        for (const { slug, selector } of activeCases) {
+          await desktopPage.goto(`${BASE_URL}/${lang}/${slug}`, { waitUntil: 'networkidle' });
+          if (await desktopPage.locator(selector).count() !== 1) problems.push(`${lang}/${slug}: active state`);
+        }
+
+        for (const slug of ['founder.html', 'projects.html', 'ai-ventures.html', 'stylai.html']) {
+          await desktopPage.goto(`${BASE_URL}/${lang}/${slug}`, { waitUntil: 'networkidle' });
+          const expectedSwitch = `../${lang === 'ar' ? 'en' : 'ar'}/${slug}`;
+          if (await desktopPage.locator('.lang-pill').getAttribute('href') !== expectedSwitch) problems.push(`${lang}/${slug}: language route`);
+        }
+        await desktopContext.close();
+
+        const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+        const mobilePage = await mobileContext.newPage();
+        await mobilePage.goto(`${BASE_URL}/${lang}/index.html`, { waitUntil: 'networkidle' });
+        await mobilePage.locator('.hamb').click();
+        const mobileProjects = mobilePage.locator('[data-nav-group="projects-menu"] .nav-more-btn');
+        const mobileMore = mobilePage.locator('[data-nav-group="more"] .nav-more-btn');
+        await mobileProjects.click();
+        if (!await mobilePage.locator('[data-nav-group="projects-menu"] .nav-dropdown').isVisible()) problems.push(`${lang}: mobile Projects expand`);
+        await mobilePage.waitForTimeout(200);
+        await captureScreenshot(mobilePage, { path: path.join(screenshotsDir, `${lang}-mobile-projects-open-390x844.png`) });
+        results.screenshots.push(`navigation-v592/${lang}-mobile-projects-open-390x844.png`);
+        await mobileMore.click();
+        if (!await mobilePage.locator('[data-nav-group="more"] .nav-dropdown').isVisible() || await mobileProjects.getAttribute('aria-expanded') !== 'false') {
+          problems.push(`${lang}: mobile More expand or sibling close`);
+        }
+        await mobilePage.waitForTimeout(200);
+        await captureScreenshot(mobilePage, { path: path.join(screenshotsDir, `${lang}-mobile-more-open-390x844.png`) });
+        results.screenshots.push(`navigation-v592/${lang}-mobile-more-open-390x844.png`);
+        const navDestinations = await mobilePage.locator('.links a:not(.lang-pill)').evaluateAll(links => links.map(link => link.getAttribute('href')));
+        if (navDestinations.length !== 11 || new Set(navDestinations).size !== 11) problems.push(`${lang}: mobile destinations ${navDestinations.length}`);
+        await mobilePage.keyboard.press('Escape');
+        if (await mobileMore.getAttribute('aria-expanded') !== 'false') problems.push(`${lang}: mobile Escape close`);
+        await mobileContext.close();
+      }
+
+      if (problems.length) throw new Error(problems.join(' | '));
       results.passed++;
-      console.log('  ✓ "More" dropdown markup present in both EN and AR pages');
+      console.log('  ✓ Exact EN/AR order, mouse + keyboard behavior, active states, language routes, mobile groups, and destinations passed');
     } catch (err) {
       results.failed++;
-      results.errors.push(`Nav dropdown HTML test: ${err.message}`);
-      console.error('  ✗ Nav dropdown HTML test failed:', err.message);
+      results.errors.push(`V5.9.2 navigation test: ${err.message}`);
+      console.error('  ✗ V5.9.2 navigation test failed:', err.message);
     }
 
     // V5.7 — Portfolio cards render, media covers present, no broken covers
@@ -627,11 +744,12 @@ async function runQA() {
       console.error('  ✗ V5.7 empty-gallery test failed:', err.message);
     }
 
-    // V5.7 — Confidential URLs never appear in any public HTML (incl. new media pages)
-    console.log('\n--- V5.7: Confidential URL exclusion (synthetic fixtures) ---');
+    // Synthetic private fixtures never appear in any generated public HTML.
+    console.log('\n--- Public source: Synthetic confidential URL exclusion ---');
     results.total++;
     try {
-      const banned = ['alpha.private-study.example.invalid', 'beta.private-study.example.invalid', 'private-study.example.invalid'];
+      const banned = ['alpha.private-study.example.invalid', 'beta.private-study.example.invalid',
+        'private-study.example.invalid'];
       const hits = [];
       for (const lang of ['en', 'ar']) {
         const dir = path.resolve(__dirname, '..', lang);
@@ -647,6 +765,183 @@ async function runQA() {
       results.failed++;
       results.errors.push(`V5.7 confidential URL test: ${err.message}`);
       console.error('  ✗ V5.7 confidential URL test failed:', err.message);
+    }
+
+    // V5.7.1 — Portfolio display order (EN + AR identical, owner-defined)
+    console.log('\n--- V5.7.1: Portfolio order (EN + AR) ---');
+    results.total++;
+    try {
+      const expected = ['stylai', 'dilmart', 'stylai-store', 'muhasebos', 'orbitraai', 'max-hub', 'deyon', 'cylendra', 'veneraswap', 'paynxs', 'ordernxs', 'roic', 'nuxese'];
+      const problems = [];
+      for (const lang of ['en', 'ar']) {
+        const html = fs.readFileSync(path.resolve(__dirname, '..', lang, 'projects.html'), 'utf8');
+        const order = [];
+        const re = /href="([a-z0-9-]+)\.html"/g; let m;
+        while ((m = re.exec(html)) !== null) { if (expected.includes(m[1]) && !order.includes(m[1])) order.push(m[1]); }
+        if (order.join(',') !== expected.join(',')) problems.push(`${lang}: got [${order.join(', ')}]`);
+      }
+      if (problems.length) throw new Error('Portfolio order mismatch — ' + problems.join(' | '));
+      results.passed++;
+      console.log('  ✓ Portfolio order matches owner-defined sequence in EN and AR');
+    } catch (err) {
+      results.failed++;
+      results.errors.push(`V5.7.1 portfolio order test: ${err.message}`);
+      console.error('  ✗ V5.7.1 portfolio order test failed:', err.message);
+    }
+
+    // V5.7.1 — Deployment package cleanliness (no data/, no source, no registers)
+    console.log('\n--- V5.7.1: Deployment package isolation ---');
+    results.total++;
+    try {
+      const { execSync } = require('child_process');
+      execSync('node scripts/deploy-package.js', { cwd: path.resolve(__dirname, '..'), stdio: 'pipe' });
+      const distDir = path.resolve(__dirname, '..', 'dist');
+      const problems = [];
+      if (fs.existsSync(path.join(distDir, 'data'))) problems.push('dist/data/ present');
+      const walk = d => fs.readdirSync(d, { withFileTypes: true }).flatMap(e => {
+        const full = path.join(d, e.name);
+        return e.isDirectory() ? walk(full) : [full];
+      });
+      const files = fs.existsSync(distDir) ? walk(distDir) : [];
+      for (const f of files) {
+        const base = path.basename(f);
+        if (['site-content.js', 'build.js', 'qa-test.js', 'deploy-package.js'].includes(base)) problems.push('source file: ' + path.relative(distDir, f));
+        if (/\.(html|js|css|json|txt|xml)$/i.test(base)) {
+          const c = fs.readFileSync(f, 'utf8');
+          for (const s of ['_internalRegister', 'private-study.example.invalid']) {
+            if (c.includes(s)) problems.push(`"${s}" in ${path.relative(distDir, f)}`);
+          }
+        }
+      }
+      if (problems.length) throw new Error('dist leak: ' + problems.join('; '));
+      results.passed++;
+      console.log('  ✓ dist/ excludes data/, source files, and internal registers');
+    } catch (err) {
+      results.failed++;
+      results.errors.push(`V5.7.1 dist isolation test: ${err.message}`);
+      console.error('  ✗ V5.7.1 dist isolation test failed:', err.message);
+    }
+
+    // V5.9.1 — Selected Work footer uses the final approved project order across priority EN/AR pages
+    console.log('\n--- V5.9.1: Footer selected products (EN + AR) ---');
+    results.total++;
+    try {
+      const expectedNames = ['Cylendra Labs', 'VeneraSwap', 'StylAI', 'StylAI Store', 'DilMart', 'MuhasebOS', 'Max Hub', 'Deyon App'];
+      const expectedHrefs = ['cylendra.html', 'veneraswap.html', 'stylai.html', 'stylai-store.html', 'dilmart.html', 'muhasebos.html', 'max-hub.html', 'deyon.html'];
+      const expectedIds = ['cylendra', 'veneraswap', 'stylai', 'stylai-store', 'dilmart', 'muhasebos', 'max-hub', 'deyon'];
+      const priorityPages = ['index.html', 'projects.html', 'founder.html', 'team.html', 'ai-ventures.html', 'partnerships.html'];
+      const problems = [];
+
+      for (const lang of ['en', 'ar']) {
+        for (const pageName of priorityPages) {
+          await switchPage.goto(`${BASE_URL}/${lang}/${pageName}`, { waitUntil: 'networkidle' });
+          const footer = await switchPage.evaluate(() => {
+            const columns = Array.from(document.querySelectorAll('.footer-col'));
+            const selected = columns.find(column => /^(Selected Work|أعمال مختارة)$/.test(column.querySelector('h4')?.textContent.trim() || ''));
+            if (!selected) return null;
+            const founderLinkedIn = document.querySelector('.footer-brand .inline-link');
+            return {
+              heading: selected.querySelector('h4').textContent.trim(),
+              names: Array.from(selected.querySelectorAll('a')).map(link => link.textContent.trim()),
+              hrefs: Array.from(selected.querySelectorAll('a')).map(link => link.getAttribute('href')),
+              copyright: document.querySelector('.footer-bottom div')?.textContent.trim(),
+              founderLinkedInText: founderLinkedIn?.textContent.trim(),
+              founderLinkedInHref: founderLinkedIn?.getAttribute('href')
+            };
+          });
+          if (!footer) {
+            problems.push(`${lang}/${pageName}: selected-work column missing`);
+            continue;
+          }
+          if (footer.heading !== (lang === 'ar' ? 'أعمال مختارة' : 'Selected Work')) {
+            problems.push(`${lang}/${pageName}: heading ${footer.heading}`);
+          }
+          if (footer.names.join('|') !== expectedNames.join('|')) {
+            problems.push(`${lang}/${pageName}: names [${footer.names.join(', ')}]`);
+          }
+          if (footer.hrefs.join('|') !== expectedHrefs.join('|')) {
+            problems.push(`${lang}/${pageName}: hrefs [${footer.hrefs.join(', ')}]`);
+          }
+          if (new Set(footer.hrefs).size !== footer.hrefs.length) {
+            problems.push(`${lang}/${pageName}: duplicate href`);
+          }
+          const expectedCopyright = lang === 'ar'
+            ? '© 2020–2026 Venera Finance LTD · VENERA Technology. جميع الحقوق محفوظة.'
+            : '© 2020–2026 Venera Finance LTD · VENERA Technology. All Rights Reserved.';
+          if (footer.copyright !== expectedCopyright || footer.copyright.includes('© 2026 Venera Finance LTD')) {
+            problems.push(`${lang}/${pageName}: copyright ${footer.copyright}`);
+          }
+          const expectedLinkedInText = lang === 'ar' ? 'الملف المهني للمؤسس على LinkedIn ↗' : 'Founder LinkedIn Profile ↗';
+          if (footer.founderLinkedInText !== expectedLinkedInText) {
+            problems.push(`${lang}/${pageName}: founder LinkedIn text ${footer.founderLinkedInText}`);
+          }
+          if (footer.founderLinkedInHref !== 'https://www.linkedin.com/in/leader7701/') {
+            problems.push(`${lang}/${pageName}: founder LinkedIn URL ${footer.founderLinkedInHref}`);
+          }
+        }
+
+        for (let index = 0; index < expectedHrefs.length; index++) {
+          const href = expectedHrefs[index];
+          const response = await switchPage.goto(`${BASE_URL}/${lang}/${href}`, { waitUntil: 'networkidle' });
+          const projectId = await switchPage.locator('[data-project]').first().getAttribute('data-project');
+          if (!response || response.status() !== 200 || projectId !== expectedIds[index]) {
+            problems.push(`${lang}/${href}: status=${response?.status()} project=${projectId}`);
+          }
+        }
+      }
+      if (problems.length) throw new Error(problems.join(' | '));
+      results.passed++;
+      console.log('  ✓ Selected Work order, 16 localized routes, LinkedIn labels, and V5.11 copyright range passed');
+    } catch (err) {
+      results.failed++;
+      results.errors.push(`V5.9.1 footer links test: ${err.message}`);
+      console.error('  ✗ V5.9.1 footer links test failed:', err.message);
+    }
+
+    // V5.9.1 — Footer responsive layout and visual review captures
+    console.log('\n--- V5.9.1: Footer responsive layout (desktop + mobile) ---');
+    results.total++;
+    try {
+      const footerScreenshots = path.join(SCREENSHOTS_DIR, 'footer-v591');
+      fs.mkdirSync(footerScreenshots, { recursive: true });
+      const problems = [];
+      for (const viewport of [{ name: 'desktop', width: 1440, height: 900 }, { name: 'mobile', width: 390, height: 844 }]) {
+        const footerContext = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
+        const footerPage = await footerContext.newPage();
+        for (const lang of ['en', 'ar']) {
+          await footerPage.goto(`${BASE_URL}/${lang}/index.html`, { waitUntil: 'networkidle' });
+          const footer = footerPage.locator('.footer');
+          await footer.scrollIntoViewIfNeeded();
+          await footerPage.locator('.topnav').evaluate(element => {
+            element.style.visibility = 'hidden';
+          });
+          const layout = await footer.evaluate(element => ({
+            left: element.getBoundingClientRect().left,
+            right: element.getBoundingClientRect().right,
+            width: element.getBoundingClientRect().width,
+            scrollWidth: element.scrollWidth,
+            viewportWidth: window.innerWidth,
+            direction: getComputedStyle(element).direction
+          }));
+          if (layout.left < -1 || layout.right > layout.viewportWidth + 1 || layout.scrollWidth > layout.viewportWidth + 1) {
+            problems.push(`${lang}/${viewport.name}: footer overflow ${JSON.stringify(layout)}`);
+          }
+          if (layout.direction !== (lang === 'ar' ? 'rtl' : 'ltr')) {
+            problems.push(`${lang}/${viewport.name}: direction=${layout.direction}`);
+          }
+          const shotName = `${lang}-footer-${viewport.name}-${viewport.width}x${viewport.height}.png`;
+          await captureScreenshot(footer, { path: path.join(footerScreenshots, shotName) });
+          results.screenshots.push(`footer-v591/${shotName}`);
+        }
+        await footerContext.close();
+      }
+      if (problems.length) throw new Error(problems.join(' | '));
+      results.passed++;
+      console.log('  ✓ Footer fits EN/AR desktop and mobile layouts with correct direction; review captures saved');
+    } catch (err) {
+      results.failed++;
+      results.errors.push(`V5.9.1 footer responsive test: ${err.message}`);
+      console.error('  ✗ V5.9.1 footer responsive test failed:', err.message);
     }
 
     await switchContext.close();
