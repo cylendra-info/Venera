@@ -18,8 +18,14 @@ if (!fs.existsSync(AR_DIR)) fs.mkdirSync(AR_DIR, { recursive: true });
 function renderHead({ lang, title, description, slug, extraMeta = '' }) {
   const isAr = lang === 'ar';
   const otherLang = isAr ? 'en' : 'ar';
-  const canonicalUrl = `${siteContent.meta.canonicalDomain}/${lang}/${slug}`;
-  const alternateUrl = `${siteContent.meta.canonicalDomain}/${otherLang}/${slug}`;
+  const domain = (siteContent.meta.canonicalDomain || '').replace(/\/$/, '');
+  const hasDomain = domain.length > 0;
+
+  const canonicalBlock = hasDomain
+    ? `\n  <!-- Canonical & Multilingual Alternate (absolute URLs require verified domain) -->\n  <link rel="canonical" href="${domain}/${lang}/${slug}">\n  <link rel="alternate" hreflang="${lang}" href="${domain}/${lang}/${slug}">\n  <link rel="alternate" hreflang="${otherLang}" href="${domain}/${otherLang}/${slug}">\n  <link rel="alternate" hreflang="x-default" href="${domain}/en/${slug}">`
+    : `\n  <!-- Canonical and hreflang omitted: no verified production domain configured -->`;
+
+  const ogUrl = hasDomain ? `<meta property="og:url" content="${domain}/${lang}/${slug}">` : '';
 
   return `<!doctype html>
 <html lang="${lang}" dir="${isAr ? 'rtl' : 'ltr'}">
@@ -29,28 +35,23 @@ function renderHead({ lang, title, description, slug, extraMeta = '' }) {
   <meta name="theme-color" content="#040914">
   <title>${title} | ${siteContent.meta.brandName}</title>
   <meta name="description" content="${description}">
-  
-  <!-- Canonical & Multilingual Alternate -->
-  <link rel="canonical" href="${canonicalUrl}">
-  <link rel="alternate" hreflang="${lang}" href="${slug}">
-  <link rel="alternate" hreflang="${otherLang}" href="../${otherLang}/${slug}">
-  <link rel="alternate" hreflang="x-default" href="../en/${slug}">
-  
+  ${canonicalBlock}
+
   <!-- Open Graph & Twitter Cards -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="${title} | ${siteContent.meta.brandName}">
   <meta property="og:description" content="${description}">
-  <meta property="og:url" content="${canonicalUrl}">
+  ${ogUrl}
   <meta property="og:site_name" content="${siteContent.meta.brandName}">
   <meta property="og:image" content="../assets/venera-logo-transparent.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${title} | ${siteContent.meta.brandName}">
   <meta name="twitter:description" content="${description}">
-  
+
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/png" href="../assets/favicon.png">
   <link rel="apple-touch-icon" href="../assets/favicon.png">
-  
+
   <!-- Stylesheet -->
   <link rel="stylesheet" href="../assets/style.css">
   ${extraMeta}
@@ -67,19 +68,39 @@ function renderHeader({ lang, currentSlug }) {
   const otherLangLabel = isAr ? 'English' : 'العربية';
   const otherLangUrl = `../${otherLang}/${currentSlug}`;
 
-  const navLinksHtml = navItems.map(item => {
-    // Check if this is the active page
+  const isActiveItem = (item) => {
     const itemSlug = path.basename(item.href);
-    const isActive = (itemSlug === currentSlug) || 
+    return (itemSlug === currentSlug) ||
       (currentSlug === 'index.html' && item.id === 'home') ||
       (currentSlug === 'about.html' && item.id === 'about') ||
       (currentSlug === 'company.html' && item.id === 'about') ||
       (currentSlug === 'projects.html' && item.id === 'projects') ||
       (currentSlug === 'work.html' && item.id === 'projects') ||
       (['cylendra.html', 'veneraswap.html', 'paynxs.html', 'ordernxs.html', 'roic.html', 'nuxese.html'].includes(currentSlug) && item.id === 'projects');
+  };
 
-    return `<a class="${isActive ? 'active' : ''}" href="${itemSlug}">${item.label}</a>`;
-  }).join('');
+  const primaryItems = navItems.filter(i => i.primary !== false);
+  const secondaryItems = navItems.filter(i => i.primary === false);
+  const secondaryHasActive = secondaryItems.some(isActiveItem);
+
+  const primaryHtml = primaryItems.map(item =>
+    `<a class="${isActiveItem(item) ? 'active' : ''}" href="${path.basename(item.href)}">${item.label}</a>`
+  ).join('');
+
+  const dropdownItemsHtml = secondaryItems.map(item =>
+    `<a class="nav-dropdown-item${isActiveItem(item) ? ' active' : ''}" href="${path.basename(item.href)}">${item.label}</a>`
+  ).join('');
+
+  const moreLabel = isAr ? 'المزيد' : 'More';
+  const dropdownHtml = secondaryItems.length > 0 ? `
+    <div class="nav-more${secondaryHasActive ? ' has-active' : ''}">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-label="${moreLabel}">
+        ${moreLabel} <span class="nav-more-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="nav-dropdown" role="menu">
+        ${dropdownItemsHtml}
+      </div>
+    </div>` : '';
 
   return `
   <header class="topnav">
@@ -89,7 +110,8 @@ function renderHeader({ lang, currentSlug }) {
       </a>
       <button class="hamb" aria-label="${isAr ? 'فتح القائمة' : 'Toggle Navigation Menu'}" aria-expanded="false">☰</button>
       <nav class="links" aria-label="${isAr ? 'القائمة الرئيسية' : 'Primary Navigation'}">
-        ${navLinksHtml}
+        ${primaryHtml}
+        ${dropdownHtml}
         <a class="lang-pill" href="${otherLangUrl}" hreflang="${otherLang}" lang="${otherLang}">${otherLangLabel}</a>
       </nav>
     </div>
@@ -214,7 +236,8 @@ function buildHomePage(lang) {
     </div>
   `).join('');
 
-  const featuredProjects = siteContent.projects[lang].slice(0, 3);
+  const featuredIds = ['stylai', 'dilmart', 'muhasebos', 'orbitraai', 'cylendra', 'max-hub'];
+  const featuredProjects = featuredIds.map(id => siteContent.projects[lang].find(p => p.id === id)).filter(Boolean);
   const projectsHtml = featuredProjects.map(p => `
     <div class="card">
       <span class="status-badge ${p.statusClass}">${p.status}</span>
@@ -222,7 +245,7 @@ function buildHomePage(lang) {
       <p>${p.summary}</p>
       <div class="card-footer">
         <a class="inline-link" href="${p.slug}">
-          ${isAr ? 'عرض تفاصيل المشروع ↗' : 'View Project Case Study ↗'}
+          ${isAr ? 'استكشف المنصة ↗' : 'Explore Platform ↗'}
         </a>
       </div>
     </div>
@@ -319,6 +342,23 @@ function buildHomePage(lang) {
       </div>
     </section>
 
+    <!-- Founder Introduction -->
+    <section class="section dark">
+      <div class="wrap">
+        <div class="founder-intro-grid">
+          <div>
+            <div class="eyebrow">${isAr ? 'المؤسس والقيادة' : 'FOUNDER & LEADERSHIP'}</div>
+            <h2>${isAr ? 'علي حسين — مهندس أنظمة وريادي تقني' : 'Ali Hussein — Systems Architect & Technology Entrepreneur'}</h2>
+            <p class="lead">${isAr ? 'مسيرة مهنية بدأت عام 2004 من مركز تقنية ميداني في العراق، تطورت عبر عقدين إلى هندسة منصات مؤسسية وأطر بنية تحتية رقمية سيادية.' : 'A professional journey that began in 2004 at a grassroots internet center in Iraq, evolving through two decades into enterprise platform engineering and sovereign digital infrastructure.'}</p>
+            <a class="btn" href="founder.html" style="margin-top: 32px;">${isAr ? 'استعراض السيرة الكاملة →' : 'Explore Founder Profile →'}</a>
+          </div>
+          <figure class="founder-intro-portrait">
+            <img src="../assets/founder-executive.webp" alt="Ali Hussein - Founder &amp; Technology Director" width="1024" height="1536">
+          </figure>
+        </div>
+      </div>
+    </section>
+
     <!-- Strategic Systems & Initiatives Banner -->
     <section class="section dark">
       <div class="wrap">
@@ -347,10 +387,33 @@ function buildHomePage(lang) {
       </div>
     </section>
 
-    <!-- Institutional CTA -->
+    <!-- Strategic Partnerships -->
+    <section class="section dark" id="partnerships">
+      <div class="wrap">
+        <div class="sect-head">
+          <div class="eyebrow">${c.partnerships.eyebrow}</div>
+          <h2>${c.partnerships.title}</h2>
+          <p class="lead">${c.partnerships.lead}</p>
+        </div>
+        <div class="caps-grid" style="margin-top: 40px;">
+          ${c.partnerships.models.map(m => `
+            <div class="cap-item">
+              <div class="cap-title">${m.title}</div>
+              <p>${m.desc}</p>
+            </div>
+          `).join('')}
+        </div>
+        <div style="margin-top: 40px; text-align: center;">
+          <a class="btn" href="contact.html">${c.partnerships.cta} →</a>
+          <p style="margin-top: 16px; font-size: 0.875rem; color: var(--text-muted);">${c.partnerships.note}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
     <section class="section soft">
       <div class="wrap" style="text-align: center; max-width: 800px; margin: 0 auto;">
-        <div class="eyebrow">${isAr ? 'حوار استراتيجي' : 'PARTNERSHIP & ADVISORY'}</div>
+        <div class="eyebrow">${isAr ? 'ابدأ المحادثة' : 'START THE CONVERSATION'}</div>
         <h2 style="color: var(--text-soft-main);">${c.ctaBanner.title}</h2>
         <p class="lead" style="color: var(--text-soft-muted); margin: 16px auto 32px;">${c.ctaBanner.desc}</p>
         <a class="btn" href="contact.html">${c.ctaBanner.btn} →</a>
@@ -526,41 +589,74 @@ function buildProjectsPage(lang) {
 
   const head = renderHead({
     lang,
-    title: isAr ? 'المشاريع والمحفظة التقنية' : 'Engineering Projects & Portfolio',
-    description: isAr ? 'استعراض المنصات والأنظمة التقنية المطورة وقيد التطوير' : 'Detailed catalog of developed systems, platforms under development, and technical ventures.',
+    title: isAr ? 'مشاريعنا ومنصاتنا' : 'Ventures & Platforms',
+    description: isAr ? 'مشاريع VENERA Technology التقنية: منصات نشطة ومنتجات مطوّرة وتقنيات ذكية' : 'VENERA Technology ventures and platforms: active products, developed systems, and intelligent technologies.',
     slug: 'projects.html'
   });
 
   const header = renderHeader({ lang, currentSlug: 'projects.html' });
 
-  const cardsHtml = projects.map(p => `
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span class="status-badge ${p.statusClass}">${p.status}</span>
-      </div>
-      <h3>${p.name}</h3>
-      <div style="font-size: 0.8125rem; color: var(--accent-cyan); font-weight: 600; margin-bottom: 12px;">${p.tagline}</div>
-      <p>${p.summary}</p>
-      <div class="card-footer">
-        <a class="inline-link" href="${p.slug}">
-          ${isAr ? 'قراءة دراسة المشروع الهندسية ↗' : 'Read Full Architecture Case Study ↗'}
-        </a>
-      </div>
-    </div>
+  const categoryMeta = {
+    all:      { en: 'All Ventures',                              ar: 'جميع المشاريع' },
+    trading:  { en: 'Trading & Wealth Technologies',             ar: 'تقنيات التداول والثروة' },
+    commerce: { en: 'Ventures & Consumer Platforms',             ar: 'المشاريع ومنصات المستهلك' },
+    bizops:   { en: 'Business Technologies',                     ar: 'تقنيات الأعمال' },
+    heritage: { en: 'Engineering Heritage',                      ar: 'الإرث الهندسي' }
+  };
+
+  const filterTabs = ['all', 'trading', 'commerce', 'bizops', 'heritage'].map(cat => `
+    <button class="portfolio-filter-btn${cat === 'all' ? ' active' : ''}" data-filter="${cat}" aria-pressed="${cat === 'all'}">
+      ${categoryMeta[cat][lang]}
+    </button>
   `).join('');
+
+  const cardsHtml = projects.map(p => {
+    const media = siteContent.projectMedia[p.id] || { type: 'logo', mono: p.name.trim().charAt(0) };
+    const catTag = categoryMeta[p.category] ? categoryMeta[p.category][lang] : '';
+    let cover;
+    if (media.type === 'logo') {
+      cover = `<div class="pf-cover pf-cover-logo">
+          <span class="pf-cover-status status-badge ${p.statusClass}">${p.status}</span>
+          <span class="pf-mono" aria-hidden="true">${media.mono}</span>
+        </div>`;
+    } else {
+      cover = `<div class="pf-cover">
+          <span class="pf-cover-status status-badge ${p.statusClass}">${p.status}</span>
+          <img src="../assets/${media.cover}" alt="${p.name} ${isAr ? 'واجهة المنتج' : 'product interface'}" loading="lazy" decoding="async">
+        </div>`;
+    }
+    return `
+    <div class="card portfolio-card pf-card" data-category="${p.category || 'heritage'}">
+      ${cover}
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>${p.name}</h3>
+          <span class="portfolio-cat-tag portfolio-cat-${p.category || 'heritage'}">${catTag}</span>
+        </div>
+        <div class="pf-card-tag">${p.tagline}</div>
+        <p>${p.summary}</p>
+        <div class="card-footer">
+          <a class="inline-link" href="${p.slug}">${isAr ? 'عرض المشروع ↗' : 'View project ↗'}</a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 
   const body = `
     <section class="page-hero">
       <div class="wrap">
-        <div class="eyebrow">${isAr ? 'محفظة الأعمال الهندسية' : 'PORTFOLIO & SYSTEM CATALOG'}</div>
-        <h1>${isAr ? 'المشاريع والأنظمة التقنية' : 'Verified Engineering Work'}</h1>
-        <p>${isAr ? 'محفظة موثقة تتسم بالشفافية، تميز بدقة بين المنتجات المنشورة، والتجارب قيد التطوير، والمشاريع المنفذة لأطراف خارجية.' : 'A transparent portfolio delineating commercial products built, platforms under active laboratory development, and third-party engineering deliveries.'}</p>
+        <div class="eyebrow">${isAr ? 'مشاريعنا ومنصاتنا' : 'OUR VENTURES & PLATFORMS'}</div>
+        <h1>${isAr ? 'المشاريع والمنصات' : 'Ventures & Platforms'}</h1>
+        <p>${isAr ? 'محفظة متنوعة من المشاريع الرقمية والمنصات الذكية والحلول التقنية في التجارة الإلكترونية وإدارة الأعمال والتقنيات المالية والابتكار.' : 'A portfolio of digital ventures, intelligent platforms, and technology solutions spanning commerce, business operations, financial technology, and emerging markets.'}</p>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <div class="cards-grid">
+        <div class="portfolio-filters" role="group" aria-label="${isAr ? 'تصفية المشاريع حسب الفئة' : 'Filter projects by category'}">
+          ${filterTabs}
+        </div>
+        <div class="cards-grid" id="portfolio-grid">
           ${cardsHtml}
         </div>
       </div>
@@ -585,8 +681,61 @@ function buildProjectDetailPage(lang, project) {
 
   const capabilitiesHtml = project.capabilities.map(cap => `<li>${cap}</li>`).join('');
 
+  const projectId = project.slug.replace('.html', '');
+
+  // V5.7 — genuine product visual block (gallery / single / logo). Only
+  // rendered when media exists; never a fabricated or empty placeholder.
+  const media = siteContent.projectMedia[projectId];
+  let visualHtml = '';
+  if (media && media.type === 'gallery') {
+    const slides = media.gallery.map((g, i) => `
+            <figure class="pf-slide${i === 0 ? ' active' : ''}" data-cap="${g.cap[lang]}">
+              <img src="../assets/${g.img}" alt="${project.name} — ${g.cap[lang]}" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async">
+            </figure>`).join('');
+    const dots = media.gallery.map((g, i) => `<button class="pf-dot${i === 0 ? ' active' : ''}" type="button" role="tab" aria-selected="${i === 0 ? 'true' : 'false'}" aria-label="${(isAr ? 'صورة ' : 'Image ') + (i + 1)}"></button>`).join('');
+    const prevGlyph = isAr ? '&#8250;' : '&#8249;';
+    const nextGlyph = isAr ? '&#8249;' : '&#8250;';
+    visualHtml = `
+    <section class="pf-visual-section">
+      <div class="wrap">
+        <div class="pf-gallery" role="group" aria-roledescription="carousel" aria-label="${project.name}" tabindex="0">
+          <div class="pf-stage">
+            ${slides}
+            <button class="pf-gbtn pf-prev" type="button" aria-label="${isAr ? 'الصورة السابقة' : 'Previous image'}">${prevGlyph}</button>
+            <button class="pf-gbtn pf-next" type="button" aria-label="${isAr ? 'الصورة التالية' : 'Next image'}">${nextGlyph}</button>
+          </div>
+          <div class="pf-foot">
+            <span class="pf-cap" aria-live="polite">${media.gallery[0].cap[lang]}</span>
+            <div class="pf-dots" role="tablist" aria-label="${isAr ? 'اختر الصورة' : 'Choose image'}">${dots}</div>
+            <span class="pf-counter" aria-hidden="true"><span class="current">1</span> / ${media.gallery.length}</span>
+          </div>
+        </div>
+      </div>
+    </section>`;
+  } else if (media && media.type === 'single') {
+    visualHtml = `
+    <section class="pf-visual-section">
+      <div class="wrap">
+        <figure class="pf-single">
+          <div class="pf-single-frame"><img src="../assets/${media.cover}" alt="${project.name} — ${media.cap[lang]}" loading="eager" decoding="async"></div>
+          <figcaption class="pf-single-cap">${media.cap[lang]}</figcaption>
+        </figure>
+      </div>
+    </section>`;
+  } else if (media && media.type === 'logo') {
+    visualHtml = `
+    <section class="pf-visual-section">
+      <div class="wrap">
+        <div class="pf-logo-panel">
+          <span class="pf-logo-mono" aria-hidden="true">${media.mono}</span>
+          <span class="pf-logo-name">${project.name}</span>
+        </div>
+      </div>
+    </section>`;
+  }
+
   const body = `
-    <section class="page-hero">
+    <section class="page-hero" data-project="${projectId}">
       <div class="wrap">
         <div style="margin-bottom: 12px;">
           <a class="inline-link" href="projects.html" style="font-size: 0.8125rem;">
@@ -598,6 +747,7 @@ function buildProjectDetailPage(lang, project) {
         <p>${project.tagline}</p>
       </div>
     </section>
+    ${visualHtml}
 
     <section class="section">
       <div class="wrap detail-grid">
@@ -638,11 +788,6 @@ function buildProjectDetailPage(lang, project) {
           <div class="sidebar-item">
             <strong>${isAr ? 'دور المؤسس / الشركة' : 'Founder / Company Role'}</strong>
             <span>${project.role}</span>
-          </div>
-
-          <div class="sidebar-item">
-            <strong>${isAr ? 'بيان التحقق والمصداقية' : 'Verification Note'}</strong>
-            <span style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6;">${project.statusVerification}</span>
           </div>
 
           ${project.externalUrl ? `
@@ -749,7 +894,7 @@ function buildFounderPage(lang) {
   const header = renderHeader({ lang, currentSlug: 'founder.html' });
 
   const bioParagraphs = c.biography.paragraphs.map(p => `<p class="lead" style="margin-bottom: 20px;">${p}</p>`).join('');
-  const storyParagraphs = c.story.paragraphs.map(p => `<p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.85; margin-bottom: 18px;">${p}</p>`).join('');
+  const storyParagraphs = c.story.paragraphs.map(p => `<p style="color: #334155; font-size: 1.0625rem; line-height: 1.9; margin-bottom: 22px;">${p}</p>`).join('');
 
   const timelineHtml = c.timeline.map(t => `
     <div class="milestone">
@@ -767,8 +912,8 @@ function buildFounderPage(lang) {
   `).join('');
 
   const body = `
-    <!-- Executive Leadership Hero: Dark Navy + Globe + Formal Portrait -->
-    <section class="hero" style="min-height: auto; padding: 80px 0 90px;">
+    <!-- Executive Leadership Hero: Dark Navy + Network Grid + Formal Portrait -->
+    <section class="founder-hero-section">
       <div class="wrap founder-hero-grid">
         <div>
           <div class="eyebrow">${c.hero.eyebrow}</div>
@@ -778,7 +923,6 @@ function buildFounderPage(lang) {
           
           <div class="quote-card">
             <blockquote>"${c.hero.quote}"</blockquote>
-            <cite>— ${c.hero.name}, ${isAr ? c.hero.currentRole : c.hero.currentRole}</cite>
           </div>
 
           <div class="actions">
@@ -791,14 +935,41 @@ function buildFounderPage(lang) {
           </div>
         </div>
 
-        <div>
-          <figure class="founder-portrait-hero">
-            <img src="../assets/founder-executive.webp" alt="${c.hero.name} - ${c.hero.title}" width="1024" height="1536" fetchpriority="high">
-            <figcaption class="founder-badge-overlay">
-              <strong>${c.hero.name}</strong>
-              <span>${isAr ? 'الصورة الرسمية · القيادة التقنية والتنفيذية' : 'EXECUTIVE PORTRAIT · FOUNDER & TECHNOLOGY DIRECTOR'}</span>
-            </figcaption>
-          </figure>
+        <div class="founder-visual-col">
+          <div class="founder-cinematic-wrap">
+            <!-- Digital globe network — decorative, aria-hidden -->
+            <svg class="founder-globe-svg" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- Globe outline -->
+              <circle cx="210" cy="210" r="175" stroke="rgba(56,189,248,0.13)" stroke-width="1"/>
+              <!-- Equator -->
+              <ellipse cx="210" cy="210" rx="175" ry="52" stroke="rgba(56,189,248,0.10)" stroke-width="0.8"/>
+              <!-- Upper latitude -->
+              <ellipse cx="210" cy="150" rx="138" ry="40" stroke="rgba(56,189,248,0.08)" stroke-width="0.8"/>
+              <!-- Lower latitude -->
+              <ellipse cx="210" cy="270" rx="138" ry="40" stroke="rgba(56,189,248,0.07)" stroke-width="0.8"/>
+              <!-- Primary meridian -->
+              <ellipse cx="210" cy="210" rx="52" ry="175" stroke="rgba(56,189,248,0.08)" stroke-width="0.8"/>
+              <!-- Secondary meridian -->
+              <ellipse cx="210" cy="210" rx="130" ry="175" stroke="rgba(37,99,235,0.06)" stroke-width="0.8"/>
+              <!-- Network nodes -->
+              <circle cx="210" cy="35" r="3.5" fill="rgba(56,189,248,0.55)"/>
+              <circle cx="210" cy="385" r="2.5" fill="rgba(56,189,248,0.35)"/>
+              <circle cx="383" cy="150" r="3" fill="rgba(37,99,235,0.6)"/>
+              <circle cx="37" cy="270" r="2.5" fill="rgba(56,189,248,0.35)"/>
+              <circle cx="385" cy="210" r="3.5" fill="rgba(56,189,248,0.5)"/>
+              <circle cx="35" cy="210" r="2" fill="rgba(56,189,248,0.25)"/>
+              <circle cx="330" cy="110" r="2" fill="rgba(56,189,248,0.4)"/>
+              <!-- Network connection lines -->
+              <line x1="210" y1="35" x2="383" y2="150" stroke="rgba(56,189,248,0.14)" stroke-width="0.8" stroke-dasharray="4,5"/>
+              <line x1="383" y1="150" x2="385" y2="210" stroke="rgba(37,99,235,0.10)" stroke-width="0.8" stroke-dasharray="3,6"/>
+              <line x1="210" y1="35" x2="330" y2="110" stroke="rgba(56,189,248,0.10)" stroke-width="0.8" stroke-dasharray="3,5"/>
+              <!-- Subtle glow dot at top pole -->
+              <circle cx="210" cy="35" r="7" fill="rgba(56,189,248,0.08)"/>
+              <circle cx="385" cy="210" r="8" fill="rgba(37,99,235,0.07)"/>
+            </svg>
+            <!-- Transparent founder image — blends with dark navy via screen mode -->
+            <img class="founder-transparent-img" src="../assets/founder-Ali.png" alt="${c.hero.name}" fetchpriority="high">
+          </div>
         </div>
       </div>
     </section>
@@ -834,10 +1005,7 @@ function buildFounderPage(lang) {
     <section class="section soft">
       <div class="wrap story-split">
         <figure class="story-portrait">
-          <img src="../assets/founder-story.webp" alt="${c.hero.name} - ${c.story.title}" width="1024" height="1536">
-          <figcaption style="padding: 16px 20px; font-size: 0.75rem; color: var(--text-dim); background: #ffffff;">
-            ${isAr ? 'صورة المسيرة المهنية الشخصية · جذور الهندسة الميدانية' : 'PERSONAL JOURNEY · EARLY TECHNICAL ENABLEMENT'}
-          </figcaption>
+          <img src="../assets/founder-story.webp" alt="${c.hero.name}" width="1024" height="1536">
         </figure>
 
         <div>
@@ -1037,62 +1205,358 @@ function buildContactPage(lang) {
 // Sitemap & Robots
 // --------------------------------------------------------------------------
 function buildSitemap() {
-  const baseUrl = siteContent.meta.canonicalDomain;
+  const baseUrl = (siteContent.meta.canonicalDomain || '').replace(/\/$/, '');
+  const sitemapPath = path.join(ROOT_DIR, 'sitemap.xml');
+  if (!baseUrl) {
+    // Deterministic: no domain = no sitemap.xml on disk (remove stale file if present)
+    if (fs.existsSync(sitemapPath)) {
+      fs.unlinkSync(sitemapPath);
+      console.log('⚠ sitemap.xml removed: canonicalDomain not configured');
+    } else {
+      console.log('⚠ sitemap.xml absent: canonicalDomain not configured');
+    }
+    return;
+  }
   const slugs = [
-    'index.html',
-    'about.html',
-    'expertise.html',
-    'projects.html',
-    'cylendra.html',
-    'veneraswap.html',
-    'paynxs.html',
-    'ordernxs.html',
-    'roic.html',
-    'nuxese.html',
-    'initiatives.html',
-    'founder.html',
-    'insights.html',
-    'contact.html'
+    'index.html', 'about.html', 'expertise.html', 'projects.html',
+    'cylendra.html', 'veneraswap.html', 'paynxs.html', 'ordernxs.html',
+    'roic.html', 'nuxese.html', 'initiatives.html', 'founder.html',
+    'insights.html', 'contact.html'
   ];
 
-  let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-`;
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n';
+  xml += '        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
 
   slugs.forEach(slug => {
-    xml += `  <url>
-    <loc>${baseUrl}/en/${slug}</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="${baseUrl}/en/${slug}"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/ar/${slug}"/>
-    <changefreq>weekly</changefreq>
-    <priority>${slug === 'index.html' ? '1.0' : slug === 'founder.html' ? '0.9' : '0.8'}</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/ar/${slug}</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/ar/${slug}"/>
-    <xhtml:link rel="alternate" hreflang="en" href="${baseUrl}/en/${slug}"/>
-    <changefreq>weekly</changefreq>
-    <priority>${slug === 'index.html' ? '1.0' : slug === 'founder.html' ? '0.9' : '0.8'}</priority>
-  </url>
-`;
+    const priority = slug === 'index.html' ? '1.0' : slug === 'founder.html' ? '0.9' : '0.8';
+    xml += `  <url>\n    <loc>${baseUrl}/en/${slug}</loc>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${baseUrl}/en/${slug}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/ar/${slug}"/>\n`;
+    xml += `    <changefreq>weekly</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
+    xml += `  <url>\n    <loc>${baseUrl}/ar/${slug}</loc>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/ar/${slug}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${baseUrl}/en/${slug}"/>\n`;
+    xml += `    <changefreq>weekly</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
   });
 
-  xml += `</urlset>\n`;
-  fs.writeFileSync(path.join(ROOT_DIR, 'sitemap.xml'), xml, 'utf8');
+  xml += '</urlset>\n';
+  fs.writeFileSync(sitemapPath, xml, 'utf8');
   console.log('✓ sitemap.xml generated');
 }
 
-function buildRobots() {
-  const content = `User-agent: *
-Allow: /
-Sitemap: ${siteContent.meta.canonicalDomain}/sitemap.xml
-`;
-  fs.writeFileSync(path.join(ROOT_DIR, 'robots.txt'), content, 'utf8');
-  console.log('✓ robots.txt generated');
+// 11. AI Ventures & Emerging Technologies Page
+function buildAIVenturesPage(lang) {
+  const isAr = lang === 'ar';
+  const p = siteContent.aiPage[lang];
+
+  const head = renderHead({
+    lang,
+    title: p.title,
+    description: p.metaDesc,
+    slug: 'ai-ventures.html'
+  });
+
+  const header = renderHeader({ lang, currentSlug: 'ai-ventures.html' });
+
+  // Filter to approved_public only — private/draft never rendered
+  const ventures = (siteContent.aiVentures[lang] || []).filter(v => v.visibility === 'approved_public');
+
+  const cardsHtml = ventures.map(v => `
+    <div class="ai-venture-card">
+      <div class="ai-venture-icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="10" stroke="var(--accent-blue)" stroke-width="1.5" opacity="0.6"/>
+          <circle cx="16" cy="16" r="4" fill="var(--accent-blue)" opacity="0.8"/>
+          <line x1="16" y1="2" x2="16" y2="8" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+          <line x1="16" y1="24" x2="16" y2="30" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+          <line x1="2" y1="16" x2="8" y2="16" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+          <line x1="24" y1="16" x2="30" y2="16" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="ai-venture-content">
+        <div class="ai-venture-meta">
+          <span class="ai-category-tag">${v.techCategory}</span>
+          <span class="status-badge ${v.statusClass}">${v.status}</span>
+        </div>
+        <h3 class="ai-venture-name">${v.name}</h3>
+        <p class="ai-venture-tagline">${v.tagline}</p>
+        <p class="ai-venture-summary">${v.summary}</p>
+      </div>
+    </div>
+  `).join('');
+
+  const body = `
+    <section class="page-hero ai-ventures-hero">
+      <div class="wrap">
+        <div class="eyebrow">${p.eyebrow}</div>
+        <h1>${p.title}</h1>
+        <p>${p.heroDesc}</p>
+      </div>
+    </section>
+
+    <section class="section ai-ventures-section">
+      <div class="wrap">
+        <div class="ai-ventures-grid">
+          ${cardsHtml}
+        </div>
+        <div class="ai-ventures-notice">
+          <p>${isAr ? 'هذه مشاريع قيد التطوير. لا تمثل منتجات تجارية مطلقة ما لم يُشار إلى ذلك. يخضع الإفصاح عن التفاصيل الاستراتيجية والمعمارية للمراجعة والموافقة.' : 'These are ventures in active development. They do not represent commercially launched products unless otherwise indicated. Strategic and architectural details are disclosed through a reviewed qualification process.'}</p>
+        </div>
+      </div>
+    </section>
+  `;
+
+  return head + header + body + renderFooter({ lang });
 }
 
-// Root index.html redirect with language detection
+// 12. Strategic Investment & Venture Partnerships Page
+function buildOpportunitiesPage(lang) {
+  const isAr = lang === 'ar';
+  const c = siteContent.opportunities.pageContent[lang];
+  const founderLinkedIn = siteContent.meta.founderLinkedIn;
+
+  // Only approved_public opportunities rendered — filter happens here
+  const publicOpps = (siteContent.opportunities.publicOpportunities || []).filter(o => o.visibility === 'approved_public');
+
+  const head = renderHead({
+    lang,
+    title: c.title,
+    description: c.metaDesc,
+    slug: 'partnerships.html'
+  });
+
+  const header = renderHeader({ lang, currentSlug: 'partnerships.html' });
+
+  const partnershipModelsHtml = c.partnershipModels.map(m => `
+    <div class="partnership-model-card">
+      <h4>${m.title}</h4>
+      <p>${m.desc}</p>
+    </div>
+  `).join('');
+
+  const journeyHtml = c.journeySteps.map(s => `
+    <div class="journey-step">
+      <div class="journey-step-number">${s.step}</div>
+      <div class="journey-step-content">
+        <h4>${s.title}</h4>
+        <p>${s.desc}</p>
+      </div>
+    </div>
+  `).join('');
+
+  const audienceHtml = c.audienceItems.map(item => `<li>${item}</li>`).join('');
+
+  // Opportunities catalog — shown only if approved_public records exist
+  const catalogSection = publicOpps.length > 0
+    ? `<section class="section">
+        <div class="wrap">
+          <div class="eyebrow">${isAr ? 'فرص الشراكة المتاحة' : 'AVAILABLE PARTNERSHIP OPPORTUNITIES'}</div>
+          <div class="cards-grid">
+            ${publicOpps.map(o => `
+              <div class="card">
+                <h3>${isAr ? o.titleAr : o.titleEn}</h3>
+                <p>${isAr ? o.shortDescAr : o.shortDescEn}</p>
+                <div style="margin-top:12px; font-size:0.8125rem; color:var(--text-muted);">
+                  ${isAr ? o.sectorAr : o.sectorEn} · ${isAr ? o.targetGeographyAr : o.targetGeographyEn}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>`
+    : `<section class="section">
+        <div class="wrap">
+          <div class="no-public-listing">
+            <div class="no-listing-icon" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="12" width="32" height="28" rx="3" stroke="var(--accent-blue)" stroke-width="1.5" opacity="0.6"/>
+                <line x1="16" y1="22" x2="32" y2="22" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                <line x1="16" y1="28" x2="26" y2="28" stroke="var(--accent-cyan)" stroke-width="1.5" opacity="0.6"/>
+                <circle cx="36" cy="10" r="6" fill="var(--accent-blue)" opacity="0.15" stroke="var(--accent-blue)" stroke-width="1.5"/>
+                <line x1="36" y1="7" x2="36" y2="13" stroke="var(--accent-blue)" stroke-width="1.5"/>
+                <line x1="33" y1="10" x2="39" y2="10" stroke="var(--accent-blue)" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <p class="no-listing-primary">${c.noPublicListingMsg}</p>
+            <p class="no-listing-secondary">${c.noPublicListingSubMsg}</p>
+          </div>
+        </div>
+      </section>`;
+
+  const body = `
+    <section class="page-hero opportunities-hero">
+      <div class="wrap">
+        <div class="eyebrow">${c.eyebrow}</div>
+        <h1>${c.title}</h1>
+        <p class="hero-tagline">${c.tagline}</p>
+        <p>${c.heroDesc}</p>
+      </div>
+    </section>
+
+    ${catalogSection}
+
+    <section class="section">
+      <div class="wrap">
+        <div class="two-col-section">
+          <div>
+            <div class="eyebrow">${c.audienceTitle.toUpperCase()}</div>
+            <ul class="audience-list">
+              ${audienceHtml}
+            </ul>
+          </div>
+          <div>
+            <div class="eyebrow">${c.partnershipsTitle.toUpperCase()}</div>
+            <p style="color:var(--text-secondary); margin-bottom:24px;">${c.partnershipsDesc}</p>
+            <div class="partnership-models-grid">
+              ${partnershipModelsHtml}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="wrap">
+        <div class="eyebrow">${c.journeyTitle.toUpperCase()}</div>
+        <div class="journey-steps">
+          ${journeyHtml}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="cta-block">
+          <h2>${c.ctaTitle}</h2>
+          <p>${c.ctaDesc}</p>
+          <a href="${founderLinkedIn}" target="_blank" rel="noopener noreferrer" class="btn-primary">${c.ctaLinkedIn} ↗</a>
+        </div>
+        <div class="legal-disclaimer" style="margin-top:48px;">
+          <p>${c.disclaimer}</p>
+        </div>
+      </div>
+    </section>
+  `;
+
+  return head + header + body + renderFooter({ lang });
+}
+
+// 13. Team Page
+function buildTeamPage(lang) {
+  const isAr = lang === 'ar';
+  const c = siteContent.team[lang];
+  const founderLinkedIn = siteContent.meta.founderLinkedIn;
+
+  // Exact filenames — confirmed present in assets/
+  const img1 = '../assets/Venera-Finance-Team-in-Neon-Office-1.png';
+  const img2 = '../assets/Venera-Finance-Team-in-Neon-Office-2.png';
+
+  const head = renderHead({
+    lang,
+    title: c.title,
+    description: c.metaDesc,
+    slug: 'team.html'
+  });
+
+  const header = renderHeader({ lang, currentSlug: 'team.html' });
+
+  const prevLabel = isAr ? 'الصورة السابقة' : 'Previous photograph';
+  const nextLabel = isAr ? 'الصورة التالية' : 'Next photograph';
+  // In RTL the glyphs visually reverse: prev points right, next points left.
+  const prevGlyph = isAr ? '&#8250;' : '&#8249;';
+  const nextGlyph = isAr ? '&#8249;' : '&#8250;';
+
+  const principlesHtml = c.principles.map((p, i) => `
+          <div class="tm-point">
+            <span class="tm-idx">${isAr ? ['٠١', '٠٢', '٠٣'][i] : ['01', '02', '03'][i]}</span>
+            <div>
+              <h3>${p.label}</h3>
+              <p>${p.desc}</p>
+            </div>
+          </div>`).join('');
+
+  const body = `
+    <!-- SECTION A: PEOPLE BEHIND VENERA + GALLERY -->
+    <section class="tm-hero">
+      <div class="wrap">
+        <header class="tm-hero-head">
+          <div class="eyebrow">${c.eyebrow}</div>
+          <h1 class="tm-hero-title">${c.title}</h1>
+          <p class="tm-hero-desc">${c.heroDesc}</p>
+        </header>
+
+        <div class="tm-gallery" role="group" aria-roledescription="carousel"
+             aria-label="${isAr ? 'صور فريق VENERA' : 'VENERA team photographs'}" tabindex="0">
+          <div class="tm-stage">
+            <figure class="tm-slide active" data-caption="${c.caption1}">
+              <img src="${img1}"
+                   alt="${isAr ? 'فريق VENERA في المكتب أسفل شعار الشركة' : 'The VENERA team gathered in the office beneath the company emblem'}"
+                   loading="eager" fetchpriority="high" decoding="async" width="1120" height="700">
+            </figure>
+            <figure class="tm-slide" data-caption="${c.caption2}">
+              <img src="${img2}"
+                   alt="${isAr ? 'فريق VENERA حول المكتب في بيئة العمل' : 'The VENERA team around the desk in the workspace'}"
+                   loading="eager" decoding="async" width="1120" height="700">
+            </figure>
+            <div class="tm-vignette" aria-hidden="true"></div>
+            <button class="tm-gbtn tm-prev" type="button" aria-label="${prevLabel}">${prevGlyph}</button>
+            <button class="tm-gbtn tm-next" type="button" aria-label="${nextLabel}">${nextGlyph}</button>
+          </div>
+          <div class="tm-foot">
+            <span class="tm-caption" aria-live="polite">${c.caption1}</span>
+            <div class="tm-dots" role="tablist" aria-label="${isAr ? 'اختر الصورة' : 'Choose photograph'}">
+              <button class="tm-dot active" type="button" role="tab" aria-selected="true" aria-label="${isAr ? 'الصورة 1' : 'Photograph 1'}"></button>
+              <button class="tm-dot" type="button" role="tab" aria-selected="false" aria-label="${isAr ? 'الصورة 2' : 'Photograph 2'}"></button>
+            </div>
+            <span class="tm-counter" aria-hidden="true"><span class="current">1</span> / 2</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION B: PEOPLE, TECHNOLOGY & COLLABORATION -->
+    <section class="tm-collab">
+      <div class="wrap">
+        <div class="tm-collab-grid">
+          <div class="tm-collab-left">
+            <div class="eyebrow">${c.collabEyebrow}</div>
+            <h2 class="tm-collab-title">${c.collabTitle}</h2>
+          </div>
+          <div class="tm-collab-right">
+            <p class="tm-lede">${c.collabLede}</p>
+            <div class="tm-points">
+              ${principlesHtml}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION C: STRATEGIC COLLABORATION CTA -->
+    <section class="tm-cta">
+      <div class="wrap">
+        <div class="tm-cta-inner">
+          <div class="eyebrow">${c.ctaEyebrow}</div>
+          <h2 class="tm-cta-title">${c.ctaTitle}</h2>
+          <p class="tm-cta-desc">${c.ctaDesc}</p>
+          <a href="${founderLinkedIn}" target="_blank" rel="noopener noreferrer" class="btn">${c.ctaLabel} ↗</a>
+        </div>
+      </div>
+    </section>
+  `;
+
+  return head + header + body + renderFooter({ lang });
+}
+
+function buildRobots() {
+  const baseUrl = (siteContent.meta.canonicalDomain || '').replace(/\/$/, '');
+  const sitemapLine = baseUrl ? `Sitemap: ${baseUrl}/sitemap.xml\n` : '# Sitemap: configure canonicalDomain to enable\n';
+  const robotsContent = `User-agent: *\nAllow: /\n${sitemapLine}`;
+  fs.writeFileSync(path.join(ROOT_DIR, 'robots.txt'), robotsContent, 'utf8');
+  console.log('✓ robots.txt generated');
+
+}
 function buildRootIndex() {
   const content = `<!doctype html>
 <html lang="en">
@@ -1129,40 +1593,31 @@ function compileSite() {
   ['en', 'ar'].forEach(lang => {
     const dir = lang === 'en' ? EN_DIR : AR_DIR;
 
-    // 1. Home
     fs.writeFileSync(path.join(dir, 'index.html'), buildHomePage(lang), 'utf8');
-    
-    // 2. About & alias company.html
+
     const aboutHtml = buildAboutPage(lang);
     fs.writeFileSync(path.join(dir, 'about.html'), aboutHtml, 'utf8');
     fs.writeFileSync(path.join(dir, 'company.html'), aboutHtml, 'utf8');
 
-    // 3. Expertise
     fs.writeFileSync(path.join(dir, 'expertise.html'), buildExpertisePage(lang), 'utf8');
 
-    // 4. Projects & alias work.html
     const projectsHtml = buildProjectsPage(lang);
     fs.writeFileSync(path.join(dir, 'projects.html'), projectsHtml, 'utf8');
     fs.writeFileSync(path.join(dir, 'work.html'), projectsHtml, 'utf8');
 
-    // 5. Project Detail Pages (all 6)
     siteContent.projects[lang].forEach(p => {
       fs.writeFileSync(path.join(dir, p.slug), buildProjectDetailPage(lang, p), 'utf8');
     });
 
-    // 6. Strategic Initiatives
     fs.writeFileSync(path.join(dir, 'initiatives.html'), buildInitiativesPage(lang), 'utf8');
-
-    // 7. Founder Page
+    fs.writeFileSync(path.join(dir, 'ai-ventures.html'), buildAIVenturesPage(lang), 'utf8');
+    fs.writeFileSync(path.join(dir, 'partnerships.html'), buildOpportunitiesPage(lang), 'utf8');
+    fs.writeFileSync(path.join(dir, 'team.html'), buildTeamPage(lang), 'utf8');
     fs.writeFileSync(path.join(dir, 'founder.html'), buildFounderPage(lang), 'utf8');
-
-    // 8. Research & Insights
     fs.writeFileSync(path.join(dir, 'insights.html'), buildInsightsPage(lang), 'utf8');
-
-    // 9. Contact
     fs.writeFileSync(path.join(dir, 'contact.html'), buildContactPage(lang), 'utf8');
 
-    console.log(`✓ Compiled complete ${lang.toUpperCase()} page set (15 HTML files)`);
+    console.log(`✓ Compiled complete ${lang.toUpperCase()} page set (18 HTML files)`);
   });
 
   buildSitemap();

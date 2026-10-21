@@ -1,3 +1,12 @@
 node_modules/
 .DS_Store
 Thumbs.db
+
+# Generated build artifacts — do not commit
+sitemap.xml
+dist/
+
+# Development-only artifacts — excluded from the public review snapshot
+qa-screenshots/
+test-results/
+design-prototypes/

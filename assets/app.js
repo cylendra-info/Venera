@@ -5,10 +5,132 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
+  initNavDropdown();
   initDigitalGlobe();
   initContactForm();
   initInsightsModal();
+  initPortfolioFilters();
+  initTeamGallery();
+  initProjectGalleries();
 });
+
+/* --------------------------------------------------------------------------
+   Project Detail Galleries (V5.7) — one image at a time, crossfade,
+   prev/next, dots, keyboard, touch-swipe, RTL-aware. Supports multiple.
+   -------------------------------------------------------------------------- */
+function initProjectGalleries() {
+  const roots = document.querySelectorAll('.pf-gallery');
+  if (!roots.length) return;
+  const isRtl = document.documentElement.dir === 'rtl';
+
+  roots.forEach(root => {
+    const slides = Array.from(root.querySelectorAll('.pf-slide'));
+    const dots = Array.from(root.querySelectorAll('.pf-dot'));
+    const prev = root.querySelector('.pf-prev');
+    const next = root.querySelector('.pf-next');
+    const counter = root.querySelector('.pf-counter .current');
+    const caption = root.querySelector('.pf-cap');
+    if (slides.length < 2) return;
+
+    let i = 0;
+    const caps = slides.map(s => s.getAttribute('data-cap') || '');
+
+    function show(n) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle('active', k === i));
+      dots.forEach((d, k) => {
+        d.classList.toggle('active', k === i);
+        d.setAttribute('aria-selected', k === i ? 'true' : 'false');
+      });
+      if (counter) counter.textContent = String(i + 1);
+      if (caption) caption.textContent = caps[i];
+    }
+
+    if (prev) prev.addEventListener('click', () => show(i - 1));
+    if (next) next.addEventListener('click', () => show(i + 1));
+    dots.forEach((d, k) => d.addEventListener('click', () => show(k)));
+
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); show(isRtl ? i - 1 : i + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); show(isRtl ? i + 1 : i - 1); }
+    });
+
+    let x0 = null;
+    const stage = root.querySelector('.pf-stage');
+    if (stage) {
+      stage.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+      stage.addEventListener('touchend', (e) => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) {
+          const forward = isRtl ? dx > 0 : dx < 0;
+          show(forward ? i + 1 : i - 1);
+        }
+        x0 = null;
+      }, { passive: true });
+    }
+
+    show(0);
+  });
+}
+
+/* --------------------------------------------------------------------------
+   Team Page Gallery — one image at a time, crossfade, prev/next, dots,
+   keyboard, touch-swipe. No libraries. Content stays visible without JS.
+   -------------------------------------------------------------------------- */
+function initTeamGallery() {
+  const root = document.querySelector('.tm-gallery');
+  if (!root) return;
+
+  const slides = Array.from(root.querySelectorAll('.tm-slide'));
+  const dots = Array.from(root.querySelectorAll('.tm-dot'));
+  const prev = root.querySelector('.tm-prev');
+  const next = root.querySelector('.tm-next');
+  const counter = root.querySelector('.tm-counter .current');
+  const caption = root.querySelector('.tm-caption');
+  if (slides.length < 2) return;
+
+  let i = 0;
+  const captions = slides.map(s => s.getAttribute('data-caption') || '');
+
+  function show(n) {
+    i = (n + slides.length) % slides.length;
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    dots.forEach((d, k) => {
+      d.classList.toggle('active', k === i);
+      d.setAttribute('aria-selected', k === i ? 'true' : 'false');
+    });
+    if (counter) counter.textContent = String(i + 1);
+    if (caption) caption.textContent = captions[i];
+  }
+
+  if (prev) prev.addEventListener('click', () => show(i - 1));
+  if (next) next.addEventListener('click', () => show(i + 1));
+  dots.forEach((d, k) => d.addEventListener('click', () => show(k)));
+
+  const isRtl = document.documentElement.dir === 'rtl';
+  root.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(isRtl ? i - 1 : i + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); show(isRtl ? i + 1 : i - 1); }
+  });
+
+  let x0 = null;
+  const stage = root.querySelector('.tm-stage');
+  if (stage) {
+    stage.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    stage.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 40) {
+        const forward = isRtl ? dx > 0 : dx < 0;
+        show(forward ? i + 1 : i - 1);
+      }
+      x0 = null;
+    }, { passive: true });
+  }
+
+  show(0);
+}
 
 /* --------------------------------------------------------------------------
    1. Mobile Navigation & Accessibility
@@ -77,29 +199,29 @@ function initDigitalGlobe() {
   let isVisible = true;
 
   // Key infrastructural nodes (lat, lon in degrees)
-  // Representing global tech & sovereign nodes (Minsk, Baghdad, London, Singapore, New York, Dubai, Tokyo, Frankfurt)
+  // Illustrative technology infrastructure nodes — not representative of offices or operational locations
   const nodes = [
-    { lat: 53.9, lon: 27.56, label: "Minsk (HQ)", color: "#38bdf8" },
-    { lat: 33.31, lon: 44.36, label: "Baghdad", color: "#60a5fa" },
-    { lat: 51.5, lon: -0.12, label: "London", color: "#93c5fd" },
-    { lat: 1.35, lon: 103.82, label: "Singapore", color: "#38bdf8" },
-    { lat: 40.71, lon: -74.0, label: "New York", color: "#60a5fa" },
-    { lat: 25.2, lon: 55.27, label: "Dubai", color: "#38bdf8" },
-    { lat: 35.68, lon: 139.69, label: "Tokyo", color: "#93c5fd" },
-    { lat: 50.11, lon: 8.68, label: "Frankfurt", color: "#60a5fa" },
-    { lat: 59.43, lon: 24.75, label: "Tallinn", color: "#7dd3fc" }
+    { lat: 53.9, lon: 27.56, label: "Node-A", color: "#38bdf8" },
+    { lat: 33.31, lon: 44.36, label: "Node-B", color: "#60a5fa" },
+    { lat: 51.5, lon: -0.12, label: "Node-C", color: "#93c5fd" },
+    { lat: 1.35, lon: 103.82, label: "Node-D", color: "#38bdf8" },
+    { lat: 40.71, lon: -74.0, label: "Node-E", color: "#60a5fa" },
+    { lat: 25.2, lon: 55.27, label: "Node-F", color: "#38bdf8" },
+    { lat: 35.68, lon: 139.69, label: "Node-G", color: "#93c5fd" },
+    { lat: 50.11, lon: 8.68, label: "Node-H", color: "#60a5fa" },
+    { lat: 59.43, lon: 24.75, label: "Node-I", color: "#7dd3fc" }
   ];
 
   // Data transmission arcs connecting nodes
   const arcs = [
-    [0, 1], // Minsk - Baghdad
-    [0, 2], // Minsk - London
-    [1, 5], // Baghdad - Dubai
-    [5, 3], // Dubai - Singapore
-    [2, 4], // London - New York
-    [3, 6], // Singapore - Tokyo
-    [0, 7], // Minsk - Frankfurt
-    [0, 8]  // Minsk - Tallinn
+    [0, 1], // A-B
+    [0, 2], // A-C
+    [1, 5], // B-F
+    [5, 3], // F-D
+    [2, 4], // C-E
+    [3, 6], // D-G
+    [0, 7], // A-H
+    [0, 8]  // A-I
   ];
 
   function resize() {
@@ -319,12 +441,6 @@ function initDigitalGlobe() {
         ctx.arc(p.x, p.y, 3 * dpr, 0, Math.PI * 2);
         ctx.fill();
 
-        // Label on front-facing nodes
-        if (p.z > radius * 0.2) {
-          ctx.font = `${10 * dpr}px var(--font-en, sans-serif)`;
-          ctx.fillStyle = `rgba(241, 245, 249, ${alpha})`;
-          ctx.fillText(n.label, p.x + 8 * dpr, p.y + 3 * dpr);
-        }
       }
     });
 
@@ -352,38 +468,41 @@ function initDigitalGlobe() {
 
 /* --------------------------------------------------------------------------
    3. Institutional Contact Form Handling
+   NOTE: Submission disabled pending verified delivery endpoint.
+   No simulated submission, fake reference numbers, or false delivery
+   claims are presented. See V5_1_FIXES.md for endpoint specification.
    -------------------------------------------------------------------------- */
 function initContactForm() {
   const form = document.querySelector('#institutional-contact-form');
   if (!form) return;
 
   const feedback = document.querySelector('#form-feedback');
+  const isArabic = document.documentElement.lang === 'ar';
 
+  const pendingMsg = {
+    en: `<strong>This form is pending secure endpoint configuration.</strong><br>For direct contact, please reach out via <a href="https://www.linkedin.com/in/leader7701/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.`,
+    ar: `<strong>النموذج الإلكتروني قيد الإعداد.</strong><br>للتواصل المباشر، يُرجى التواصل عبر <a href="https://www.linkedin.com/in/leader7701/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.`
+  };
+
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = isArabic ? 'النموذج قيد الإعداد' : 'Form Pending Configuration';
+  }
+
+  if (feedback) {
+    feedback.className = 'form-feedback info';
+    feedback.innerHTML = isArabic ? pendingMsg.ar : pendingMsg.en;
+  }
+
+  // Block any submission — prevent false delivery claims
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = document.documentElement.lang === 'ar' ? 'جارٍ التحقق وتشفير الإرسال...' : 'Encrypting & Routing Inquiry...';
-
-    setTimeout(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-
-      const refNumber = 'VEN-' + Math.floor(100000 + Math.random() * 900000);
-      const isArabic = document.documentElement.lang === 'ar';
-
-      if (feedback) {
-        feedback.className = 'form-feedback success';
-        feedback.innerHTML = isArabic
-          ? `<strong>تم استلام طلبكم المؤسسي بنجاح.</strong><br>الرقم المرجعي للاستفسار: <code>${refNumber}</code>.<br>سيتم توجيه المراسلة للقيادة الهندسية المختصة في أقرب وقت.`
-          : `<strong>Institutional inquiry received successfully.</strong><br>Inquiry Reference ID: <code>${refNumber}</code>.<br>Your communication has been cryptographically routed to our systems engineering practice.`;
-        feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-
-      form.reset();
-    }, 1200);
+    if (feedback) {
+      feedback.className = 'form-feedback info';
+      feedback.innerHTML = isArabic ? pendingMsg.ar : pendingMsg.en;
+      feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   });
 }
 
@@ -467,6 +586,67 @@ function initInsightsModal() {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
       }
+    });
+  });
+}
+/* --------------------------------------------------------------------------
+   Nav "More" Dropdown
+   -------------------------------------------------------------------------- */
+function initNavDropdown() {
+  const moreContainers = document.querySelectorAll('.nav-more');
+  if (!moreContainers.length) return;
+
+  moreContainers.forEach(container => {
+    const btn = container.querySelector('.nav-more-btn');
+    if (!btn) return;
+
+    function toggle(open) {
+      const isOpen = open !== undefined ? open : !container.classList.contains('open');
+      container.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggle();
+    });
+
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      if (e.key === 'Escape') toggle(false);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!container.contains(e.target)) toggle(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && container.classList.contains('open')) toggle(false);
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   Portfolio Category Filter (V5.3)
+   -------------------------------------------------------------------------- */
+function initPortfolioFilters() {
+  const btns = document.querySelectorAll('.portfolio-filter-btn');
+  const cards = document.querySelectorAll('.portfolio-card');
+  if (!btns.length || !cards.length) return;
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      btns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
     });
   });
 }

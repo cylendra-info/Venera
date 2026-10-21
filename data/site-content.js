@@ -17,7 +17,9 @@ const siteContent = {
     founderLinkedIn: "https://www.linkedin.com/in/leader7701/",
     founderExpYears: "22+",
     founderStartYear: "2004",
-    canonicalDomain: "https://veneratech.com", // Reference domain
+    // Production domain — must be set to a verified, owner-controlled URL before deployment.
+    // Leave as empty string for safe local/dev behavior (canonicals and sitemap suppressed).
+    canonicalDomain: "",
     tagline: {
       en: "Engineering the Systems of Tomorrow",
       ar: "هندسة أنظمة الغد"
@@ -29,35 +31,42 @@ const siteContent = {
   },
 
   navigation: {
+    // Primary items always visible. Secondary items collapse into "More" dropdown.
     en: [
-      { id: "home", label: "Home", href: "/en/index.html" },
-      { id: "about", label: "About VENERA", href: "/en/about.html" },
-      { id: "expertise", label: "Expertise", href: "/en/expertise.html" },
-      { id: "projects", label: "Projects", href: "/en/projects.html" },
-      { id: "initiatives", label: "Strategic Initiatives", href: "/en/initiatives.html" },
-      { id: "founder", label: "Founder", href: "/en/founder.html" },
-      { id: "insights", label: "Research & Insights", href: "/en/insights.html" },
-      { id: "contact", label: "Contact", href: "/en/contact.html" }
+      { id: "home",         label: "Home",                href: "/en/index.html",        primary: true  },
+      { id: "about",        label: "About",               href: "/en/about.html",        primary: true  },
+      { id: "expertise",    label: "Expertise",           href: "/en/expertise.html",    primary: true  },
+      { id: "projects",     label: "Projects",            href: "/en/projects.html",     primary: true  },
+      { id: "ai-ventures",  label: "AI Ventures",         href: "/en/ai-ventures.html",  primary: true  },
+      { id: "partnerships", label: "Partnerships",        href: "/en/partnerships.html", primary: true  },
+      { id: "initiatives",  label: "Initiatives",         href: "/en/initiatives.html",  primary: false },
+      { id: "team",         label: "Team",                href: "/en/team.html",         primary: false },
+      { id: "founder",      label: "Founder",             href: "/en/founder.html",      primary: false },
+      { id: "insights",     label: "Research & Insights", href: "/en/insights.html",     primary: false },
+      { id: "contact",      label: "Contact",             href: "/en/contact.html",      primary: false }
     ],
     ar: [
-      { id: "home", label: "الرئيسية", href: "/ar/index.html" },
-      { id: "about", label: "عن فينيريا", href: "/ar/about.html" },
-      { id: "expertise", label: "القدرات والخبرات", href: "/ar/expertise.html" },
-      { id: "projects", label: "المشاريع والمحفظة", href: "/ar/projects.html" },
-      { id: "initiatives", label: "المبادرات الاستراتيجية", href: "/ar/initiatives.html" },
-      { id: "founder", label: "المؤسس", href: "/ar/founder.html" },
-      { id: "insights", label: "البحوث والرؤى", href: "/ar/insights.html" },
-      { id: "contact", label: "التواصل المؤسسي", href: "/ar/contact.html" }
+      { id: "home",         label: "الرئيسية",                 href: "/ar/index.html",        primary: true  },
+      { id: "about",        label: "عن فينيريا",               href: "/ar/about.html",        primary: true  },
+      { id: "expertise",    label: "الخبرات",                  href: "/ar/expertise.html",    primary: true  },
+      { id: "projects",     label: "المشاريع",                 href: "/ar/projects.html",     primary: true  },
+      { id: "ai-ventures",  label: "مشاريع الذكاء",           href: "/ar/ai-ventures.html",  primary: true  },
+      { id: "partnerships", label: "الشراكات",                 href: "/ar/partnerships.html", primary: true  },
+      { id: "initiatives",  label: "المبادرات",                href: "/ar/initiatives.html",  primary: false },
+      { id: "team",         label: "الفريق",                   href: "/ar/team.html",         primary: false },
+      { id: "founder",      label: "المؤسس",                   href: "/ar/founder.html",      primary: false },
+      { id: "insights",     label: "البحوث والرؤى",            href: "/ar/insights.html",     primary: false },
+      { id: "contact",      label: "التواصل",                  href: "/ar/contact.html",      primary: false }
     ]
   },
 
   home: {
     en: {
       hero: {
-        badge: "INDEPENDENT TECHNOLOGY ENGINEERING · ESTABLISHED 2020",
-        title: "Engineering the Systems",
+        badge: "TECHNOLOGY VENTURES · INTELLIGENT SYSTEMS · STRATEGIC PARTNERSHIPS",
+        title: "Building the Ventures",
         titleHighlight: "of Tomorrow.",
-        subtitle: "Designing intelligent platforms, enterprise systems, and digital infrastructure for the next generation of connected organizations.",
+        subtitle: "A technology venture development organization. We build intelligent platforms, financial systems, and digital enterprises for an interconnected world.",
         ctaPrimary: "Explore Our Expertise",
         ctaSecondary: "Discover Our Work",
         stats: [
@@ -67,21 +76,21 @@ const siteContent = {
         ]
       },
       intro: {
-        eyebrow: "INSTITUTIONAL CREDIBILITY",
-        title: "Systems Designed for Scale, Governance & Long-Term Sovereignty",
-        lead: "VENERA Technology unites robust software architecture, applied artificial intelligence, and strategic systems thinking to engineer digital assets that endure.",
+        eyebrow: "TECHNOLOGY VENTURE DEVELOPMENT",
+        title: "Ventures, Platforms & Intelligent Systems",
+        lead: "VENERA Technology is a technology venture development organization building intelligent platforms, financial systems, and enterprise software across digital commerce, trading technologies, and AI.",
         points: [
           {
-            title: "Architectural Integrity",
-            desc: "We prioritize fault-tolerant, modular architectures over transient software trends, ensuring enterprise stability."
+            title: "Venture Development",
+            desc: "We conceive, engineer, and scale technology ventures — from initial architecture through operational deployment."
           },
           {
-            title: "National & Enterprise Scope",
-            desc: "From decentralized protocols to conceptual frameworks for sovereign data exchange, our focus is systemic impact."
+            title: "Intelligent Systems",
+            desc: "Applied AI, algorithmic trading intelligence, and data-driven platforms built for commercial and institutional environments."
           },
           {
-            title: "Transparent Provenance",
-            desc: "Clear delineation between historical technical exploration, current corporate development, and future research."
+            title: "Strategic Partnerships",
+            desc: "We pursue joint ventures, co-investment structures, and enterprise technology partnerships with aligned organizations worldwide."
           }
         ]
       },
@@ -92,10 +101,10 @@ const siteContent = {
         viewAll: "View All Capabilities"
       },
       projectsPreview: {
-        eyebrow: "SELECTED WORK",
-        title: "A Transparent Engineering Portfolio",
-        lead: "Explore platforms engineered, ventures founded, and active research programs.",
-        viewAll: "Explore Complete Portfolio"
+        eyebrow: "OUR VENTURES & PLATFORMS",
+        title: "Technology Ventures Built to Last",
+        lead: "Operational platforms, developed products, and active technology ventures across commerce, trading intelligence, and business systems.",
+        viewAll: "View All Ventures"
       },
       initiativesPreview: {
         eyebrow: "STRATEGIC SYSTEMS",
@@ -130,18 +139,32 @@ const siteContent = {
           }
         ]
       },
+      partnerships: {
+        eyebrow: "STRATEGIC PARTNERSHIPS & JOINT VENTURES",
+        title: "Partner With VENERA Technology",
+        lead: "We are actively pursuing strategic partnerships, joint ventures, and co-investment structures with aligned organizations across technology, finance, commerce, and public-sector innovation.",
+        models: [
+          { title: "Technology Joint Ventures", desc: "Co-develop and co-own technology platforms and digital ventures with shared engineering resources and strategic alignment." },
+          { title: "Enterprise Technology Partnerships", desc: "Integrate VENERA-developed platforms into enterprise operations, with licensing, white-label, and custom development arrangements." },
+          { title: "Co-Investment & Venture Formation", desc: "Structured investment and co-founding arrangements for new digital ventures in high-potential market segments." },
+          { title: "National Digital Infrastructure", desc: "Government and institutional partnerships for sovereign digital systems, identity infrastructure, and national-scale technology programs." },
+          { title: "International Market Expansion", desc: "Regional and international expansion of proven platforms through strategic distribution, licensing, and market-entry partnerships." }
+        ],
+        cta: "Explore Strategic Partnership Opportunities",
+        note: "Partnership enquiries are evaluated for strategic alignment. We engage with institutional partners, technology organizations, and qualified investors."
+      },
       ctaBanner: {
-        title: "Ready to Discuss Mission-Critical Architecture?",
-        desc: "We consult with technology partners, institutional leaders, and enterprise organizations seeking strategic digital systems.",
-        btn: "Initiate Consultation"
+        title: "Explore Strategic Partnership Opportunities",
+        desc: "We work with technology organizations, institutional partners, and qualified investors pursuing joint ventures, enterprise technology collaboration, and co-investment in digital ventures.",
+        btn: "Initiate Partnership Discussion"
       }
     },
     ar: {
       hero: {
-        badge: "هندسة التقنيات المستقلة · تأسست عام 2020",
-        title: "هندسة أنظمة",
+        badge: "مشاريع تقنية · أنظمة ذكية · شراكات استراتيجية",
+        title: "بناء مشاريع",
         titleHighlight: "الغد الرقمي.",
-        subtitle: "تصميم المنصات الذكية، والأنظمة المؤسسية، والبنى التحتية الرقمية للجيل القادم من المؤسسات المترابطة.",
+        subtitle: "منظمة تطوير مشاريع تقنية. نبني المنصات الذكية والأنظمة المالية والشركات الرقمية لعالم مترابط.",
         ctaPrimary: "استكشف قدراتنا",
         ctaSecondary: "استعرض مشاريعنا",
         stats: [
@@ -151,21 +174,21 @@ const siteContent = {
         ]
       },
       intro: {
-        eyebrow: "المصداقية المؤسسية",
-        title: "أنظمة مصممة للتوسع، والحوكمة، والسيادة التقنية طويلة المدى",
-        lead: "تجمع VENERA Technology بين البنى البرمجية المحكمة، والذكاء الاصطناعي التطبيقي، والتفكير المنظومي الاستراتيجي لبناء أصول رقمية مستدامة.",
+        eyebrow: "تطوير المشاريع التقنية",
+        title: "مشاريع ومنصات وأنظمة ذكية",
+        lead: "VENERA Technology منظمة متخصصة في تطوير المشاريع التقنية، تبني منصات ذكية وأنظمة مالية وبرمجيات مؤسسية عبر قطاعات التجارة الرقمية وتقنيات التداول والذكاء الاصطناعي.",
         points: [
           {
-            title: "المتانة المعمارية",
-            desc: "نمنح الأولوية للبنى التحتية المرنة والمقاومة للأعطال بدلاً من الصيحات البرمجية العابرة، ضماناً للاستقرار المؤسسي."
+            title: "تطوير المشاريع",
+            desc: "نتصور المشاريع التقنية ونهندسها ونطورها — من التصميم المعماري الأولي حتى النشر التشغيلي."
           },
           {
-            title: "نطاق وطني ومؤسسي",
-            desc: "من البروتوكولات الموزعة إلى الأطر المفاهيمية لتبادل البيانات السيادية، ينصب تركيزنا على إحداث تأثير منظومي شامل."
+            title: "الأنظمة الذكية",
+            desc: "ذكاء اصطناعي تطبيقي، وذكاء تداول خوارزمي، ومنصات تعتمد البيانات في بيئات تجارية ومؤسسية."
           },
           {
-            title: "الشفافية في النسب والمسار",
-            desc: "تمييز جلي بين التجارب التقنية التاريخية، والمنتجات المؤسسية الحالية، والدراسات البحثية المستقبلية."
+            title: "الشراكات الاستراتيجية",
+            desc: "نسعى إلى مشاريع مشتركة وهياكل تمويل متشاركة وشراكات تقنية مؤسسية مع منظمات متوافقة الرؤية حول العالم."
           }
         ]
       },
@@ -176,10 +199,10 @@ const siteContent = {
         viewAll: "عرض كافة التخصصات"
       },
       projectsPreview: {
-        eyebrow: "مختارات من الأعمال",
-        title: "محفظة هندسية تتسم بالشفافية والتوثيق",
-        lead: "استكشف المنصات المطورة، والشركات المؤسسة، والبرامج البحثية النشطة.",
-        viewAll: "استعراض المحفظة الكاملة"
+        eyebrow: "مشاريعنا ومنصاتنا",
+        title: "مشاريع تقنية مبنية للبقاء",
+        lead: "منصات تشغيلية ومنتجات مطوّرة ومشاريع تقنية نشطة عبر التجارة وذكاء التداول وأنظمة الأعمال.",
+        viewAll: "عرض كافة المشاريع"
       },
       initiativesPreview: {
         eyebrow: "الأنظمة الاستراتيجية",
@@ -214,10 +237,24 @@ const siteContent = {
           }
         ]
       },
+      partnerships: {
+        eyebrow: "الشراكات الاستراتيجية والمشاريع المشتركة",
+        title: "شارك مع VENERA Technology",
+        lead: "نسعى بنشاط إلى شراكات استراتيجية ومشاريع مشتركة وهياكل تمويل متشاركة مع منظمات متوافقة في قطاعات التقنية والمال والتجارة والابتكار المؤسسي.",
+        models: [
+          { title: "المشاريع التقنية المشتركة", desc: "التطوير المشترك وامتلاك المنصات التقنية والمشاريع الرقمية بموارد هندسية مشتركة وتوافق استراتيجي." },
+          { title: "الشراكات التقنية المؤسسية", desc: "دمج منصات VENERA في العمليات المؤسسية عبر ترتيبات الترخيص والعلامة البيضاء والتطوير المخصص." },
+          { title: "الاستثمار المشترك وتأسيس المشاريع", desc: "ترتيبات استثمارية منظمة وتأسيس مشترك لمشاريع رقمية جديدة في قطاعات ذات إمكانات عالية." },
+          { title: "البنية التحتية الرقمية الوطنية", desc: "شراكات حكومية ومؤسسية لأنظمة رقمية سيادية وبنية هوية وبرامج تقنية وطنية." },
+          { title: "التوسع في الأسواق الدولية", desc: "توسيع المنصات المُثبتة إقليمياً ودولياً عبر شراكات توزيع وترخيص ودخول أسواق استراتيجية." }
+        ],
+        cta: "استكشف فرص الشراكة الاستراتيجية",
+        note: "تُقيَّم استفسارات الشراكة وفق التوافق الاستراتيجي. نتعامل مع الشركاء المؤسسيين والمنظمات التقنية والمستثمرين المؤهلين."
+      },
       ctaBanner: {
-        title: "هل ترغب في مناقشة بنية أنظمة للمهام الحيوية؟",
-        desc: "نرحب بالتواصل مع الشركاء التقنيين، والمؤسسات المالية، والهيئات الساعية لتطوير أنظمة رقمية استراتيجية.",
-        btn: "طلب استشارة مؤسسية"
+        title: "استكشف فرص الشراكة الاستراتيجية",
+        desc: "نتعاون مع المنظمات التقنية والشركاء المؤسسيين والمستثمرين المؤهلين الساعين إلى مشاريع مشتركة وتعاون تقني مؤسسي واستثمار مشترك في المشاريع الرقمية.",
+        btn: "بدء نقاش الشراكة"
       }
     }
   },
@@ -472,13 +509,14 @@ const siteContent = {
         id: "cylendra",
         name: "Cylendra Labs",
         slug: "cylendra.html",
-        status: "Under Development — Labs",
+        category: "trading",
+        status: "In Development",
         statusClass: "status-dev",
         tagline: "Multi-Platform Algorithmic Trading Ecosystem",
         summary: "A unified suite of six interconnected platforms engineered for digital asset trading, risk assessment, and algorithmic execution.",
         detailsUrl: "/en/cylendra.html",
         externalUrl: "https://labs.cylendra.com/",
-        overview: "Cylendra is a sophisticated financial engineering initiative currently undergoing active laboratory development. Conceived to address fragmented market tooling, it integrates automated strategy execution, real-time portfolio telemetry, and multi-asset market connectivity into a single cohesive ecosystem.",
+        overview: "Cylendra is a sophisticated financial engineering initiative currently in active development. Conceived to address fragmented market tooling, it integrates automated strategy execution, real-time portfolio telemetry, and multi-asset market connectivity into a single cohesive ecosystem.",
         problemStatement: "Digital asset trading environments suffer from severe tool fragmentation, unreliable execution latencies, and inadequate risk visualization across divergent exchanges.",
         solutionConcept: "A modular, microservice-powered ecosystem consisting of six specialized trading platforms operating in synchronization under centralized risk parameters.",
         capabilities: [
@@ -489,13 +527,14 @@ const siteContent = {
         ],
         architecture: "Distributed architecture built on high-throughput message brokers, asynchronous microservices, in-memory caching, and resilient API gateways.",
         role: "Architecture, systemic engineering, and interface development led by Ali Hussein / Venera.",
-        statusVerification: "Under active internal development; not commercially launched. Product demonstrations and laboratory builds maintained at labs.cylendra.com."
+        statusVerification: "Platform in active development. Product demonstrations and laboratory builds available at labs.cylendra.com. Not yet commercially launched."
       },
       {
         id: "veneraswap",
         name: "VeneraSwap",
         slug: "veneraswap.html",
-        status: "Developed / Historical (Revival Assessment)",
+        category: "trading",
+        status: "Protocol Developed",
         statusClass: "status-hist",
         tagline: "Decentralized Automated Market-Maker Protocol",
         summary: "An automated liquidity protocol and decentralized asset exchange architecture with public documentation and smart contract foundations.",
@@ -518,7 +557,8 @@ const siteContent = {
         id: "paynxs",
         name: "PayNXS",
         slug: "paynxs.html",
-        status: "Developed / Historical Concept",
+        category: "commerce",
+        status: "Platform Developed",
         statusClass: "status-hist",
         tagline: "Merchant Digital Payments Ecosystem for Emerging Markets",
         summary: "An early digital payment and retail merchant platform developed for the Iraqi commercial market (circa 2019–2020).",
@@ -541,7 +581,8 @@ const siteContent = {
         id: "ordernxs",
         name: "OrderNXS",
         slug: "ordernxs.html",
-        status: "Developed / Third-Party Project",
+        category: "commerce",
+        status: "Client Delivery",
         statusClass: "status-third",
         tagline: "On-Demand Delivery & Commercial Services Platform",
         summary: "A full-featured commercial logistics and order dispatch system engineered for a third-party commercial client in Iraq.",
@@ -564,7 +605,8 @@ const siteContent = {
         id: "roic",
         name: "ROIC",
         slug: "roic.html",
-        status: "Historical / Discontinued Utility",
+        category: "heritage",
+        status: "Historical Initiative",
         statusClass: "status-hist",
         tagline: "Telegram-Based Digital Asset Utility Interface",
         summary: "A rapid-interaction automated Telegram bot engineered for community digital asset management, monitoring, and interaction.",
@@ -581,13 +623,14 @@ const siteContent = {
         ],
         architecture: "High-concurrency webhook ingestion workers built in Node.js/Python, integrated with external blockchain nodes and cache layers.",
         role: "Conceptualized and engineered by Ali Hussein.",
-        statusVerification: "Discontinued prior to full commercial and regulatory completion. (Note: A reported community reach of approximately 100,000 users was noted by the founder but is cataloged as pending independent audit before public statistical display)."
+        statusVerification: "Historical initiative. Discontinued prior to full commercial and regulatory completion. Community reach figures noted by founder; not independently verified."
       },
       {
         id: "nuxese",
         name: "Nuxese Group",
         slug: "nuxese.html",
-        status: "Historical Corporate Venture",
+        category: "heritage",
+        status: "Historical Venture",
         statusClass: "status-hist",
         tagline: "Estonian Digital Asset Licensing & Infrastructure Entity",
         summary: "An international technology enterprise established in Estonia to explore European regulatory frameworks and institutional digital asset rails.",
@@ -605,6 +648,169 @@ const siteContent = {
         architecture: "Regulatory compliance workflows, identity verification pipelines, and secure transactional databases.",
         role: "Founded and directed by Ali Hussein.",
         statusVerification: "Historical corporate venture. Provided critical institutional and regulatory insights now integrated into VENERA Technology's engineering philosophy. Does not represent active current licensing."
+      },
+      {
+        id: "dilmart",
+        name: "DilMart",
+        slug: "dilmart.html",
+        category: "commerce",
+        status: "Platform Developed",
+        statusClass: "status-hist",
+        tagline: "Iraq-Focused Digital Commerce Platform",
+        summary: "An Iraq-focused digital commerce platform supporting online shopping, order management, and retail fulfillment workflows. Technical development by Venera Finance LTD.",
+        detailsUrl: "/en/dilmart.html",
+        externalUrl: null,
+        overview: "DilMart is a digital commerce platform designed for the Iraqi market, combining consumer-facing shopping capabilities with an operational technology layer intended to support scalable digital retail. The platform addresses online shopping, order management, and the workflows associated with retail fulfillment in the Iraqi e-commerce context.",
+        problemStatement: "Iraq's retail market has significant unmet demand for reliable digital commerce infrastructure — consumers and merchants lack access to a locally adapted platform that handles the operational realities of Iraqi retail fulfillment.",
+        solutionConcept: "A digital commerce platform combining a consumer shopping interface with an order management and fulfillment operations layer, designed specifically for the Iraqi market context.",
+        capabilities: [
+          "Consumer-facing online shopping interface",
+          "Order management and retail fulfillment operations",
+          "Digital retail operations platform"
+        ],
+        architecture: "Digital commerce platform built on a React and Supabase stack, designed for multi-vendor Iraqi e-commerce operations.",
+        role: "Technical development involvement by Venera Finance LTD. Legal ownership and operational attribution to be documented separately.",
+        statusVerification: "Platform developed. Technical development by Venera Finance LTD. Legal ownership and commercial operations held separately. Public repository (dilmart-info/Dilmart) confirms React/Supabase stack and multi-vendor commerce scope."
+      },
+      {
+        id: "stylai",
+        name: "StylAI",
+        slug: "stylai.html",
+        category: "commerce",
+        status: "Active Platform",
+        statusClass: "status-ops",
+        tagline: "Barber & Salon Booking Platform — Consumer App",
+        summary: "Discover nearby barbers and salons, view services and pricing, and book appointments instantly. Live on iOS and Android under Venera Finance.",
+        detailsUrl: "/en/stylai.html",
+        externalUrl: null,
+        overview: "StylAI is the consumer-facing application of a two-sided barber and salon booking platform developed and published by Venera Finance LTD. Users discover nearby barbershops and salons through an interactive map, browse available services with pricing and durations, select a preferred barber, and confirm bookings — all from a single mobile interface.",
+        problemStatement: "Booking a barber in emerging markets still relies on phone calls and walk-in visits, creating scheduling friction for both clients and service providers.",
+        solutionConcept: "A map-based mobile marketplace connecting customers with nearby barbershops and salons, enabling instant booking, tracking, and post-service ratings.",
+        capabilities: [
+          "Map-based salon discovery with real salon photos on map pins",
+          "Service browsing with prices, durations, and barber selection",
+          "Instant appointment booking with status tracking (upcoming, completed, cancelled)",
+          "Push notifications for booking confirmations and status updates",
+          "Post-service experience ratings",
+          "Offers, rewards, and cashback availability"
+        ],
+        architecture: "iOS and Android mobile applications. Active development evidenced by regular version releases (v1.1.3 with multiple incremental updates).",
+        role: "Developed and published by Venera Finance LTD. App Store listing under developer Safaa Ali; Google Play under Venera Finance developer account.",
+        statusVerification: "Live on Apple App Store (id6764330995) and Google Play (com.stylai.app.customer). Published under Venera Finance developer account. Multiple confirmed version updates."
+      },
+      {
+        id: "stylai-store",
+        name: "StylAI Store",
+        slug: "stylai-store.html",
+        category: "commerce",
+        status: "Active Platform",
+        statusClass: "status-ops",
+        tagline: "Barber & Salon Management Platform — Provider App",
+        summary: "The merchant-side companion to StylAI, enabling barbershop and salon owners to manage appointments and schedules. Live on Android under Venera Finance.",
+        detailsUrl: "/en/stylai-store.html",
+        externalUrl: null,
+        overview: "StylAI Store (published on Google Play as StylAi Barber | إدارة الحلاقين) is the provider-facing component of the StylAI two-sided booking ecosystem. It enables barbershop and salon owners to manage incoming appointment requests, view and organize their daily schedule, and operate their booking pipeline through a dedicated mobile interface.",
+        problemStatement: "Barber and salon owners managing appointments manually face scheduling conflicts, missed bookings, and limited digital visibility for customer acquisition.",
+        solutionConcept: "A merchant-facing mobile management application paired with the StylAI consumer app, giving barbers and salon owners direct control over their appointment pipeline and provider profile.",
+        capabilities: [
+          "Appointment request management for barbershop and salon owners",
+          "Schedule organization and booking pipeline management",
+          "Provider-side notifications for new and updated bookings",
+          "Integration with StylAI consumer booking flow as the two-sided marketplace counterpart"
+        ],
+        architecture: "Android application operating as the provider-facing component of the StylAI platform, sharing backend infrastructure with the consumer app.",
+        role: "Developed and published by Venera Finance LTD.",
+        statusVerification: "Live on Google Play (com.stylai.app.barber). Published under Venera Finance developer account. Confirmed operational as the provider-side component of the StylAI marketplace."
+      },
+      {
+        id: "max-hub",
+        name: "Max Hub",
+        slug: "max-hub.html",
+        category: "commerce",
+        status: "Active Platform",
+        statusClass: "status-ops",
+        tagline: "Delivery Agent Application — Field Operations",
+        summary: "A mobile application supporting delivery representatives in their day-to-day field operations. Developed and operated under Venera Finance LTD.",
+        detailsUrl: "/en/max-hub.html",
+        externalUrl: null,
+        overview: "Max Hub is a mobile application designed to support delivery agents in carrying out their day-to-day field operations. Developed and operated under Venera Finance LTD, the application gives delivery representatives a digital interface for managing and executing delivery tasks.",
+        problemStatement: "Delivery agents operating in field environments require reliable digital tooling to coordinate tasks, navigate assignments, and maintain operational status without manual paperwork.",
+        solutionConcept: "A dedicated mobile application for delivery representatives that digitizes field operations and provides structured support for agent workflows.",
+        capabilities: [
+          "Digital interface for delivery representative operations",
+          "Field task support for delivery agents"
+        ],
+        architecture: "Mobile application for delivery field operations, developed for emerging market logistics environments.",
+        role: "Developed and operated by Venera Finance LTD.",
+        statusVerification: "Developed and operated by Venera Finance LTD. Confirmed operational by founder. No public app-store listing at this time."
+      },
+      {
+        id: "deyon",
+        name: "Deyon App",
+        slug: "deyon.html",
+        category: "bizops",
+        status: "Active Platform",
+        statusClass: "status-ops",
+        tagline: "Digital Debt Ledger for Small Retailers",
+        summary: "Helps small retailers record and organize customer debts and credit accounts. A practical digital alternative to paper ledgers for independent merchants.",
+        detailsUrl: "/en/deyon.html",
+        externalUrl: null,
+        overview: "Deyon is a mobile application designed to help small retailers and independent merchants record and organize outstanding customer debts and credit balances. It replaces paper-based debt tracking with a structured digital ledger, giving shop owners a clear view of who owes what.",
+        problemStatement: "Small retailers in emerging markets commonly manage customer credit and debt records on paper, leading to lost entries, disputes, and difficulty tracking outstanding balances across many customers.",
+        solutionConcept: "A simple digital ledger application enabling small business owners to record, organize, and review customer debt and credit accounts from a mobile device.",
+        capabilities: [
+          "Customer debt and credit record management",
+          "Digital replacement for paper-based debt ledgers",
+          "Organized view of outstanding customer balances"
+        ],
+        architecture: "Mobile application for small retail financial record-keeping, designed for independent merchants in emerging markets.",
+        role: "Developed and operated by Venera Finance LTD.",
+        statusVerification: "Developed and operated by Venera Finance LTD. Confirmed operational by founder. No public app-store listing at this time."
+      },
+      {
+        id: "muhasebos",
+        name: "MuhasebOS",
+        slug: "muhasebos.html",
+        category: "bizops",
+        status: "Active System",
+        statusClass: "status-ops",
+        tagline: "Business Operations & Accounting System",
+        summary: "An accounting and business operations system developed and operated under Venera Finance LTD, designed for business management and financial record-keeping.",
+        detailsUrl: "/en/muhasebos.html",
+        externalUrl: null,
+        overview: "MuhasebOS is an accounting and business operations system developed by Venera Finance LTD. The system addresses business management and financial record-keeping needs. Specific accounting modules, integrations, and technical architecture are pending verification through source code or product demonstration.",
+        problemStatement: "Businesses operating in emerging markets often lack access to integrated, locally adapted accounting and operations management tools that fit their workflows and regulatory environment.",
+        solutionConcept: "A dedicated business operations platform covering accounting and financial management functions, built and operated under Venera Finance LTD.",
+        capabilities: [
+          "Business operations and accounting management",
+          "Financial record-keeping"
+        ],
+        architecture: "Business operations and accounting system developed for emerging market commercial environments.",
+        role: "Developed and operated by Venera Finance LTD.",
+        statusVerification: "Developed and operated by Venera Finance LTD. Confirmed operational by founder. Further technical specifications available upon request."
+      },
+      {
+        id: "orbitraai",
+        name: "OrbitraAI",
+        slug: "orbitraai.html",
+        category: "trading",
+        status: "Platform Developed · Preparing for Launch",
+        statusClass: "status-dev",
+        tagline: "AI-Powered Trading Intelligence Platform",
+        summary: "An AI-powered financial intelligence platform developed by VENERA Technology, combining market analysis, signal processing, and decision-support capabilities for digital asset and financial markets.",
+        detailsUrl: "/en/orbitraai.html",
+        externalUrl: null,
+        overview: "OrbitraAI is an AI-powered trading intelligence platform developed under VENERA Technology. The platform has completed its initial development phase and is being prepared for launch, with additional capabilities currently undergoing internal testing. It is positioned as a standalone financial intelligence product within the Trading & Wealth Technologies portfolio.",
+        problemStatement: "Participants in digital asset and financial markets face an increasing volume of market data, fragmented signal sources, and limited tools that synthesize intelligence at the speed and scale modern trading environments demand.",
+        solutionConcept: "An AI trading intelligence platform designed to process market signals, analyze financial conditions, and support structured decision-making for trading and portfolio contexts.",
+        capabilities: [
+          "AI-driven market signal analysis and intelligence synthesis",
+          "Financial data processing and trading decision support",
+          "Platform architecture designed for digital asset and financial markets"
+        ],
+        architecture: "AI trading intelligence platform. Core development completed. Additional capability modules undergoing internal testing prior to public launch.",
+        role: "Developed under VENERA Technology by Ali Hussein.",
+        statusVerification: "Platform development completed. Not yet publicly launched. Additional capabilities in testing prior to release. No live trading performance, investment returns, or customer adoption claimed. This is not a regulated investment or brokerage service."
       }
     ],
     ar: [
@@ -612,13 +818,14 @@ const siteContent = {
         id: "cylendra",
         name: "Cylendra Labs",
         slug: "cylendra.html",
-        status: "قيد التطوير — مرحلة المختبر",
+        category: "trading",
+        status: "قيد التطوير",
         statusClass: "status-dev",
         tagline: "منظومة مترابطة لتقنيات التداول الخوارزمي",
         summary: "مجموعة متكاملة من ست منصات برمجية مترابطة طُورت لهندسة التداول بالأصول الرقمية، وتحليل المخاطر، والتنفيذ الخوارزمي.",
         detailsUrl: "/ar/cylendra.html",
         externalUrl: "https://labs.cylendra.com/",
-        overview: "تُمثل منصة Cylendra مبادرة هندسية مالية متقدمة تخضع حالياً للتطوير النشط داخل بيئة المختبر. صُممت لتجاوز التشتت في أدوات الأسواق المالية، وتجمع بين التنفيذ الآلي للاستراتيجيات، والتحليل اللحظي للمحافظ، والربط متعدد الأصول ضمن منظومة موحدة.",
+        overview: "تُمثل منصة Cylendra مبادرة هندسية مالية متقدمة تخضع حالياً للتطوير النشط. صُممت لتجاوز التشتت في أدوات الأسواق المالية، وتجمع بين التنفيذ الآلي للاستراتيجيات، والتحليل اللحظي للمحافظ، والربط متعدد الأصول ضمن منظومة موحدة.",
         problemStatement: "تعاني بيئات التداول الرقمي من تشتت الأدوات، وتأخر زمن التنفيذ، وغياب الرؤية الشاملة للمخاطر عبر مختلف منصات التداول.",
         solutionConcept: "منظومة قائمة على الخدمات المصغرة تضم ست منصات تداول تخصصية تعمل بتناغم تام تحت معايير موحدة للتحكم بالمخاطر.",
         capabilities: [
@@ -629,13 +836,14 @@ const siteContent = {
         ],
         architecture: "بنية موزعة تعتمد على وسائط الرسائل عالية التدفق، والخدمات المصغرة غير المتزامنة، والتخزين الذاكري السريع، وبوابات الربط البرمجي المرنة.",
         role: "التصميم المعماري، وهندسة النظم، وتطوير الواجهات بقيادة علي حسين / فينيريا.",
-        statusVerification: "مشروع قيد التطوير الداخلي النشط ولم يُطلق تجارياً بعد. تتوفر العروض التقنية وبناءات المختبر عبر labs.cylendra.com."
+        statusVerification: "منصة قيد التطوير النشط ولم تُطلق تجارياً بعد. العروض التقنية متاحة عبر labs.cylendra.com."
       },
       {
         id: "veneraswap",
         name: "VeneraSwap",
         slug: "veneraswap.html",
-        status: "مطوّر / مرحلة تاريخية (قيد دراسة التحديث)",
+        category: "trading",
+        status: "بروتوكول مطوّر",
         statusClass: "status-hist",
         tagline: "بروتوكول صانع السوق الآلي اللامركزي",
         summary: "بروتوكول سيولة آلي وبنية تداول لامركزية للأصول الرقمية مع وثائق تقنية منشورة وعقود ذكية مؤسسة.",
@@ -658,7 +866,8 @@ const siteContent = {
         id: "paynxs",
         name: "PayNXS",
         slug: "paynxs.html",
-        status: "مطوّر / تصور تقني تاريخي",
+        category: "commerce",
+        status: "منصة مطوّرة",
         statusClass: "status-hist",
         tagline: "منظومة مدفوعات رقمية للتجار والأسواق الناشئة",
         summary: "مبادرة تقنية للدفع الإلكتروني ومنظومة التجار صُممت لقطاع التجزئة في العراق (قرابة 2019–2020).",
@@ -681,7 +890,8 @@ const siteContent = {
         id: "ordernxs",
         name: "OrderNXS",
         slug: "ordernxs.html",
-        status: "مطوّر / مشروع لجهة خارجية",
+        category: "commerce",
+        status: "تسليم مشروع",
         statusClass: "status-third",
         tagline: "منصة لوجستية وتوصيل عند الطلب للشركات",
         summary: "نظام شامل لإدارة الطلبات واللوجستيات وتوجيه السائقين تم تطويره لصالح عميل تجاري في العراق.",
@@ -704,7 +914,8 @@ const siteContent = {
         id: "roic",
         name: "ROIC",
         slug: "roic.html",
-        status: "مشروع تاريخي / أداة متوقفة",
+        category: "heritage",
+        status: "مبادرة تاريخية",
         statusClass: "status-hist",
         tagline: "واجهة محادثة ذكية للأصول الرقمية عبر تليجرام",
         summary: "بوت تفاعلي آلي على منصة تليجرام طُوّر لمتابعة الأصول الرقمية والتنبيهات وإدارة التعاملات المجتمعية.",
@@ -721,13 +932,14 @@ const siteContent = {
         ],
         architecture: "عمال معالجة غير متزامنة مبنية بـ Node.js/Python متصلة بنقاط الربط الخارجية للشبكات وقنوات التخزين المؤقت.",
         role: "صياغة المفهوم والتطوير البرمجي بواسطة علي حسين.",
-        statusVerification: "مشروع تاريخي متوقف قبل استكمال المسارات القانونية والتجارية. (ملاحظة: حجم الجمهور المقدر بـ 100 ألف مستخدم ورد من المؤسس ويصنف كمعلومة قيد التدقيق المستقل قبل نشرها كإحصائية معتمدة)."
+        statusVerification: "مبادرة تاريخية. متوقفة قبل استكمال المسارات القانونية والتجارية. أرقام انتشار الجمهور مستندة إلى تصريح المؤسس ولم يتم التحقق منها بشكل مستقل."
       },
       {
         id: "nuxese",
         name: "Nuxese Group",
         slug: "nuxese.html",
-        status: "مشروع مؤسسي تاريخي",
+        category: "heritage",
+        status: "مشروع تاريخي",
         statusClass: "status-hist",
         tagline: "كيان استوني للترخيص والتقنيات المالية",
         summary: "شركة تقنية دولية تأسست في إستونيا لاستكشاف الأطر التنظيمية الأوروبية وبنى الأصول الرقمية المؤسسية.",
@@ -745,6 +957,169 @@ const siteContent = {
         architecture: "أنظمة تدقيق الامتثال، وخطوط التحقق من الهوية، وقواعد البيانات المالية المؤمنة تشفيرياً.",
         role: "التأسيس والإدارة بواسطة علي حسين.",
         statusVerification: "مشروع مؤسسي تاريخي أمدّ الشركة بخبرات تنظيمية ورقابية عميقة تم دمجها في فلسفة VENERA Technology الحالية. لا يمثل ترخيصاً تشغيلياً نشطاً في الوقت الحاضر."
+      },
+      {
+        id: "dilmart",
+        name: "DilMart",
+        slug: "dilmart.html",
+        category: "commerce",
+        status: "منصة مطوّرة",
+        statusClass: "status-hist",
+        tagline: "منصة التجارة الرقمية — السوق العراقي",
+        summary: "منصة تجارة رقمية موجهة للسوق العراقي، تدعم التسوق الإلكتروني وإدارة الطلبات وعمليات الوفاء بالتجزئة. التطوير التقني من قِبل Venera Finance LTD.",
+        detailsUrl: "/ar/dilmart.html",
+        externalUrl: null,
+        overview: "DilMart منصة تجارة رقمية مصممة للسوق العراقي، تجمع بين واجهة تسوق استهلاكية وطبقة تقنية تشغيلية تستهدف دعم عمليات التجزئة الرقمية الموسعة. تعالج المنصة التسوق الإلكتروني وإدارة الطلبات وسير عمل الوفاء بالتجزئة في السياق العراقي.",
+        problemStatement: "يشهد سوق التجزئة العراقي طلباً كبيراً غير مُلبَّى على البنية التحتية للتجارة الرقمية — إذ يفتقر المستهلكون والتجار إلى منصة محلية متكاملة تلائم الواقع التشغيلي للبيع بالتجزئة في العراق.",
+        solutionConcept: "منصة تجارة رقمية تجمع واجهة تسوق استهلاكية مع طبقة إدارة الطلبات والوفاء التشغيلي، مصممة خصيصاً للسياق العراقي.",
+        capabilities: [
+          "واجهة تسوق إلكتروني للمستهلكين",
+          "إدارة الطلبات وعمليات الوفاء بالتجزئة",
+          "منصة عمليات تجزئة رقمية"
+        ],
+        architecture: "منصة تجارة رقمية مبنية على React وSupabase، مصممة لعمليات التجارة الإلكترونية متعددة البائعين في السوق العراقي.",
+        role: "التطوير التقني من قِبل Venera Finance LTD. الملكية القانونية والإسناد التشغيلي يُوثَّقان بشكل منفصل.",
+        statusVerification: "تم تطوير المنصة. التطوير التقني من قِبل Venera Finance LTD. الملكية القانونية والعمليات التجارية مستقلة."
+      },
+      {
+        id: "stylai",
+        name: "StylAI",
+        slug: "stylai.html",
+        category: "commerce",
+        status: "منصة نشطة",
+        statusClass: "status-ops",
+        tagline: "منصة حجز الحلاقين والصالونات — تطبيق العملاء",
+        summary: "اكتشف أقرب الحلاقين والصالونات، استعرض الخدمات والأسعار، واحجز مواعيدك فوراً. متاح على iOS وAndroid عبر Venera Finance.",
+        detailsUrl: "/ar/stylai.html",
+        externalUrl: null,
+        overview: "StylAI هو التطبيق الموجّه للعملاء ضمن منصة حجز الحلاقين والصالونات ذات الاتجاهين، طُوّر ونُشر بواسطة Venera Finance LTD. يتيح التطبيق للمستخدمين اكتشاف الصالونات القريبة عبر خريطة تفاعلية، واستعراض الخدمات المتاحة مع الأسعار والمدد الزمنية، واختيار الحلاق المفضل، وتأكيد الحجز، كل ذلك من واجهة موحدة.",
+        problemStatement: "لا يزال حجز مواعيد الحلاقة في أسواق الدول الناشئة يعتمد على المكالمات الهاتفية والحضور المباشر، مما يُسبب احتكاكاً في الجدولة لكل من العملاء ومقدمي الخدمة.",
+        solutionConcept: "سوق إلكتروني متنقل يربط العملاء بأقرب الحلاقين والصالونات، مع دعم الحجز الفوري وتتبع المواعيد والتقييمات.",
+        capabilities: [
+          "اكتشاف الصالونات على الخريطة مع عرض صور حقيقية لكل صالون",
+          "استعراض الخدمات مع الأسعار والمدد الزمنية وخيار الحلاق",
+          "حجز فوري للمواعيد مع تتبع الحالة (قادمة / مكتملة / ملغاة)",
+          "إشعارات فورية عند تأكيد الحجز أو تغيير حالته",
+          "تقييم تجربة الخدمة بعد الزيارة",
+          "العروض والمكافآت والاسترداد النقدي عند توفرها"
+        ],
+        architecture: "تطبيقات جوال لنظامَي iOS وAndroid مع تطوير مستمر موثق بإصدارات منتظمة (الإصدار 1.1.3 مع تحديثات متعددة).",
+        role: "طُوّر ونُشر بواسطة Venera Finance LTD. القائمة على App Store باسم المطوّر Safaa Ali، وعلى Google Play تحت حساب Venera Finance.",
+        statusVerification: "متاح حالياً على Apple App Store (id6764330995) وGoogle Play (com.stylai.app.customer). منشور تحت حساب المطوّر Venera Finance مع تأكيد تحديثات إصدار متعددة."
+      },
+      {
+        id: "stylai-store",
+        name: "StylAI Store",
+        slug: "stylai-store.html",
+        category: "commerce",
+        status: "منصة نشطة",
+        statusClass: "status-ops",
+        tagline: "منصة إدارة الحلاقين والصالونات — تطبيق مقدمي الخدمة",
+        summary: "تطبيق الجانب التجاري المكمّل لـ StylAI، يُمكّن أصحاب صالونات الحلاقة من إدارة المواعيد والجداول. متاح على Android عبر Venera Finance.",
+        detailsUrl: "/ar/stylai-store.html",
+        externalUrl: null,
+        overview: "StylAI Store (المنشور على Google Play باسم StylAi Barber | إدارة الحلاقين) هو الجانب الموجّه لمقدمي الخدمة في منظومة الحجز الثنائية. يُمكّن أصحاب صالونات الحلاقة من استقبال طلبات الحجز وتنظيم جداولهم اليومية وإدارة خط المواعيد من خلال واجهة جوال مخصصة.",
+        problemStatement: "يواجه أصحاب صالونات الحلاقة الذين يديرون مواعيدهم يدوياً تعارضات في الجدولة وفقدان الحجوزات وغياب التواجد الرقمي.",
+        solutionConcept: "تطبيق إدارة متنقل لمقدمي الخدمة يعمل جنباً إلى جنب مع تطبيق StylAI للعملاء، لإتاحة السيطرة الكاملة على خط المواعيد.",
+        capabilities: [
+          "استقبال وإدارة طلبات الحجز لأصحاب الصالونات",
+          "تنظيم الجداول وإدارة خط المواعيد",
+          "إشعارات فورية للحجوزات الجديدة والمحدّثة",
+          "تكامل مع تطبيق StylAI للعملاء ضمن منصة السوق الثنائية"
+        ],
+        architecture: "تطبيق Android يعمل كالجانب التجاري لمنصة StylAI مشتركاً في البنية التحتية الخلفية مع تطبيق العملاء.",
+        role: "طُوّر ونُشر بواسطة Venera Finance LTD.",
+        statusVerification: "متاح حالياً على Google Play (com.stylai.app.barber). منشور تحت حساب المطوّر Venera Finance. مؤكد تشغيلياً كالجانب التجاري لمنظومة StylAI."
+      },
+      {
+        id: "max-hub",
+        name: "Max Hub",
+        slug: "max-hub.html",
+        category: "commerce",
+        status: "منصة نشطة",
+        statusClass: "status-ops",
+        tagline: "تطبيق المندوب — عمليات الميدان",
+        summary: "تطبيق جوال يدعم مندوبي التوصيل في تنفيذ مهامهم الميدانية اليومية. طُوّر وشُغّل تحت مظلة Venera Finance LTD.",
+        detailsUrl: "/ar/max-hub.html",
+        externalUrl: null,
+        overview: "Max Hub تطبيق جوال مصمم لدعم مندوبي التوصيل في تنفيذ عملياتهم اليومية الميدانية. طُوّر وشُغّل تحت مظلة Venera Finance LTD، ويوفر للمندوبين واجهة رقمية لإدارة مهام التوصيل وتنفيذها.",
+        problemStatement: "يحتاج مندوبو التوصيل العاملون في بيئات ميدانية إلى أدوات رقمية موثوقة لتنسيق المهام وإدارة التكليفات ومتابعة الحالة التشغيلية دون الاعتماد على الورق.",
+        solutionConcept: "تطبيق جوال مخصص لمندوبي التوصيل يرقمن العمليات الميدانية ويوفر دعماً منظماً لسير عمل المندوب.",
+        capabilities: [
+          "واجهة رقمية لعمليات مندوب التوصيل",
+          "دعم المهام الميدانية لمندوبي التوصيل"
+        ],
+        architecture: "تطبيق جوال للعمليات الميدانية، مطوّر لبيئات لوجستيات الأسواق الناشئة.",
+        role: "طُوّر وشُغّل بواسطة Venera Finance LTD.",
+        statusVerification: "طُوّر وشُغّل بواسطة Venera Finance LTD. مؤكد تشغيلياً من قِبل المؤسس. لا يوجد رابط متجر تطبيقات عام في الوقت الحالي."
+      },
+      {
+        id: "deyon",
+        name: "Deyon App",
+        slug: "deyon.html",
+        category: "bizops",
+        status: "منصة نشطة",
+        statusClass: "status-ops",
+        tagline: "دفتر الديون الرقمي للمتاجر الصغيرة",
+        summary: "يساعد أصحاب المتاجر الصغيرة على تسجيل وتنظيم ديون العملاء وحسابات الآجل. بديل رقمي عملي عن دفاتر الورق للتجار المستقلين.",
+        detailsUrl: "/ar/deyon.html",
+        externalUrl: null,
+        overview: "Deyon تطبيق جوال يساعد أصحاب المتاجر الصغيرة والتجار المستقلين على تسجيل وتنظيم الديون المستحقة وأرصدة الآجل لعملائهم. يحل محل سجلات الديون الورقية بدفتر رقمي منظم يمنح أصحاب المحلات رؤية واضحة لما يستحق لكل عميل.",
+        problemStatement: "يعتمد تجار التجزئة الصغار في الأسواق الناشئة على تتبع ديون العملاء وحسابات الآجل بالورق، مما يؤدي إلى ضياع السجلات والنزاعات وصعوبة متابعة الأرصدة المستحقة.",
+        solutionConcept: "تطبيق دفتر رقمي بسيط يمكّن أصحاب الأعمال الصغيرة من تسجيل وتنظيم ومراجعة ديون العملاء وحسابات الآجل من جهاز جوال.",
+        capabilities: [
+          "إدارة سجلات ديون العملاء وحسابات الآجل",
+          "بديل رقمي لدفاتر الديون الورقية",
+          "عرض منظم للأرصدة المستحقة على العملاء"
+        ],
+        architecture: "تطبيق جوال لمسك سجلات التجزئة المالية، مصمم للتجار المستقلين في الأسواق الناشئة.",
+        role: "طُوّر وشُغّل بواسطة Venera Finance LTD.",
+        statusVerification: "طُوّر وشُغّل بواسطة Venera Finance LTD. مؤكد تشغيلياً من قِبل المؤسس. لا يوجد رابط متجر تطبيقات عام في الوقت الحالي."
+      },
+      {
+        id: "muhasebos",
+        name: "MuhasebOS",
+        slug: "muhasebos.html",
+        category: "bizops",
+        status: "نظام نشط",
+        statusClass: "status-ops",
+        tagline: "نظام العمليات التجارية والمحاسبة",
+        summary: "نظام محاسبة وعمليات أعمال طُوّر وشُغّل تحت مظلة Venera Finance LTD، مصمم لإدارة الأعمال وحفظ السجلات المالية.",
+        detailsUrl: "/ar/muhasebos.html",
+        externalUrl: null,
+        overview: "MuhasebOS نظام محاسبة وعمليات أعمال طوّرته Venera Finance LTD، يعالج احتياجات إدارة الأعمال وحفظ السجلات المالية. تفاصيل الوحدات والتكاملات والبنية التقنية المحددة تستلزم التحقق عبر الكود المصدري أو عرض تجريبي للمنتج.",
+        problemStatement: "تفتقر الشركات في الأسواق الناشئة إلى أدوات متكاملة ومتكيفة محلياً لإدارة المحاسبة والعمليات التجارية تناسب سير عملها وبيئتها التنظيمية.",
+        solutionConcept: "منصة عمليات أعمال مخصصة تغطي وظائف المحاسبة وإدارة الشؤون المالية، بُنيت وتُشغّل تحت مظلة Venera Finance LTD.",
+        capabilities: [
+          "إدارة عمليات الأعمال والمحاسبة",
+          "حفظ السجلات المالية"
+        ],
+        architecture: "نظام عمليات أعمال ومحاسبة مطوّر لبيئات تجارية في الأسواق الناشئة.",
+        role: "طُوّر وشُغّل بواسطة Venera Finance LTD.",
+        statusVerification: "طُوّر وشُغّل بواسطة Venera Finance LTD. مؤكد تشغيلياً من قِبل المؤسس. التفاصيل التقنية الإضافية متاحة عند الطلب."
+      },
+      {
+        id: "orbitraai",
+        name: "OrbitraAI",
+        slug: "orbitraai.html",
+        category: "trading",
+        status: "منصة مطوّرة · الإطلاق قادم",
+        statusClass: "status-dev",
+        tagline: "منصة ذكاء التداول المدعومة بالذكاء الاصطناعي",
+        summary: "منصة ذكاء مالي مدعومة بالذكاء الاصطناعي طوّرتها VENERA Technology، تجمع بين تحليل السوق ومعالجة الإشارات ودعم القرار لأسواق الأصول الرقمية والمالية.",
+        detailsUrl: "/ar/orbitraai.html",
+        externalUrl: null,
+        overview: "OrbitraAI منصة ذكاء تداول مدعومة بالذكاء الاصطناعي طوّرتها VENERA Technology. أكملت المنصة مرحلة التطوير الأولى وتُستعدّ للإطلاق، مع قدرات إضافية تخضع حالياً للاختبار الداخلي. تُقدَّم كمنتج مالي ذكي مستقل ضمن محفظة تقنيات التداول والثروة.",
+        problemStatement: "يواجه المشاركون في أسواق الأصول الرقمية والمالية حجماً متزايداً من البيانات ومصادر إشارات متفرقة وندرة أدوات تُصنّف الذكاء بالسرعة والحجم اللازمين.",
+        solutionConcept: "منصة ذكاء تداول بالذكاء الاصطناعي مصممة لمعالجة إشارات السوق وتحليل الأوضاع المالية ودعم اتخاذ القرارات المنظمة في سياقات التداول وإدارة المحافظ.",
+        capabilities: [
+          "تحليل إشارات السوق وتوليد الذكاء المالي بالذكاء الاصطناعي",
+          "معالجة البيانات المالية ودعم قرارات التداول",
+          "بنية منصة مصممة لأسواق الأصول الرقمية والمالية"
+        ],
+        architecture: "منصة ذكاء تداول بالذكاء الاصطناعي. اكتمل التطوير الأساسي. وحدات قدرات إضافية تخضع للاختبار الداخلي قبيل الإطلاق العام.",
+        role: "طُوّرت تحت مظلة VENERA Technology بقيادة علي حسين.",
+        statusVerification: "اكتمل تطوير المنصة. لم تُطلق للعموم بعد. قدرات إضافية قيد الاختبار تمهيداً للإطلاق. لا يُدّعى أي أداء تداول حي أو عوائد استثمارية أو اعتماد تجاري. هذا ليس خدمة استثمار أو وساطة منظمة."
       }
     ]
   },
@@ -930,8 +1305,7 @@ const siteContent = {
         paragraphs: [
           "In 2004, amid challenging infrastructural conditions in Iraq, Ali Hussein launched his first technical endeavor: an internet and computer training center providing local communities with their first direct access to the global network.",
           "During this foundational period, he also undertook a temporary training assignment within an Iraqi irrigation-projects department, introducing civil engineers and administrative staff to digitized workflows and computer adoption.",
-          "This early immersion established his enduring conviction: that technological infrastructure is only as effective as its ability to operate reliably under local constraints and serve real human organizations.",
-          "The informal portrait displayed here reflects those formative years of hands-on grassroots engineering, while the executive portrait represents current institutional leadership."
+          "This early immersion established his enduring conviction: that technological infrastructure is only as effective as its ability to operate reliably under local constraints and serve real human organizations."
         ]
       },
       timeline: [
@@ -1000,8 +1374,7 @@ const siteContent = {
         paragraphs: [
           "في عام 2004، وفي ظل ظروف بنيوية وتحديات صعبة في العراق، أطلق علي حسين أولى مبادراته التقنية: مقهى ومركز تدريب للحاسوب والإنترنت وفّر للمجتمع المحلي أول نافذة اتصال مباشر بالشبكة العالمية.",
           "وخلال تلك المرحلة التأسيسية، عمل في مهمة تدريبية مؤقتة لدعم استخدام الحاسوب في إحدى دوائر مشاريع الري العراقية، مساهماً في تدريب المهندسين والموظفين الإداريين على الحوسبة وسير العمل الرقمي.",
-          "رسخت تلك البدايات قناعته الدائمة بأن متانة البنية التحتية التقنية تُقاس بقدرتها على العمل المستقر تحت وطأة القيود الميدانية وخدمة المؤسسات الواقعية.",
-          "تُجسد الصورة الشخصية بالقبعة تلك السنوات الأولى من العمل الهندسي الميداني، بينما تمثل الصورة الرسمية بالبدلة الحضور المؤسسي والقيادي الحالي."
+          "رسخت تلك البدايات قناعته الدائمة بأن متانة البنية التحتية التقنية تُقاس بقدرتها على العمل المستقر تحت وطأة القيود الميدانية وخدمة المؤسسات الواقعية."
         ]
       },
       timeline: [
@@ -1286,6 +1659,410 @@ const siteContent = {
           privacyNote: "تُعامل المراسلات بسرية تامة وتخضع لبروتوكولات الخصوصية المؤسسية."
         }
       }
+    }
+  },
+
+  // -----------------------------------------------------------------------
+  // PROJECT MEDIA (V5.7) — genuine captured product visuals only.
+  // Keyed by project id. type: "gallery" | "single" | "logo".
+  // Images live in assets/. Projects absent here fall back to a logo card.
+  // No fabricated UI; captions are factual and concise.
+  // -----------------------------------------------------------------------
+  projectMedia: {
+    "stylai": {
+      type: "gallery",
+      cover: "proj-stylai-customer.png",
+      gallery: [
+        { img: "proj-stylai-customer.png", cap: { en: "Customer app — discovery & booking", ar: "تطبيق العميل — الاكتشاف والحجز" } },
+        { img: "proj-stylai-barber.png",   cap: { en: "Provider app — salon management",    ar: "تطبيق مزوّد الخدمة — إدارة الصالون" } }
+      ]
+    },
+    "stylai-store": {
+      type: "single",
+      cover: "proj-stylai-store.png",
+      cap: { en: "StylAI Store — grooming & salon commerce", ar: "ستايلي ستور — تجارة منتجات العناية والصالونات" }
+    },
+    "dilmart": {
+      type: "single",
+      cover: "proj-dilmart.png",
+      cap: { en: "DilMart storefront — consumer shopping experience", ar: "واجهة ديلمارت — تجربة تسوق المستهلك" }
+    },
+    "muhasebos": {
+      type: "single",
+      cover: "proj-muhasebos.png",
+      cap: { en: "MuhasebOS — business operations environment", ar: "محاسب أو إس — بيئة عمليات الأعمال" }
+    },
+    "orbitraai": {
+      type: "single",
+      cover: "proj-orbitraai.png",
+      cap: { en: "OrbitraAI — platform interface", ar: "أوربيترا إيه آي — واجهة المنصة" }
+    },
+    "max-hub": { type: "logo", mono: "M" },
+    "deyon":   { type: "logo", mono: "D" }
+  },
+
+  // -----------------------------------------------------------------------
+  // TEAM PAGE CONTENT
+  // No individual names or bios — collective institutional presentation only.
+  // -----------------------------------------------------------------------
+  team: {
+    en: {
+      title: "The People Behind VENERA",
+      eyebrow: "Our People",
+      metaDesc: "The people behind VENERA Technology — a disciplined, multidisciplinary team building intelligent platforms, digital ventures, and strategic partnerships.",
+      heroDesc: "The people and collaborative expertise behind our technology ventures and strategic initiatives.",
+      caption1: "The VENERA team",
+      caption2: "Inside the workspace",
+      collabEyebrow: "People, Technology & Collaboration",
+      collabTitle: "Technology. Execution. Shared Vision.",
+      collabLede: "VENERA operates as a coordinated, execution-focused organization. Engineering discipline, operational rigor, and strategic thinking work in close alignment — from first architecture through to live delivery.",
+      principles: [
+        {
+          label: "Technology First",
+          desc: "Engineering discipline drives every product — platforms built to be sound, scalable, and ready to evolve."
+        },
+        {
+          label: "Execution Discipline",
+          desc: "Ownership is clear, milestones are defined, and delivery is non-negotiable across every venture."
+        },
+        {
+          label: "Strategic Collaboration",
+          desc: "Open to institutional partnerships and joint ventures with organizations that share a long-term view."
+        }
+      ],
+      ctaEyebrow: "Strategic Collaboration",
+      ctaTitle: "Work With Our Team",
+      ctaDesc: "Interested in strategic collaboration, technology partnerships, or joint ventures? We welcome conversations with institutions and investors who share a long-term perspective.",
+      ctaLabel: "Connect on LinkedIn"
+    },
+    ar: {
+      title: "الفريق وراء VENERA",
+      eyebrow: "فريقنا",
+      metaDesc: "الفريق وراء VENERA Technology — فريق منضبط متعدد التخصصات يبني منصات ذكية ومشاريع رقمية وشراكات استراتيجية.",
+      heroDesc: "الفريق والخبرات المتعاونة وراء مشاريعنا التقنية ومبادراتنا الاستراتيجية.",
+      caption1: "فريق VENERA",
+      caption2: "داخل بيئة العمل",
+      collabEyebrow: "الأفراد والتقنية والتعاون",
+      collabTitle: "التقنية. التنفيذ. رؤية مشتركة.",
+      collabLede: "تعمل VENERA كمنظومة منسقة ومركّزة على التنفيذ. يعمل الانضباط الهندسي والدقة التشغيلية والتفكير الاستراتيجي في توافق وثيق — من التصميم المعماري الأول وحتى التسليم الفعلي.",
+      principles: [
+        {
+          label: "التقنية أولاً",
+          desc: "الانضباط الهندسي يقود كل منتج — منصات محكمة البناء، قابلة للتوسع، ومهيأة للتطور."
+        },
+        {
+          label: "انضباط التنفيذ",
+          desc: "الملكية واضحة، والمعالم محددة، والتسليم غير قابل للتفاوض عبر كل مشروع."
+        },
+        {
+          label: "التعاون الاستراتيجي",
+          desc: "منفتحون على الشراكات المؤسسية والمشاريع المشتركة مع المنظمات التي تشاركنا الرؤية بعيدة المدى."
+        }
+      ],
+      ctaEyebrow: "التعاون الاستراتيجي",
+      ctaTitle: "تعاون مع فريقنا",
+      ctaDesc: "هل أنت مهتم بالتعاون الاستراتيجي أو شراكات التقنية أو المشاريع المشتركة؟ نرحب بالحوار مع المؤسسات والمستثمرين الذين يشاركوننا الرؤية بعيدة المدى.",
+      ctaLabel: "تواصل عبر LinkedIn"
+    }
+  },
+
+  // -----------------------------------------------------------------------
+  // AI VENTURES & EMERGING TECHNOLOGIES
+  // Cards only — no individual detail pages generated unless owner approves.
+  // Publication gate: visibility must be "approved_public" to appear in build.
+  // -----------------------------------------------------------------------
+  aiVentures: {
+    en: [
+      {
+        id: "ai-mos",
+        name: "AI-MOS",
+        tagline: "Intelligent Operating Environment",
+        summary: "An intelligent operating environment designed to coordinate AI-enabled business processes and digital operations.",
+        category: "ai",
+        techCategory: "Intelligent Systems",
+        status: "In Development",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "orchestrator-ai",
+        name: "Orchestrator AI",
+        tagline: "AI Agent Coordination Platform",
+        summary: "A platform focused on coordinating AI agents, tasks, and automated workflows.",
+        category: "ai",
+        techCategory: "AI Orchestration",
+        status: "In Development",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "ali-executive-agent",
+        name: "Ali Executive Agent",
+        tagline: "Intelligent Executive Assistance",
+        summary: "An intelligent executive-assistance system for organizing professional tasks and connected workflows.",
+        category: "ai",
+        techCategory: "AI Productivity",
+        status: "In Development",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "revos-ai",
+        name: "RevOS AI Revenue",
+        tagline: "Revenue Intelligence & Business Optimization",
+        summary: "An AI-driven venture focused on revenue intelligence and business-process optimization.",
+        category: "ai",
+        techCategory: "Revenue Intelligence",
+        status: "In Development",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "wealthos-ai",
+        name: "WealthOS AI",
+        tagline: "Intelligent Wealth Organization",
+        summary: "An intelligent technology concept for wealth organization and financial information management.",
+        category: "ai",
+        techCategory: "FinTech Intelligence",
+        status: "In Development",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "causal-solver-mesh",
+        name: "Causal Solver Mesh",
+        tagline: "DeFi Intelligence & Trading Research",
+        summary: "An advanced research initiative developing intelligent approaches to decentralized trading and arbitrage opportunity analysis.",
+        category: "ai",
+        techCategory: "DeFi Intelligence & Trading Research",
+        status: "In Development",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "ttade-bond-protocol",
+        name: "Trade Bond Protocol",
+        tagline: "Emerging Technology Protocol",
+        summary: "An emerging technology protocol initiative.",
+        category: "ai",
+        techCategory: "Protocol Technology",
+        status: "In Development",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      }
+    ],
+    ar: [
+      {
+        id: "ai-mos",
+        name: "AI-MOS",
+        tagline: "بيئة تشغيل ذكية",
+        summary: "بيئة تشغيل ذكية تهدف إلى تنسيق العمليات الرقمية والأعمال المدعومة بالذكاء الاصطناعي.",
+        category: "ai",
+        techCategory: "أنظمة ذكية",
+        status: "قيد التطوير",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "orchestrator-ai",
+        name: "Orchestrator AI",
+        tagline: "منصة تنسيق وكلاء الذكاء الاصطناعي",
+        summary: "منصة لتنسيق وكلاء الذكاء الاصطناعي والمهام وسير العمل المؤتمت.",
+        category: "ai",
+        techCategory: "تنسيق الذكاء الاصطناعي",
+        status: "قيد التطوير",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "ali-executive-agent",
+        name: "Ali Executive Agent",
+        tagline: "مساعد تنفيذي ذكي",
+        summary: "نظام مساعد تنفيذي ذكي لتنظيم المهام المهنية وسير العمل المتكامل.",
+        category: "ai",
+        techCategory: "إنتاجية بالذكاء الاصطناعي",
+        status: "قيد التطوير",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "revos-ai",
+        name: "RevOS AI Revenue",
+        tagline: "ذكاء الإيرادات وتحسين الأعمال",
+        summary: "مشروع يعتمد على الذكاء الاصطناعي لتحليل فرص الإيرادات وتحسين العمليات التجارية.",
+        category: "ai",
+        techCategory: "ذكاء الإيرادات",
+        status: "قيد التطوير",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "wealthos-ai",
+        name: "WealthOS AI",
+        tagline: "تنظيم الثروة الذكي",
+        summary: "مشروع تقني ذكي لتنظيم الثروة وإدارة المعلومات المالية.",
+        category: "ai",
+        techCategory: "تقنية مالية ذكية",
+        status: "قيد التطوير",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "causal-solver-mesh",
+        name: "Causal Solver Mesh",
+        tagline: "تقنيات التداول اللامركزي وأبحاث المراجحة",
+        summary: "منظومة بحثية متقدمة لتطوير تقنيات تحليل فرص التداول اللامركزي والمراجحة، مع التركيز على النمذجة الذكية والتقييم الاقتصادي للفرص.",
+        category: "ai",
+        techCategory: "تقنيات التداول اللامركزي وأبحاث المراجحة",
+        status: "قيد التطوير",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      },
+      {
+        id: "ttade-bond-protocol",
+        name: "Trade Bond Protocol",
+        tagline: "بروتوكول تقني ناشئ",
+        summary: "مبادرة لتطوير بروتوكول تقني ناشئ.",
+        category: "ai",
+        techCategory: "بروتوكولات تقنية",
+        status: "قيد التطوير",
+        statusClass: "status-dev",
+        visibility: "approved_public"
+      }
+    ]
+  },
+
+  // -----------------------------------------------------------------------
+  // STRATEGIC INVESTMENT & VENTURE PARTNERSHIPS
+  // opportunities array: each record requires visibility: "approved_public"
+  // to appear in the public build. Private/draft records must NEVER appear.
+  // Currently no approved public opportunities — elegant general page shown.
+  // Internal register entries are withheld from this public source snapshot.
+  // The two synthetic fixtures below exist ONLY so the confidentiality
+  // regression tests can verify the visibility gate without real data.
+  // -----------------------------------------------------------------------
+  opportunities: {
+    // Internal register only. Public build reads this but filters to approved_public.
+    // DO NOT populate with confidential financial models, feasibility details,
+    // or any non-public business intelligence. Values here are synthetic.
+    _internalRegister: [
+      {
+        id: "synthetic-study-alpha",
+        nameEn: "Synthetic Study Alpha",
+        nameAr: "دراسة اصطناعية ألفا",
+        visibility: "private",
+        note: "Synthetic fixture. Site: alpha.private-study.example.invalid. Test data only."
+      },
+      {
+        id: "synthetic-study-beta",
+        nameEn: "Synthetic Study Beta",
+        nameAr: "دراسة اصطناعية بيتا",
+        visibility: "private",
+        note: "Synthetic fixture. Site: beta.private-study.example.invalid. Test data only."
+      }
+    ],
+
+    publicOpportunities: [],
+
+    pageContent: {
+      en: {
+        title: "Strategic Investment & Venture Partnerships",
+        eyebrow: "VENTURE PARTNERSHIPS",
+        tagline: "From Researched Opportunities to Technology-Enabled Ventures",
+        heroDesc: "VENERA identifies, studies, and advances technology-enabled business opportunities, connecting engineering capabilities with strategic capital and operating partnerships.",
+        noPublicListingMsg: "Selected venture opportunities are introduced through direct strategic discussions.",
+        noPublicListingSubMsg: "VENERA works with investors, operating partners, and strategic collaborators to develop technology-enabled business opportunities. Inquiries from qualified parties are welcomed.",
+        audienceTitle: "Partnership Audience",
+        audienceItems: [
+          "Iraqi investors and business groups",
+          "Gulf investors and family businesses",
+          "European strategic partners",
+          "American and Canadian venture collaborators",
+          "Technology operating partners",
+          "Institutional collaborators"
+        ],
+        partnershipsTitle: "Partnership Models",
+        partnershipsDesc: "VENERA is interested in exploring the following collaboration structures with aligned partners:",
+        partnershipModels: [
+          { title: "Technology Joint Ventures", desc: "Co-develop and operate technology ventures combining VENERA's engineering capabilities with partner market access and capital." },
+          { title: "Co-Development of Digital Platforms", desc: "Collaborate on designing and building purpose-built digital platforms for specific market opportunities." },
+          { title: "Strategic Capital Participation", desc: "Structured investment participation in technology ventures at appropriate development stages." },
+          { title: "Market-Entry & Operating Partnerships", desc: "Leverage VENERA's technology base to enter new markets with aligned operating partners." },
+          { title: "Digital Infrastructure Collaboration", desc: "Develop shared digital infrastructure enabling multiple complementary business lines." },
+          { title: "Venture Commercialization & Scaling", desc: "Partner to commercialize developed technology ventures and scale operations across target markets." }
+        ],
+        journeyTitle: "Partnership Journey",
+        journeySteps: [
+          { step: "01", title: "Opportunity Discovery", desc: "Interested partner reviews public information about VENERA's capabilities and focus areas." },
+          { step: "02", title: "Initial Discussion", desc: "VENERA and the prospective partner discuss strategic fit and shared interests." },
+          { step: "03", title: "Qualification", desc: "Both parties assess capabilities, interests, and relevant requirements." },
+          { step: "04", title: "Private Briefing", desc: "Selected information may be shared through an approved secure process with qualified partners." },
+          { step: "05", title: "Partnership Structuring", desc: "Parties negotiate scope, responsibilities, investment, legal arrangements, and governance." }
+        ],
+        ctaTitle: "Begin a Strategic Conversation",
+        ctaDesc: "Inquiries from qualified investors and strategic partners are welcomed. Initial discussions are conducted through LinkedIn or institutional contact.",
+        ctaLinkedIn: "Connect on LinkedIn",
+        disclaimer: "This page describes potential partnership structures, not existing contractual relationships. No securities offering, investment solicitation, or guaranteed return is represented. Jurisdiction-specific regulatory considerations apply. Access to confidential materials is discretionary and subject to review.",
+        metaDesc: "VENERA Technology strategic investment and venture partnership opportunities. Technology joint ventures, co-development, and strategic capital participation."
+      },
+      ar: {
+        title: "الفرص الاستثمارية والشراكات الاستراتيجية",
+        eyebrow: "شراكات استراتيجية",
+        tagline: "من الفرص المدروسة إلى مشاريع تقنية قابلة للتنفيذ والنمو",
+        heroDesc: "تتعرف VENERA على الفرص التجارية المدعومة بالتكنولوجيا وتدرسها وتطورها، وتربط القدرات الهندسية برأس المال الاستراتيجي وشراكات التشغيل.",
+        noPublicListingMsg: "تُعرض الفرص المختارة من خلال مناقشات مباشرة مع الشركاء الاستراتيجيين.",
+        noPublicListingSubMsg: "تعمل VENERA مع المستثمرين وشركاء التشغيل والمتعاونين الاستراتيجيين لتطوير فرص الأعمال المدعومة بالتقنية. نرحب بالاستفسارات من الأطراف المؤهلة.",
+        audienceTitle: "جمهور الشراكة",
+        audienceItems: [
+          "المستثمرون والمجموعات التجارية العراقية",
+          "المستثمرون الخليجيون والشركات العائلية",
+          "الشركاء الاستراتيجيون الأوروبيون",
+          "المتعاونون في مجال المشاريع من أمريكا وكندا",
+          "شركاء تشغيل التقنية",
+          "المتعاونون المؤسسيون"
+        ],
+        partnershipsTitle: "نماذج الشراكة",
+        partnershipsDesc: "تهتم VENERA باستكشاف هياكل التعاون التالية مع الشركاء المتوافقين:",
+        partnershipModels: [
+          { title: "المشاريع المشتركة في التكنولوجيا", desc: "التطوير المشترك وتشغيل المشاريع التقنية الجامعة بين القدرات الهندسية لـ VENERA وإمكانية وصول الشركاء للسوق ورأس المال." },
+          { title: "التطوير المشترك للمنصات الرقمية", desc: "التعاون في تصميم وبناء منصات رقمية متخصصة لفرص سوقية محددة." },
+          { title: "المشاركة في رأس المال الاستراتيجي", desc: "المشاركة الاستثمارية المهيكلة في المشاريع التقنية في مراحل التطوير المناسبة." },
+          { title: "شراكات دخول السوق والتشغيل", desc: "الاستفادة من القاعدة التقنية لـ VENERA لدخول أسواق جديدة مع شركاء التشغيل المتوافقين." },
+          { title: "التعاون في البنية التحتية الرقمية", desc: "تطوير بنية تحتية رقمية مشتركة تتيح خطوط أعمال تكاملية متعددة." },
+          { title: "تسويق المشاريع التقنية وتوسيعها", desc: "الشراكة لتسويق المشاريع التقنية المطورة وتوسيع العمليات عبر الأسواق المستهدفة." }
+        ],
+        journeyTitle: "مسار الشراكة",
+        journeySteps: [
+          { step: "01", title: "اكتشاف الفرصة", desc: "يطلع الشريك المحتمل على المعلومات العامة حول قدرات VENERA ومجالات تركيزها." },
+          { step: "02", title: "النقاش الأولي", desc: "تناقش VENERA والشريك المحتمل التوافق الاستراتيجي والاهتمامات المشتركة." },
+          { step: "03", title: "التأهيل", desc: "يقيّم الطرفان القدرات والاهتمامات والمتطلبات ذات الصلة." },
+          { step: "04", title: "الإحاطة الخاصة", desc: "قد تُشارَك معلومات مختارة من خلال عملية آمنة معتمدة مع الشركاء المؤهلين." },
+          { step: "05", title: "هيكلة الشراكة", desc: "يتفاوض الطرفان على النطاق والمسؤوليات والاستثمار والترتيبات القانونية والحوكمة." }
+        ],
+        ctaTitle: "ابدأ محادثة استراتيجية",
+        ctaDesc: "نرحب بالاستفسارات من المستثمرين المؤهلين والشركاء الاستراتيجيين. تُجرى النقاشات الأولية عبر LinkedIn أو التواصل المؤسسي.",
+        ctaLinkedIn: "تواصل عبر LinkedIn",
+        disclaimer: "تصف هذه الصفحة هياكل الشراكة المحتملة، وليس العلاقات التعاقدية القائمة. لا يُمثل هذا عرض أوراق مالية أو دعوة للاستثمار أو ضمان عائد. تنطبق اعتبارات تنظيمية خاصة بكل ولاية قضائية. الوصول إلى المواد السرية تقديري ويخضع للمراجعة.",
+        metaDesc: "فرص الشراكة الاستراتيجية والاستثمار التقني مع VENERA Technology. مشاريع مشتركة وتطوير مشترك ومشاركة في رأس المال الاستراتيجي."
+      }
+    }
+  },
+
+  // -----------------------------------------------------------------------
+  // AI VENTURES PAGE CONTENT
+  // -----------------------------------------------------------------------
+  aiPage: {
+    en: {
+      title: "AI Ventures & Emerging Technologies",
+      eyebrow: "AI & EMERGING TECHNOLOGIES",
+      heroDesc: "Selected artificial intelligence and emerging technology initiatives under active development at VENERA Technology. Strategic details are disclosed through qualified discussions.",
+      metaDesc: "VENERA Technology AI ventures and emerging technology initiatives including AI-MOS, Orchestrator AI, WealthOS AI, and more — intelligent systems in development."
+    },
+    ar: {
+      title: "مشاريع الذكاء الاصطناعي والتقنيات الناشئة",
+      eyebrow: "الذكاء الاصطناعي والتقنيات الناشئة",
+      heroDesc: "مبادرات الذكاء الاصطناعي والتقنيات الناشئة المختارة قيد التطوير النشط في VENERA Technology. يتم الإفصاح عن التفاصيل الاستراتيجية من خلال مناقشات مؤهلة.",
+      metaDesc: "مشاريع الذكاء الاصطناعي والتقنيات الناشئة في VENERA Technology تشمل AI-MOS وOrchestrator AI وWealthOS AI وغيرها — أنظمة ذكية قيد التطوير."
     }
   },
 

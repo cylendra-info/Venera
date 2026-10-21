@@ -4,30 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#040914">
-  <title>Engineering Projects & Portfolio | VENERA Technology</title>
-  <meta name="description" content="Detailed catalog of developed systems, platforms under development, and technical ventures.">
+  <title>Ventures & Platforms | VENERA Technology</title>
+  <meta name="description" content="VENERA Technology ventures and platforms: active products, developed systems, and intelligent technologies.">
   
-  <!-- Canonical & Multilingual Alternate -->
-  <link rel="canonical" href="https://veneratech.com/en/projects.html">
-  <link rel="alternate" hreflang="en" href="projects.html">
-  <link rel="alternate" hreflang="ar" href="../ar/projects.html">
-  <link rel="alternate" hreflang="x-default" href="../en/projects.html">
-  
+  <!-- Canonical and hreflang omitted: no verified production domain configured -->
+
   <!-- Open Graph & Twitter Cards -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Engineering Projects & Portfolio | VENERA Technology">
-  <meta property="og:description" content="Detailed catalog of developed systems, platforms under development, and technical ventures.">
-  <meta property="og:url" content="https://veneratech.com/en/projects.html">
+  <meta property="og:title" content="Ventures & Platforms | VENERA Technology">
+  <meta property="og:description" content="VENERA Technology ventures and platforms: active products, developed systems, and intelligent technologies.">
+  
   <meta property="og:site_name" content="VENERA Technology">
   <meta property="og:image" content="../assets/venera-logo-transparent.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Engineering Projects & Portfolio | VENERA Technology">
-  <meta name="twitter:description" content="Detailed catalog of developed systems, platforms under development, and technical ventures.">
-  
+  <meta name="twitter:title" content="Ventures & Platforms | VENERA Technology">
+  <meta name="twitter:description" content="VENERA Technology ventures and platforms: active products, developed systems, and intelligent technologies.">
+
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/png" href="../assets/favicon.png">
   <link rel="apple-touch-icon" href="../assets/favicon.png">
-  
+
   <!-- Stylesheet -->
   <link rel="stylesheet" href="../assets/style.css">
   
@@ -41,7 +37,16 @@
       </a>
       <button class="hamb" aria-label="Toggle Navigation Menu" aria-expanded="false">☰</button>
       <nav class="links" aria-label="Primary Navigation">
-        <a class="" href="index.html">Home</a><a class="" href="about.html">About VENERA</a><a class="" href="expertise.html">Expertise</a><a class="active" href="projects.html">Projects</a><a class="" href="initiatives.html">Strategic Initiatives</a><a class="" href="founder.html">Founder</a><a class="" href="insights.html">Research & Insights</a><a class="" href="contact.html">Contact</a>
+        <a class="" href="index.html">Home</a><a class="" href="about.html">About</a><a class="" href="expertise.html">Expertise</a><a class="active" href="projects.html">Projects</a><a class="" href="ai-ventures.html">AI Ventures</a><a class="" href="partnerships.html">Partnerships</a>
+        
+    <div class="nav-more">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-label="More">
+        More <span class="nav-more-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="nav-dropdown" role="menu">
+        <a class="nav-dropdown-item" href="initiatives.html">Initiatives</a><a class="nav-dropdown-item" href="team.html">Team</a><a class="nav-dropdown-item" href="founder.html">Founder</a><a class="nav-dropdown-item" href="insights.html">Research & Insights</a><a class="nav-dropdown-item" href="contact.html">Contact</a>
+      </div>
+    </div>
         <a class="lang-pill" href="../ar/projects.html" hreflang="ar" lang="ar">العربية</a>
       </nav>
     </div>
@@ -50,100 +55,260 @@
 
     <section class="page-hero">
       <div class="wrap">
-        <div class="eyebrow">PORTFOLIO & SYSTEM CATALOG</div>
-        <h1>Verified Engineering Work</h1>
-        <p>A transparent portfolio delineating commercial products built, platforms under active laboratory development, and third-party engineering deliveries.</p>
+        <div class="eyebrow">OUR VENTURES & PLATFORMS</div>
+        <h1>Ventures & Platforms</h1>
+        <p>A portfolio of digital ventures, intelligent platforms, and technology solutions spanning commerce, business operations, financial technology, and emerging markets.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <div class="cards-grid">
+        <div class="portfolio-filters" role="group" aria-label="Filter projects by category">
           
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span class="status-badge status-dev">Under Development — Labs</span>
-      </div>
-      <h3>Cylendra Labs</h3>
-      <div style="font-size: 0.8125rem; color: var(--accent-cyan); font-weight: 600; margin-bottom: 12px;">Multi-Platform Algorithmic Trading Ecosystem</div>
-      <p>A unified suite of six interconnected platforms engineered for digital asset trading, risk assessment, and algorithmic execution.</p>
-      <div class="card-footer">
-        <a class="inline-link" href="cylendra.html">
-          Read Full Architecture Case Study ↗
-        </a>
+    <button class="portfolio-filter-btn active" data-filter="all" aria-pressed="true">
+      All Ventures
+    </button>
+  
+    <button class="portfolio-filter-btn" data-filter="trading" aria-pressed="false">
+      Trading & Wealth Technologies
+    </button>
+  
+    <button class="portfolio-filter-btn" data-filter="commerce" aria-pressed="false">
+      Ventures & Consumer Platforms
+    </button>
+  
+    <button class="portfolio-filter-btn" data-filter="bizops" aria-pressed="false">
+      Business Technologies
+    </button>
+  
+    <button class="portfolio-filter-btn" data-filter="heritage" aria-pressed="false">
+      Engineering Heritage
+    </button>
+  
+        </div>
+        <div class="cards-grid" id="portfolio-grid">
+          
+    <div class="card portfolio-card pf-card" data-category="trading">
+      <div class="pf-cover pf-cover-logo">
+          <span class="pf-cover-status status-badge status-dev">In Development</span>
+          <span class="pf-mono" aria-hidden="true">C</span>
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>Cylendra Labs</h3>
+          <span class="portfolio-cat-tag portfolio-cat-trading">Trading & Wealth Technologies</span>
+        </div>
+        <div class="pf-card-tag">Multi-Platform Algorithmic Trading Ecosystem</div>
+        <p>A unified suite of six interconnected platforms engineered for digital asset trading, risk assessment, and algorithmic execution.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="cylendra.html">View project ↗</a>
+        </div>
       </div>
     </div>
-  
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span class="status-badge status-hist">Developed / Historical (Revival Assessment)</span>
-      </div>
-      <h3>VeneraSwap</h3>
-      <div style="font-size: 0.8125rem; color: var(--accent-cyan); font-weight: 600; margin-bottom: 12px;">Decentralized Automated Market-Maker Protocol</div>
-      <p>An automated liquidity protocol and decentralized asset exchange architecture with public documentation and smart contract foundations.</p>
-      <div class="card-footer">
-        <a class="inline-link" href="veneraswap.html">
-          Read Full Architecture Case Study ↗
-        </a>
-      </div>
-    </div>
-  
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span class="status-badge status-hist">Developed / Historical Concept</span>
-      </div>
-      <h3>PayNXS</h3>
-      <div style="font-size: 0.8125rem; color: var(--accent-cyan); font-weight: 600; margin-bottom: 12px;">Merchant Digital Payments Ecosystem for Emerging Markets</div>
-      <p>An early digital payment and retail merchant platform developed for the Iraqi commercial market (circa 2019–2020).</p>
-      <div class="card-footer">
-        <a class="inline-link" href="paynxs.html">
-          Read Full Architecture Case Study ↗
-        </a>
+    <div class="card portfolio-card pf-card" data-category="trading">
+      <div class="pf-cover pf-cover-logo">
+          <span class="pf-cover-status status-badge status-hist">Protocol Developed</span>
+          <span class="pf-mono" aria-hidden="true">V</span>
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>VeneraSwap</h3>
+          <span class="portfolio-cat-tag portfolio-cat-trading">Trading & Wealth Technologies</span>
+        </div>
+        <div class="pf-card-tag">Decentralized Automated Market-Maker Protocol</div>
+        <p>An automated liquidity protocol and decentralized asset exchange architecture with public documentation and smart contract foundations.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="veneraswap.html">View project ↗</a>
+        </div>
       </div>
     </div>
-  
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span class="status-badge status-third">Developed / Third-Party Project</span>
-      </div>
-      <h3>OrderNXS</h3>
-      <div style="font-size: 0.8125rem; color: var(--accent-cyan); font-weight: 600; margin-bottom: 12px;">On-Demand Delivery & Commercial Services Platform</div>
-      <p>A full-featured commercial logistics and order dispatch system engineered for a third-party commercial client in Iraq.</p>
-      <div class="card-footer">
-        <a class="inline-link" href="ordernxs.html">
-          Read Full Architecture Case Study ↗
-        </a>
-      </div>
-    </div>
-  
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span class="status-badge status-hist">Historical / Discontinued Utility</span>
-      </div>
-      <h3>ROIC</h3>
-      <div style="font-size: 0.8125rem; color: var(--accent-cyan); font-weight: 600; margin-bottom: 12px;">Telegram-Based Digital Asset Utility Interface</div>
-      <p>A rapid-interaction automated Telegram bot engineered for community digital asset management, monitoring, and interaction.</p>
-      <div class="card-footer">
-        <a class="inline-link" href="roic.html">
-          Read Full Architecture Case Study ↗
-        </a>
+    <div class="card portfolio-card pf-card" data-category="commerce">
+      <div class="pf-cover pf-cover-logo">
+          <span class="pf-cover-status status-badge status-hist">Platform Developed</span>
+          <span class="pf-mono" aria-hidden="true">P</span>
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>PayNXS</h3>
+          <span class="portfolio-cat-tag portfolio-cat-commerce">Ventures & Consumer Platforms</span>
+        </div>
+        <div class="pf-card-tag">Merchant Digital Payments Ecosystem for Emerging Markets</div>
+        <p>An early digital payment and retail merchant platform developed for the Iraqi commercial market (circa 2019–2020).</p>
+        <div class="card-footer">
+          <a class="inline-link" href="paynxs.html">View project ↗</a>
+        </div>
       </div>
     </div>
-  
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span class="status-badge status-hist">Historical Corporate Venture</span>
-      </div>
-      <h3>Nuxese Group</h3>
-      <div style="font-size: 0.8125rem; color: var(--accent-cyan); font-weight: 600; margin-bottom: 12px;">Estonian Digital Asset Licensing & Infrastructure Entity</div>
-      <p>An international technology enterprise established in Estonia to explore European regulatory frameworks and institutional digital asset rails.</p>
-      <div class="card-footer">
-        <a class="inline-link" href="nuxese.html">
-          Read Full Architecture Case Study ↗
-        </a>
+    <div class="card portfolio-card pf-card" data-category="commerce">
+      <div class="pf-cover pf-cover-logo">
+          <span class="pf-cover-status status-badge status-third">Client Delivery</span>
+          <span class="pf-mono" aria-hidden="true">O</span>
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>OrderNXS</h3>
+          <span class="portfolio-cat-tag portfolio-cat-commerce">Ventures & Consumer Platforms</span>
+        </div>
+        <div class="pf-card-tag">On-Demand Delivery & Commercial Services Platform</div>
+        <p>A full-featured commercial logistics and order dispatch system engineered for a third-party commercial client in Iraq.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="ordernxs.html">View project ↗</a>
+        </div>
       </div>
     </div>
-  
+    <div class="card portfolio-card pf-card" data-category="heritage">
+      <div class="pf-cover pf-cover-logo">
+          <span class="pf-cover-status status-badge status-hist">Historical Initiative</span>
+          <span class="pf-mono" aria-hidden="true">R</span>
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>ROIC</h3>
+          <span class="portfolio-cat-tag portfolio-cat-heritage">Engineering Heritage</span>
+        </div>
+        <div class="pf-card-tag">Telegram-Based Digital Asset Utility Interface</div>
+        <p>A rapid-interaction automated Telegram bot engineered for community digital asset management, monitoring, and interaction.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="roic.html">View project ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="card portfolio-card pf-card" data-category="heritage">
+      <div class="pf-cover pf-cover-logo">
+          <span class="pf-cover-status status-badge status-hist">Historical Venture</span>
+          <span class="pf-mono" aria-hidden="true">N</span>
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>Nuxese Group</h3>
+          <span class="portfolio-cat-tag portfolio-cat-heritage">Engineering Heritage</span>
+        </div>
+        <div class="pf-card-tag">Estonian Digital Asset Licensing & Infrastructure Entity</div>
+        <p>An international technology enterprise established in Estonia to explore European regulatory frameworks and institutional digital asset rails.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="nuxese.html">View project ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="card portfolio-card pf-card" data-category="commerce">
+      <div class="pf-cover">
+          <span class="pf-cover-status status-badge status-hist">Platform Developed</span>
+          <img src="../assets/proj-dilmart.png" alt="DilMart product interface" loading="lazy" decoding="async">
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>DilMart</h3>
+          <span class="portfolio-cat-tag portfolio-cat-commerce">Ventures & Consumer Platforms</span>
+        </div>
+        <div class="pf-card-tag">Iraq-Focused Digital Commerce Platform</div>
+        <p>An Iraq-focused digital commerce platform supporting online shopping, order management, and retail fulfillment workflows. Technical development by Venera Finance LTD.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="dilmart.html">View project ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="card portfolio-card pf-card" data-category="commerce">
+      <div class="pf-cover">
+          <span class="pf-cover-status status-badge status-ops">Active Platform</span>
+          <img src="../assets/proj-stylai-customer.png" alt="StylAI product interface" loading="lazy" decoding="async">
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>StylAI</h3>
+          <span class="portfolio-cat-tag portfolio-cat-commerce">Ventures & Consumer Platforms</span>
+        </div>
+        <div class="pf-card-tag">Barber & Salon Booking Platform — Consumer App</div>
+        <p>Discover nearby barbers and salons, view services and pricing, and book appointments instantly. Live on iOS and Android under Venera Finance.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="stylai.html">View project ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="card portfolio-card pf-card" data-category="commerce">
+      <div class="pf-cover">
+          <span class="pf-cover-status status-badge status-ops">Active Platform</span>
+          <img src="../assets/proj-stylai-store.png" alt="StylAI Store product interface" loading="lazy" decoding="async">
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>StylAI Store</h3>
+          <span class="portfolio-cat-tag portfolio-cat-commerce">Ventures & Consumer Platforms</span>
+        </div>
+        <div class="pf-card-tag">Barber & Salon Management Platform — Provider App</div>
+        <p>The merchant-side companion to StylAI, enabling barbershop and salon owners to manage appointments and schedules. Live on Android under Venera Finance.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="stylai-store.html">View project ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="card portfolio-card pf-card" data-category="commerce">
+      <div class="pf-cover pf-cover-logo">
+          <span class="pf-cover-status status-badge status-ops">Active Platform</span>
+          <span class="pf-mono" aria-hidden="true">M</span>
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>Max Hub</h3>
+          <span class="portfolio-cat-tag portfolio-cat-commerce">Ventures & Consumer Platforms</span>
+        </div>
+        <div class="pf-card-tag">Delivery Agent Application — Field Operations</div>
+        <p>A mobile application supporting delivery representatives in their day-to-day field operations. Developed and operated under Venera Finance LTD.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="max-hub.html">View project ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="card portfolio-card pf-card" data-category="bizops">
+      <div class="pf-cover pf-cover-logo">
+          <span class="pf-cover-status status-badge status-ops">Active Platform</span>
+          <span class="pf-mono" aria-hidden="true">D</span>
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>Deyon App</h3>
+          <span class="portfolio-cat-tag portfolio-cat-bizops">Business Technologies</span>
+        </div>
+        <div class="pf-card-tag">Digital Debt Ledger for Small Retailers</div>
+        <p>Helps small retailers record and organize customer debts and credit accounts. A practical digital alternative to paper ledgers for independent merchants.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="deyon.html">View project ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="card portfolio-card pf-card" data-category="bizops">
+      <div class="pf-cover">
+          <span class="pf-cover-status status-badge status-ops">Active System</span>
+          <img src="../assets/proj-muhasebos.png" alt="MuhasebOS product interface" loading="lazy" decoding="async">
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>MuhasebOS</h3>
+          <span class="portfolio-cat-tag portfolio-cat-bizops">Business Technologies</span>
+        </div>
+        <div class="pf-card-tag">Business Operations & Accounting System</div>
+        <p>An accounting and business operations system developed and operated under Venera Finance LTD, designed for business management and financial record-keeping.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="muhasebos.html">View project ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="card portfolio-card pf-card" data-category="trading">
+      <div class="pf-cover">
+          <span class="pf-cover-status status-badge status-dev">Platform Developed · Preparing for Launch</span>
+          <img src="../assets/proj-orbitraai.png" alt="OrbitraAI product interface" loading="lazy" decoding="async">
+        </div>
+      <div class="pf-card-body">
+        <div class="pf-card-top">
+          <h3>OrbitraAI</h3>
+          <span class="portfolio-cat-tag portfolio-cat-trading">Trading & Wealth Technologies</span>
+        </div>
+        <div class="pf-card-tag">AI-Powered Trading Intelligence Platform</div>
+        <p>An AI-powered financial intelligence platform developed by VENERA Technology, combining market analysis, signal processing, and decision-support capabilities for digital asset and financial markets.</p>
+        <div class="card-footer">
+          <a class="inline-link" href="orbitraai.html">View project ↗</a>
+        </div>
+      </div>
+    </div>
         </div>
       </div>
     </section>
